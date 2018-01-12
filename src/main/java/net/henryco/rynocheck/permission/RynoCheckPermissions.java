@@ -1,0 +1,23 @@
+package net.henryco.rynocheck.permission;
+
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+
+import java.util.HashMap;
+
+/**
+ * @author Henry on 12/01/18.
+ */
+public interface RynoCheckPermissions  {
+
+	Permission NAP = new Permission(
+			"nap_member",
+			PermissionDefault.TRUE,
+			new HashMap<String, Boolean>() {{
+				this.put("revenge", true);
+				this.put("private_property", true);
+			}}
+	);
+
+
+}

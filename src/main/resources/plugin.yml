@@ -1,0 +1,27 @@
+name: RynoCheck
+version: 1.4.8.8
+description: Suka blyat
+
+author: HenryCo
+website: https://github.com/henryco
+main: net.henryco.rynocheck.RynoCheckPlugin
+
+commands:
+    nap:
+      description: You should agree with NAP contract [agree / disagree]
+      usage: /<command> [agree / disagree]
+
+
+permissions:
+    nap_member.*:
+      description: NAP member
+      children:
+        nap_member.revenge: true
+        nap_member.private_property: true
+    nap_member.revenge:
+      description: J U S T I C E
+      default: true
+    nap_member.private_property:
+      description: You deserve it!
+      default: true
+
