@@ -1,5 +1,6 @@
 package net.henryco.rynocheck.command;
 
+import com.github.henryco.injector.GrInjector;
 import net.henryco.rynocheck.permission.RynoCheckPermissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

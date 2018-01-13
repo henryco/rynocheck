@@ -1,5 +1,6 @@
 package net.henryco.rynocheck.command;
 
+import com.github.henryco.injector.GrInjector;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.Plugin;
 
@@ -12,6 +13,7 @@ public abstract class RynoCheckExecutor implements CommandExecutor {
 
 	public RynoCheckExecutor(Plugin plugin) {
 		this.plugin = plugin;
+		GrInjector.inject(this);
 	}
 
 	protected Plugin getPlugin() {
