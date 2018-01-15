@@ -24,21 +24,21 @@ commands:
     wallet-login:
       description: Login to your personal wallet
       usage: /<command> {name} {password}
-      aliases: [wlogin, w-login]
+      aliases: [wln, wlogin, w-login]
       permissions: wallet_logout
       permissions-message: You should logout first
 
     wallet-logout:
       description: Logout
       usage: </command>
-      aliases: [wlogout, w-logout]
+      aliases: [wlt, wlogout, w-logout]
       permissions: wallet_login
       permissions-message: You should login first
 
     wallet-create:
       description: Create new wallet account
       usage: /<command> {name} {password}
-      aliases: [wcreate, w-create]
+      aliases: [wcr, wcreate, w-create]
 
     wallet:
       description: Your personal money wallet

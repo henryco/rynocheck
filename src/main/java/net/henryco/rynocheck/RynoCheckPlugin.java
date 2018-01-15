@@ -4,8 +4,8 @@ import com.github.henryco.injector.GrInjector;
 import com.github.henryco.injector.meta.annotations.Inject;
 import net.henryco.rynocheck.command.DecisionCommandExecutor;
 import net.henryco.rynocheck.command.NapCommandExecutor;
-import net.henryco.rynocheck.command.WalletCommandExecutor;
-import net.henryco.rynocheck.modules.MainModule;
+import net.henryco.rynocheck.command.wallet.WalletCommandExecutor;
+import net.henryco.rynocheck.modules.RootModule;
 import net.henryco.rynocheck.modules.PluginModule;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,7 +25,7 @@ public class RynoCheckPlugin extends JavaPlugin {
 		super.onEnable();
 
 		PluginModule.setStatic_plugin(this);
-		GrInjector.addModules(MainModule.class);
+		GrInjector.addModules(RootModule.class);
 		GrInjector.inject(RynoCheckPlugin.this);
 
 		getLogger().info("Wellcome to CYBER SOMALIA");

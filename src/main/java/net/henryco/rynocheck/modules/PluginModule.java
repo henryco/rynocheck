@@ -4,12 +4,14 @@ import com.github.henryco.injector.meta.annotations.Module;
 import com.github.henryco.injector.meta.annotations.Provide;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import lombok.Setter;
+import net.henryco.rynocheck.context.SimpleCommandContext;
 import org.bukkit.plugin.Plugin;
 
 /**
  * @author Henry on 15/01/18.
- */@Module
-public final class PluginModule {
+ */@Module(components = {
+		SimpleCommandContext.class
+}) public final class PluginModule {
 
 	private @Setter static Plugin static_plugin;
 
