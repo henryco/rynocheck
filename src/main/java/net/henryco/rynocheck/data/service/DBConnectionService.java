@@ -9,29 +9,31 @@ import java.util.function.Consumer;
 /**
  * @author Henry on 13/01/18.
  */
-public class DataBaseConnectionService implements IDataBaseConnectionService {
+public class DBConnectionService implements IDBConnectionService {
 
 	private ConnectionSource connectionSource;
 	private final String URL;
 
-	DataBaseConnectionService(String URL) {
+	DBConnectionService(String URL) {
 		this.URL = URL;
 	}
 
 	@Override
 	public ConnectionHandler connect() {
 
+		this.close();
+
 		try (JdbcPooledConnectionSource connectionSource = new JdbcPooledConnectionSource(URL)) {
 			this.connectionSource = connectionSource;
 			return new ConnectionHandler() {
 				@Override
 				public ConnectionHandler then(Consumer<ConnectionSource> sourceConsumer) {
-					sourceConsumer.accept((DataBaseConnectionService.this.connectionSource));
+					sourceConsumer.accept((DBConnectionService.this.connectionSource));
 					return this;
 				}
 				@Override
 				public void close() {
-					DataBaseConnectionService.this.close();
+					DBConnectionService.this.close();
 				}
 			};
 		} catch (Exception e) {
@@ -45,10 +47,16 @@ public class DataBaseConnectionService implements IDataBaseConnectionService {
 		}
 	}
 
+
 	@Override
 	public void close() {
+
+		if (connectionSource == null)
+			return;
+
 		try {
 			connectionSource.close();
+			connectionSource = null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

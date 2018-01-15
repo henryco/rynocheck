@@ -2,18 +2,19 @@ package net.henryco.rynocheck.data.service;
 
 import com.j256.ormlite.support.ConnectionSource;
 
+import java.io.Closeable;
 import java.util.function.Consumer;
 
 /**
  * @author Henry on 13/01/18.
  */
-public interface IDataBaseConnectionService {
+public interface IDBConnectionService extends Closeable {
 
 
 	final class Factory {
 
-		public static IDataBaseConnectionService sqliteDataBase(String dataBaseFile) {
-			return new DataBaseConnectionService("jdbc:sqlite:" + dataBaseFile);
+		public static IDBConnectionService sqlite(String dataBaseFile) {
+			return new DBConnectionService("jdbc:sqlite:" + dataBaseFile);
 		}
 
 		// todo more databases
@@ -34,6 +35,5 @@ public interface IDataBaseConnectionService {
 	}
 
 	ConnectionHandler connect();
-	void close();
 
 }

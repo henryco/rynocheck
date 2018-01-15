@@ -1,6 +1,9 @@
 package net.henryco.rynocheck.command;
 
-import com.github.henryco.injector.GrInjector;
+import com.github.henryco.injector.meta.annotations.Component;
+import com.github.henryco.injector.meta.annotations.Inject;
+import com.github.henryco.injector.meta.annotations.Singleton;
+import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.permission.RynoCheckPermissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,36 +13,40 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * @author Henry on 11/01/18.
- */
+ */ @Component @Singleton
 public class NapCommandExecutor extends RynoCheckExecutor {
 
-	private static final String NAME = "nap";
-	private static final String YES = "agree";
-	private static final String NO = "disagree";
+	private static final String YES = "on";
+	private static final String NO = "off";
 
-	public NapCommandExecutor(Plugin plugin) {
-		super(plugin);
+	@Inject
+	public NapCommandExecutor(CommandContext commandContext,
+							  Plugin plugin) {
+		super(commandContext, plugin);
+		System.out.println("NapCommandExecutor()");
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		if (command.getName().equalsIgnoreCase(NAME) && sender instanceof Player) {
+		if (sender instanceof Player) {
 
-			PermissionAttachment pa = sender.addAttachment(getPlugin());
-			switch (args[0]) {
+			final PermissionAttachment pa = sender.addAttachment(getPlugin());
 
-				case YES: {
-					sender.sendMessage("Now you are NAP member");
-					pa.setPermission(RynoCheckPermissions.NAP, true);
-					return true;
-				}
+			if (YES.equalsIgnoreCase(args[0])) {
+				sender.sendMessage("Now you are NAP member");
+				pa.setPermission(RynoCheckPermissions.NAP, true);
+				return true;
+			} else if (NO.equalsIgnoreCase(args[0])) {
 
-				case NO: {
+				sender.sendMessage("Are you sure? [y/N]");
+				getContext().add(((Player) sender).getUniqueId(), aVoid -> {
 					sender.sendMessage("It's your decision");
 					pa.unsetPermission(RynoCheckPermissions.NAP);
 					return true;
-				}
+				});
+
+				return true;
 			}
 		}
 		return false;

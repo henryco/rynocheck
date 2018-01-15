@@ -1,7 +1,12 @@
 package net.henryco.rynocheck;
 
+import com.github.henryco.injector.GrInjector;
+import com.github.henryco.injector.meta.annotations.Inject;
+import net.henryco.rynocheck.command.DecisionCommandExecutor;
 import net.henryco.rynocheck.command.NapCommandExecutor;
 import net.henryco.rynocheck.command.WalletCommandExecutor;
+import net.henryco.rynocheck.modules.MainModule;
+import net.henryco.rynocheck.modules.PluginModule;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -10,19 +15,31 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class RynoCheckPlugin extends JavaPlugin {
 
 
+	private @Inject DecisionCommandExecutor decisionCommandExecutor;
+	private @Inject WalletCommandExecutor walletCommandExecutor;
+	private @Inject NapCommandExecutor napCommandExecutor;
+
+
 	@Override
 	public void onEnable() {
 		super.onEnable();
+
+		PluginModule.setStatic_plugin(this);
+		GrInjector.addModules(MainModule.class);
+		GrInjector.inject(RynoCheckPlugin.this);
+
 		getLogger().info("Wellcome to CYBER SOMALIA");
-		getCommand("nap").setExecutor(new NapCommandExecutor(this));
-		getCommand("wallet").setExecutor(new WalletCommandExecutor(this));
+		getCommand("nap").setExecutor(napCommandExecutor);
+		getCommand("wallet").setExecutor(walletCommandExecutor);
+		getCommand("y").setExecutor(decisionCommandExecutor);
+		getCommand("n").setExecutor(decisionCommandExecutor);
 	}
 
 
 	@Override
 	public void onDisable() {
 		super.onDisable();
-		getLogger().info("NA ZMEYU NIE NASTUPAI");
+		getLogger().info("U DON'T KNOW THE WAE");
 	}
 
 }

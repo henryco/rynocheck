@@ -38,6 +38,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Rynocheck plugin',
+                'Implementation-Version': version
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 jar {
     configurations.shade.each { dep ->
         from(project.zipTree(dep)) {

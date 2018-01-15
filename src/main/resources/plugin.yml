@@ -1,6 +1,6 @@
 name: RynoCheck
 version: 1.4.8.8
-description: Suka blyat
+description: Free market intensifies
 
 author: HenryCo
 website: https://github.com/henryco
@@ -8,8 +8,24 @@ main: net.henryco.rynocheck.RynoCheckPlugin
 
 commands:
     nap:
-      description: You should agree with NAP contract [agree / disagree]
-      usage: /<command> [agree / disagree]
+      description: You should agree with NAP contract [on / off]
+      usage: /<command> [on / off]
+    wallet:
+      description: Your personal money wallet
+      usage: |
+        /<command> [create {name} {pass}], [login {name} {pass}], [logout], [balance], [balance {currency}],
+        [history], [history {currency}], [send {recipient} {amount} {currency}]
+      permission: wallet_owner
+      permission-message: You should login to personal wallet first.
+    y:
+      description: Confirm action
+      usage: /<command>
+      aliases: [yes, accept, ok]
+    n:
+      description: Decline action
+      usage: </command>
+      aliases: [no, decline, cancel]
+
 
 
 permissions:
@@ -19,9 +35,12 @@ permissions:
         nap_member.revenge: true
         nap_member.private_property: true
     nap_member.revenge:
-      description: J U S T I C E
+      description: J U S T I C E for all
       default: true
     nap_member.private_property:
       description: You deserve it!
       default: true
 
+    wallet_owner:
+      description: Wallet owner
+      default: false
