@@ -28,7 +28,7 @@ dependencies {
     compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '4.23'
     compile group: 'com.j256.ormlite', name: 'ormlite-jdbc', version: '5.0'
 
-    compile 'com.github.henryco:grinjector:+'
+    compile 'com.github.henryco:grinjector:1.0.1'
 
     compileOnly "org.bukkit:bukkit:+"
     compileOnly 'org.projectlombok:lombok:+'

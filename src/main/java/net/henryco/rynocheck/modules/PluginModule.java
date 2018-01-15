@@ -15,7 +15,6 @@ public final class PluginModule {
 
 	@Provide @Singleton
 	public Plugin plugin() {
-		System.out.println("plugin("+static_plugin+")");
 		return static_plugin;
 	}
 }

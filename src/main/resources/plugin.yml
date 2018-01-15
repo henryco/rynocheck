@@ -8,23 +8,48 @@ main: net.henryco.rynocheck.RynoCheckPlugin
 
 commands:
     nap:
-      description: You should agree with NAP contract [on / off]
+      description: You should agree with NAP contract
       usage: /<command> [on / off]
-    wallet:
-      description: Your personal money wallet
-      usage: |
-        /<command> [create {name} {pass}], [login {name} {pass}], [logout], [balance], [balance {currency}],
-        [history], [history {currency}], [send {recipient} {amount} {currency}]
-      permission: wallet_owner
-      permission-message: You should login to personal wallet first.
+
     y:
       description: Confirm action
       usage: /<command>
-      aliases: [yes, accept, ok]
+      aliases: [yes, accept, ok, Y]
+
     n:
       description: Decline action
       usage: </command>
-      aliases: [no, decline, cancel]
+      aliases: [no, decline, cancel, N]
+
+    wallet-login:
+      description: Login to your personal wallet
+      usage: /<command> {name} {password}
+      aliases: [wlogin, w-login]
+      permissions: wallet_logout
+      permissions-message: You should logout first
+
+    wallet-logout:
+      description: Logout
+      usage: </command>
+      aliases: [wlogout, w-logout]
+      permissions: wallet_login
+      permissions-message: You should login first
+
+    wallet-create:
+      description: Create new wallet account
+      usage: /<command> {name} {password}
+      aliases: [wcreate, w-create]
+
+    wallet:
+      description: Your personal money wallet
+      aliases: [w]
+      usage: |
+        /<command> [send {recipient} {amount} {currency}],
+        [balance], [balance {currency}],
+        [history], [history {currency}]
+      permission: wallet_login
+      permission-message: You should login to personal wallet first.
+
 
 
 
@@ -40,7 +65,9 @@ permissions:
     nap_member.private_property:
       description: You deserve it!
       default: true
-
-    wallet_owner:
-      description: Wallet owner
+    wallet_login:
+      description: Wallet login
       default: false
+    wallet_logout:
+      description: Wallet logout
+      default: true

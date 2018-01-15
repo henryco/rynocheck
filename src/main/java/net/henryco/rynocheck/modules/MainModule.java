@@ -14,9 +14,10 @@ import java.io.File;
  * @author Henry on 14/01/18.
  */
 @Module(include = {
-		CommandModule.class
+		CommandModule.class,
+		PluginModule.class
 }, targets = {
-		RynoCheckPlugin.class
+		RynoCheckPlugin.class,
 }) public final class MainModule {
 
 
@@ -29,10 +30,8 @@ import java.io.File;
 
 	@Provide("dbName") @Singleton
 	public String provideDataBaseName(Plugin plugin) {
-		System.out.println("provideDataBaseName("+plugin+")");
-		String absolutePath = plugin.getDataFolder().getAbsolutePath();
-		System.out.println("DataPath: "+absolutePath);
-		return absolutePath + File.separator + plugin.getConfig().getString(
+		return plugin.getDataFolder().getAbsolutePath()
+				+ File.separator + plugin.getConfig().getString(
 				"database.sqlite.name", "rynocheck.db"
 		);
 	}

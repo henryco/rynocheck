@@ -28,7 +28,7 @@ public class SimpleCommandContext implements CommandContext {
 
 	@Override @SuppressWarnings("unchecked")
 	public <T> T release(UUID uuid) {
-		Function<Void, ?> function = functionMap.get(uuid);
+		Function<Void, ?> function = functionMap.remove(uuid);
 		if (function == null) return null;
 		return (T) function.apply(null);
 	}

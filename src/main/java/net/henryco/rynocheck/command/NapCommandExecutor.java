@@ -23,7 +23,6 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 	public NapCommandExecutor(CommandContext commandContext,
 							  Plugin plugin) {
 		super(commandContext, plugin);
-		System.out.println("NapCommandExecutor()");
 	}
 
 	@Override
@@ -39,10 +38,18 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 				return true;
 			} else if (NO.equalsIgnoreCase(args[0])) {
 
-				sender.sendMessage("Are you sure? [y/N]");
+				if (!pa.getPermissible().hasPermission(RynoCheckPermissions.NAP))
+					return false;
+
+				sender.sendMessage("Are you sure? /(y : N)");
 				getContext().add(((Player) sender).getUniqueId(), aVoid -> {
 					sender.sendMessage("It's your decision");
 					pa.unsetPermission(RynoCheckPermissions.NAP);
+
+					NapCommandExecutor.this.getPlugin().getServer().getOnlinePlayers().forEach(p -> getPlugin().getServer()
+							.broadcast(((Player) sender).getDisplayName() + "left the NAP",
+									RynoCheckPermissions.NAP.getName()));
+
 					return true;
 				});
 

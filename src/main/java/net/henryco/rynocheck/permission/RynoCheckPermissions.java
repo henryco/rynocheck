@@ -12,7 +12,7 @@ public interface RynoCheckPermissions  {
 
 	Permission NAP = new Permission(
 			"nap_member",
-			PermissionDefault.TRUE,
+			PermissionDefault.FALSE,
 			new HashMap<String, Boolean>() {{
 				this.put("revenge", true);
 				this.put("private_property", true);
@@ -20,4 +20,14 @@ public interface RynoCheckPermissions  {
 	);
 
 
+	Permission WALLET_LOGIN = new Permission(
+			"wallet_login",
+			PermissionDefault.FALSE
+	);
+
+
+	Permission WALLET_LOGOUT = new Permission(
+			"wallet_logout",
+			PermissionDefault.TRUE
+	);
 }
