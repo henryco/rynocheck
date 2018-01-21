@@ -1,8 +1,10 @@
-package net.henryco.rynocheck.data.service;
+package net.henryco.rynocheck.data.service.connection;
 
 import com.j256.ormlite.support.ConnectionSource;
+import lombok.extern.java.Log;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.function.Consumer;
 
 /**
@@ -10,10 +12,11 @@ import java.util.function.Consumer;
  */
 public interface IDBConnectionService extends Closeable {
 
-
+	@Log
 	final class Factory {
 
 		public static IDBConnectionService sqlite(String dataBaseFile) {
+			log.info("Creating sqlite IDBConnectionService: " + dataBaseFile);
 			return new DBConnectionService("jdbc:sqlite:" + dataBaseFile);
 		}
 
@@ -29,11 +32,18 @@ public interface IDBConnectionService extends Closeable {
 		default ConnectionHandler exceptionally(Consumer<Exception> consumer) {
 			return this;
 		}
+
+		ConnectionSource getSource();
+
 		default void close() {
 
 		}
 	}
 
 	ConnectionHandler connect();
+	default ConnectionHandler forceConnect() throws IOException {
+		this.close();
+		return connect();
+	}
 
 }

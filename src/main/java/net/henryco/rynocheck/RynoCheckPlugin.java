@@ -1,23 +1,25 @@
 package net.henryco.rynocheck;
 
 import com.github.henryco.injector.GrInjector;
-import com.github.henryco.injector.meta.annotations.Inject;
+import com.j256.ormlite.support.ConnectionSource;
 import net.henryco.rynocheck.command.DecisionCommandExecutor;
 import net.henryco.rynocheck.command.NapCommandExecutor;
 import net.henryco.rynocheck.command.wallet.WalletCommandExecutor;
-import net.henryco.rynocheck.modules.RootModule;
+import net.henryco.rynocheck.command.wallet.WalletCreateCmEx;
+import net.henryco.rynocheck.command.wallet.WalletLoginCmEx;
+import net.henryco.rynocheck.command.wallet.WalletLogoutCmEx;
 import net.henryco.rynocheck.modules.PluginModule;
+import net.henryco.rynocheck.modules.RootModule;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
+
+import static com.github.henryco.injector.GrInjector.getComponent;
 
 /**
  * @author Henry on 11/01/18.
  */
 public class RynoCheckPlugin extends JavaPlugin {
-
-
-	private @Inject DecisionCommandExecutor decisionCommandExecutor;
-	private @Inject WalletCommandExecutor walletCommandExecutor;
-	private @Inject NapCommandExecutor napCommandExecutor;
 
 
 	@Override
@@ -27,19 +29,26 @@ public class RynoCheckPlugin extends JavaPlugin {
 		PluginModule.setStatic_plugin(this);
 		GrInjector.addModules(RootModule.class);
 		GrInjector.inject(RynoCheckPlugin.this);
+		getLogger().info("Welcome to CYBER SOMALIA");
+		getCommand("nap").setExecutor(getComponent(NapCommandExecutor.class));
+		getCommand("wallet").setExecutor(getComponent(WalletCommandExecutor.class));
+		getCommand("y").setExecutor(getComponent(DecisionCommandExecutor.class));
+		getCommand("n").setExecutor(getComponent(DecisionCommandExecutor.class));
+		getCommand("wallet-create").setExecutor(getComponent(WalletCreateCmEx.class));
+		getCommand("wallet-logout").setExecutor(getComponent(WalletLogoutCmEx.class));
+		getCommand("wallet-login").setExecutor(getComponent(WalletLoginCmEx.class));
 
-		getLogger().info("Wellcome to CYBER SOMALIA");
-		getCommand("nap").setExecutor(napCommandExecutor);
-		getCommand("wallet").setExecutor(walletCommandExecutor);
-		getCommand("y").setExecutor(decisionCommandExecutor);
-		getCommand("n").setExecutor(decisionCommandExecutor);
 	}
 
 
 	@Override
 	public void onDisable() {
 		super.onDisable();
-		getLogger().info("U DON'T KNOW THE WAE");
+		try {
+			getComponent(ConnectionSource.class).close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

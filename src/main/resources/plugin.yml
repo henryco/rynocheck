@@ -37,7 +37,7 @@ commands:
 
     wallet-create:
       description: Create new wallet account
-      usage: /<command> {name} {password}
+      usage: /<command> {name} {password} {(optional) email}
       aliases: [wcr, wcreate, w-create]
 
     wallet:

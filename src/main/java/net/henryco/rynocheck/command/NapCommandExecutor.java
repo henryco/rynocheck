@@ -26,7 +26,7 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
 
 		if (sender instanceof Player) {
 

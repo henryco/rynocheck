@@ -25,9 +25,4 @@ public interface RynoCheckPermissions  {
 			PermissionDefault.FALSE
 	);
 
-
-	Permission WALLET_LOGOUT = new Permission(
-			"wallet_logout",
-			PermissionDefault.TRUE
-	);
 }
