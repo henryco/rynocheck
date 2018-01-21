@@ -2,6 +2,7 @@ package net.henryco.rynocheck;
 
 import com.github.henryco.injector.GrInjector;
 import com.j256.ormlite.support.ConnectionSource;
+import lombok.val;
 import net.henryco.rynocheck.command.DecisionCommandExecutor;
 import net.henryco.rynocheck.command.NapCommandExecutor;
 import net.henryco.rynocheck.command.wallet.WalletCommandExecutor;
@@ -10,6 +11,7 @@ import net.henryco.rynocheck.command.wallet.WalletLoginCmEx;
 import net.henryco.rynocheck.command.wallet.WalletLogoutCmEx;
 import net.henryco.rynocheck.modules.PluginModule;
 import net.henryco.rynocheck.modules.RootModule;
+import net.henryco.rynocheck.utils.PluginClassFinder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -26,10 +28,21 @@ public class RynoCheckPlugin extends JavaPlugin {
 	public void onEnable() {
 		super.onEnable();
 
+		val classFinder = new PluginClassFinder(getClassLoader());
+
 		PluginModule.setStatic_plugin(this);
-		GrInjector.addModules(RootModule.class);
+		GrInjector.addModules(classFinder, RootModule.class);
 		GrInjector.inject(RynoCheckPlugin.this);
+
 		getLogger().info("Welcome to CYBER SOMALIA");
+
+		initCommands();
+		getLogger().info("package: " + this.getClass().getPackage().getName());
+	}
+
+
+	private void initCommands() {
+
 		getCommand("nap").setExecutor(getComponent(NapCommandExecutor.class));
 		getCommand("wallet").setExecutor(getComponent(WalletCommandExecutor.class));
 		getCommand("y").setExecutor(getComponent(DecisionCommandExecutor.class));
@@ -37,7 +50,6 @@ public class RynoCheckPlugin extends JavaPlugin {
 		getCommand("wallet-create").setExecutor(getComponent(WalletCreateCmEx.class));
 		getCommand("wallet-logout").setExecutor(getComponent(WalletLogoutCmEx.class));
 		getCommand("wallet-login").setExecutor(getComponent(WalletLoginCmEx.class));
-
 	}
 
 

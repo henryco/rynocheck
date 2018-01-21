@@ -7,11 +7,14 @@ import net.henryco.rynocheck.RynoCheckPlugin;
  * @author Henry on 14/01/18.
  */
 @Module(include = {
-		CommandModule.class,
 		PluginModule.class,
 		DataModule.class
+}, targetsRootClass = {
+		RynoCheckPlugin.class
+}, componentsRootClass = {
+		RynoCheckPlugin.class
 }, targets = {
-		RynoCheckPlugin.class,
+		RynoCheckPlugin.class
 }) public final class RootModule {
 
 

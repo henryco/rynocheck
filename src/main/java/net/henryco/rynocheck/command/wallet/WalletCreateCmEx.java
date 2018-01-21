@@ -7,7 +7,7 @@ import lombok.extern.java.Log;
 import lombok.val;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.context.CommandContext;
-import net.henryco.rynocheck.data.dao.MoneyAccountDao;
+import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
 import net.henryco.rynocheck.data.model.entity.MoneyAccount;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -5,7 +5,7 @@ import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.context.CommandContext;
-import net.henryco.rynocheck.data.service.connection.IDBConnectionService;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -17,8 +17,7 @@ public class WalletCommandExecutor extends RynoCheckExecutor {
 
 
 	@Inject
-	public WalletCommandExecutor(IDBConnectionService dbConnectionService,
-								 CommandContext commandContext,
+	public WalletCommandExecutor(CommandContext commandContext,
 								 Plugin plugin) {
 		super(commandContext, plugin);
 	}

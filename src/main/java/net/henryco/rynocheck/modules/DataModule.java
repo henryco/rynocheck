@@ -1,11 +1,14 @@
 package net.henryco.rynocheck.modules;
 
-import com.github.henryco.injector.meta.annotations.*;
+import com.github.henryco.injector.meta.annotations.Module;
+import com.github.henryco.injector.meta.annotations.Named;
+import com.github.henryco.injector.meta.annotations.Provide;
+import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import lombok.extern.java.Log;
-import net.henryco.rynocheck.data.dao.MoneyAccountDao;
+import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
 import net.henryco.rynocheck.data.model.entity.MoneyAccount;
 import org.bukkit.plugin.Plugin;
 
@@ -14,10 +17,10 @@ import java.sql.SQLException;
 
 /**
  * @author Henry on 15/01/18.
- */ @Log
+ */
 @Module(include = {
  		PluginModule.class
-}) public class DataModule {
+}) @Log public class DataModule {
 
 
 	@Provide @Singleton

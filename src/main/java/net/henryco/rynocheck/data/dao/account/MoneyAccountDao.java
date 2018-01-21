@@ -1,4 +1,4 @@
-package net.henryco.rynocheck.data.dao;
+package net.henryco.rynocheck.data.dao.account;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;

@@ -10,19 +10,25 @@ import java.util.HashMap;
  */
 public interface RynoCheckPermissions  {
 
-	Permission NAP = new Permission(
-			"nap_member",
-			PermissionDefault.FALSE,
-			new HashMap<String, Boolean>() {{
-				this.put("revenge", true);
-				this.put("private_property", true);
-			}}
-	);
+	String NAP = "nap_member";
+	String WALLET = "wallet_login";
 
 
-	Permission WALLET_LOGIN = new Permission(
-			"wallet_login",
-			PermissionDefault.FALSE
-	);
+	final class Factory {
+
+		public static Permission nap() {
+			return new Permission(NAP, PermissionDefault.FALSE,
+					new HashMap<String, Boolean>() {{
+						this.put("revenge", true);
+						this.put("private_property", true);
+					}}
+			);
+		}
+
+		public static Permission wallet(String username) {
+			return new Permission(WALLET, username, PermissionDefault.FALSE);
+		}
+	}
+
 
 }

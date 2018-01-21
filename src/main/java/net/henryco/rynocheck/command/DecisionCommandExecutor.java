@@ -23,7 +23,6 @@ public class DecisionCommandExecutor extends RynoCheckExecutor {
 	public DecisionCommandExecutor(CommandContext commandContext,
 								   Plugin plugin) {
 		super(commandContext, plugin);
-		System.out.println("DecisionCommandExecutor()");
 	}
 
 	@Override

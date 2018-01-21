@@ -19,7 +19,6 @@ public abstract class RynoCheckExecutor implements CommandExecutor {
 							 Plugin plugin) {
 		this.commandContext = commandContext;
 		this.plugin = plugin;
-		System.out.println("RynoCheckExecutor(" + commandContext + ", " + plugin + ")");
 	}
 
 	protected Plugin getPlugin() {

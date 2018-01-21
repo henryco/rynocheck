@@ -47,8 +47,7 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 					pa.unsetPermission(RynoCheckPermissions.NAP);
 
 					NapCommandExecutor.this.getPlugin().getServer().getOnlinePlayers().forEach(p -> getPlugin().getServer()
-							.broadcast(((Player) sender).getDisplayName() + " has left the NAP",
-									RynoCheckPermissions.NAP.getName()));
+							.broadcast(((Player) sender).getDisplayName() + " has left the NAP", RynoCheckPermissions.NAP));
 
 					return true;
 				});
