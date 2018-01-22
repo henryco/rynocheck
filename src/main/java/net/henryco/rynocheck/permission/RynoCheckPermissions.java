@@ -1,7 +1,6 @@
 package net.henryco.rynocheck.permission;
 
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.permissions.*;
 
 import java.util.HashMap;
 
@@ -30,5 +29,29 @@ public interface RynoCheckPermissions  {
 		}
 	}
 
+
+	final class Utils {
+
+		public static void unsetPermission(Permissible permissible, String permission) {
+
+			for (PermissionAttachmentInfo info : permissible.getEffectivePermissions()) {
+
+				PermissionAttachment attachment = info.getAttachment();
+				if (attachment == null)
+					continue;
+
+				Permissible per = attachment.getPermissible();
+				if (per == null)
+					continue;
+
+				if (per.hasPermission(permission) || per.isPermissionSet(permission)) {
+					attachment.unsetPermission(permission);
+					permissible.recalculatePermissions();
+				}
+
+				unsetPermission(per, permission);
+			}
+		}
+	}
 
 }

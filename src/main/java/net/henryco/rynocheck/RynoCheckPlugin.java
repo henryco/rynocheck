@@ -37,7 +37,6 @@ public class RynoCheckPlugin extends JavaPlugin {
 		getLogger().info("Welcome to CYBER SOMALIA");
 
 		initCommands();
-		getLogger().info("package: " + this.getClass().getPackage().getName());
 	}
 
 

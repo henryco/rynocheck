@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 
+import static net.henryco.rynocheck.permission.RynoCheckPermissions.NAP;
+
 /**
  * @author Henry on 11/01/18.
  */ @Component @Singleton
@@ -32,22 +34,26 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 
 			final PermissionAttachment pa = sender.addAttachment(getPlugin());
 
+			if (args.length == 0) return false;
+
 			if (YES.equalsIgnoreCase(args[0])) {
 				sender.sendMessage("Now you are NAP member");
-				pa.setPermission(RynoCheckPermissions.NAP, true);
+				pa.setPermission(NAP, true);
 				return true;
 			} else if (NO.equalsIgnoreCase(args[0])) {
 
-				if (!pa.getPermissible().hasPermission(RynoCheckPermissions.NAP))
-					return false;
-
+				if (!pa.getPermissible().hasPermission(NAP)) {
+					sender.sendMessage("You are not NAP member");
+					return true;
+				}
 				sender.sendMessage("Are you sure? /(y : N)");
 				getContext().add(((Player) sender).getUniqueId(), aVoid -> {
-					sender.sendMessage("It's your decision");
-					pa.unsetPermission(RynoCheckPermissions.NAP);
+
+					RynoCheckPermissions.Utils.unsetPermission(sender, NAP);
+					sender.sendMessage("It's your decision, cowboy");
 
 					NapCommandExecutor.this.getPlugin().getServer().getOnlinePlayers().forEach(p -> getPlugin().getServer()
-							.broadcast(((Player) sender).getDisplayName() + " has left the NAP", RynoCheckPermissions.NAP));
+							.broadcast(((Player) sender).getDisplayName() + " has left the NAP", NAP));
 
 					return true;
 				});

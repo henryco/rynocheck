@@ -21,8 +21,15 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity(name = "money_wallet")
 public class MoneyWallet {
 
+	public static final String ID = "id";
+	public static final String ACCOUNT_ID = "account_id";
+	public static final String CURRENCY = "currency";
+	public static final String AMOUNT = "amount";
+	public static final String LAST_UPDATE = "last_update";
+
+
 	private @Id @Column(
-			name = "id",
+			name = ID,
 			nullable = false,
 			updatable = false
 	) @GeneratedValue(
@@ -31,26 +38,26 @@ public class MoneyWallet {
 
 
 	private @Column(
-			name = "account_id",
+			name = ACCOUNT_ID,
 			nullable = false,
 			updatable = false
 	) String user;
 
 
 	private @Column(
-			name = "currency",
+			name = CURRENCY,
 			nullable = false,
 			updatable = false
 	) Currency currency;
 
 
 	private @Column(
-			name = "amount"
+			name = AMOUNT
 	) BigDecimal amount;
 
 
 	private @Column(
-			name = "last_update"
+			name = LAST_UPDATE
 	) @Temporal(
 			TIMESTAMP
 	) Date lastUpdate;

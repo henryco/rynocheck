@@ -6,6 +6,9 @@ import net.henryco.rynocheck.data.model.entity.MoneyAccount;
 
 import java.sql.SQLException;
 
+import static net.henryco.rynocheck.data.model.entity.MoneyAccount.ACCOUNT_ID;
+import static net.henryco.rynocheck.data.model.entity.MoneyAccount.PASSWORD;
+
 public class MoneyAccountDao extends BaseDaoImpl<MoneyAccount, String> {
 
 
@@ -17,7 +20,7 @@ public class MoneyAccountDao extends BaseDaoImpl<MoneyAccount, String> {
 
 		if (email == null || email.trim().isEmpty()) return false;
 		try {
-			MoneyAccount account = queryBuilder().where().eq("account_id", email.trim()).queryForFirst();
+			MoneyAccount account = queryBuilder().where().eq(ACCOUNT_ID, email.trim()).queryForFirst();
 			return account != null;
 		} catch (SQLException e) {
 			return false;
@@ -29,8 +32,8 @@ public class MoneyAccountDao extends BaseDaoImpl<MoneyAccount, String> {
 		if (name == null || password == null) return false;
 
 		try {
-			return queryBuilder().where().eq("account_id", name).and()
-					.eq("password", password).queryForFirst() != null;
+			return queryBuilder().where().eq(ACCOUNT_ID, name).and()
+					.eq(PASSWORD, password).queryForFirst() != null;
 		} catch (SQLException e) {
 			return false;
 		}

@@ -28,19 +28,21 @@ public class DecisionCommandExecutor extends RynoCheckExecutor {
 	@Override
 	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
 
-		if (sender instanceof Player) {
-			UUID uniqueId = ((Player)sender).getUniqueId();
-			String name = command.getName();
+		if (!(sender instanceof Player)) {
+			return true;
+		}
 
-			getPlugin().getLogger().info("Player: " + sender);
-			getPlugin().getLogger().info("uniqueID: " + uniqueId);
-			if (name.equalsIgnoreCase(YES)) {
-				getContext().release(uniqueId);
-				return true;
-			} else if (name.equalsIgnoreCase(NO)) {
-				getContext().wipe(uniqueId);
-				return true;
-			}
+		UUID uniqueId = ((Player)sender).getUniqueId();
+		String name = command.getName();
+
+		if (name.equalsIgnoreCase(YES)) {
+			getContext().release(uniqueId);
+			return true;
+		}
+
+		if (name.equalsIgnoreCase(NO)) {
+			getContext().wipe(uniqueId);
+			return true;
 		}
 
 		return false;

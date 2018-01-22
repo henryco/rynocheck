@@ -22,8 +22,15 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity(name = "money_transaction")
 public class MoneyTransaction {
 
+	public static final String ID = "id";
+	public static final String SENDER_ID = "sender_id";
+	public static final String RECEIVER_ID = "receiver_id";
+	public static final String CURRENCY = "currency";
+	public static final String TIME = "time";
+	public static final String AMOUNT = "amount";
+
 	private @Id @Column(
-			name = "id",
+			name = ID,
 			updatable = false,
 			nullable = false
 	) @GeneratedValue(
@@ -32,35 +39,35 @@ public class MoneyTransaction {
 
 
 	private @Column(
-			name = "sender_id",
+			name = SENDER_ID,
 			updatable = false,
 			nullable = false
 	) Long sender;
 
 
 	private @Column(
-			name = "receiver_id",
+			name = RECEIVER_ID,
 			updatable = false,
 			nullable = false
 	) Long receiver;
 
 
 	private @Column(
-			name = "currency",
+			name = CURRENCY,
 			nullable = false,
 			updatable = false
 	) Currency currency;
 
 
 	private @Column(
-			name = "time"
+			name = TIME
 	) @Temporal(
 			TIMESTAMP
 	) Date time;
 
 
 	private @Column(
-			name = "amount"
+			name = AMOUNT
 	) BigDecimal amount;
 
 }

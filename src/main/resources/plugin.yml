@@ -25,7 +25,6 @@ commands:
       description: Login to your personal wallet
       usage: /<command> {name} {password}
       aliases: [wln, wlogin, w-login]
-      permissions: wallet_logout
       permissions-message: You should logout first
 
     wallet-logout:
@@ -46,7 +45,7 @@ commands:
       usage: |
         /<command> [send {recipient} {amount} {currency}],
         [balance], [balance {currency}],
-        [history], [history {currency}]
+        [history], [history {currency}], [history {currency} {page}]
       permission: wallet_login
       permission-message: You should login to personal wallet first.
 
@@ -68,6 +67,3 @@ permissions:
     wallet_login:
       description: Wallet login
       default: false
-    wallet_logout:
-      description: Wallet logout
-      default: true

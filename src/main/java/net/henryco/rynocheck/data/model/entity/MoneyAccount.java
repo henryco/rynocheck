@@ -17,8 +17,13 @@ import javax.persistence.Id;
 @Entity(name = "money_account")
 public class MoneyAccount {
 
+	public static final String ACCOUNT_ID = "account_id";
+	public static final String PASSWORD = "password";
+	public static final String DESCRIPTION = "description";
+	public static final String EMAIL = "email";
+
 	private @Id @Column(
-			name = "account_id",
+			name = ACCOUNT_ID,
 			updatable = false,
 			nullable = false,
 			unique = true
@@ -26,19 +31,19 @@ public class MoneyAccount {
 
 
 	private @Column(
-			name = "password",
+			name = PASSWORD,
 			nullable = false
 	) String pass;
 
 
 	private @Column(
-			name = "description",
+			name = DESCRIPTION,
 			length = 512
 	) String description;
 
 
 	private @Column(
-			name = "email",
+			name = EMAIL,
 			unique = true
 	) String email;
 

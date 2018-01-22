@@ -39,6 +39,7 @@ public class WalletLoginCmEx extends RynoCheckExecutor {
 	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
 
 		if (!(sender instanceof Player)) {
+			// todo
 			return true;
 		}
 
@@ -66,14 +67,12 @@ public class WalletLoginCmEx extends RynoCheckExecutor {
 			return true;
 		}
 
-		val permission = RynoCheckPermissions.Factory.wallet(args[0]);
-
 		if (pa.getPermissible().hasPermission(PERMISSION)) {
 			sender.sendMessage("You are already login");
 			return true;
 		}
 
-		pa.setPermission(permission, true);
+		pa.setPermission(PERMISSION, true);
 		walletSessionDao.addSession(args[0], uniqueId);
 		sender.sendMessage("Welcome to your private wallet " + args[0]);
 

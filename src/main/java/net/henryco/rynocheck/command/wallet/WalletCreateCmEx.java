@@ -11,6 +11,7 @@ import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
 import net.henryco.rynocheck.data.model.entity.MoneyAccount;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -31,6 +32,11 @@ public class WalletCreateCmEx extends RynoCheckExecutor {
 
 	@Override // <wallet-create> {name} {password} {optional email}
 	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
+
+		if (!(sender instanceof Player)) {
+			// todo
+			return true;
+		}
 
 		if (args.length == 0) return false;
 
