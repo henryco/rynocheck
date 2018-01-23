@@ -19,7 +19,7 @@ public class WalletCommandExecutor extends RynoCheckExecutor {
 	@Inject
 	public WalletCommandExecutor(CommandContext commandContext,
 								 Plugin plugin) {
-		super(commandContext, plugin);
+		super(commandContext, plugin, "wallet");
 	}
 
 	@Override

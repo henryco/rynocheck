@@ -22,7 +22,7 @@ public class DecisionCommandExecutor extends RynoCheckExecutor {
 	@Inject
 	public DecisionCommandExecutor(CommandContext commandContext,
 								   Plugin plugin) {
-		super(commandContext, plugin);
+		super(commandContext, plugin, YES, NO);
 	}
 
 	@Override

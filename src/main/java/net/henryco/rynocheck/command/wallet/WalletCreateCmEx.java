@@ -26,7 +26,7 @@ public class WalletCreateCmEx extends RynoCheckExecutor {
 	public WalletCreateCmEx(CommandContext commandContext,
 							MoneyAccountDao moneyAccDao,
 							Plugin plugin) {
-		super(commandContext, plugin);
+		super(commandContext, plugin, "wallet-create");
 		this.moneyAccDao = moneyAccDao;
 	}
 

@@ -24,7 +24,7 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 	@Inject
 	public NapCommandExecutor(CommandContext commandContext,
 							  Plugin plugin) {
-		super(commandContext, plugin);
+		super(commandContext, plugin, "nap");
 	}
 
 	@Override

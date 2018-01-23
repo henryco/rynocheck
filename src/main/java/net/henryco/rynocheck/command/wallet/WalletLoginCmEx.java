@@ -30,7 +30,7 @@ public class WalletLoginCmEx extends RynoCheckExecutor {
 						   WalletSessionDao walletSessionDao,
 						   MoneyAccountDao moneyAccDao,
 						   Plugin plugin) {
-		super(commandContext, plugin);
+		super(commandContext, plugin, "wallet-login");
 		this.moneyAccDao = moneyAccDao;
 		this.walletSessionDao = walletSessionDao;
 	}

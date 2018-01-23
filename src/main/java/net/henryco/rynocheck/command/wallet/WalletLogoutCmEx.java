@@ -28,7 +28,7 @@ public class WalletLogoutCmEx extends RynoCheckExecutor {
 	public WalletLogoutCmEx(WalletSessionDao walletSessionDao,
 							CommandContext commandContext,
 							Plugin plugin) {
-		super(commandContext, plugin);
+		super(commandContext, plugin, "wallet-logout");
 		this.walletSessionDao = walletSessionDao;
 	}
 

@@ -16,18 +16,35 @@ public abstract class RynoCheckExecutor implements CommandExecutor {
 	private final Plugin plugin;
 
 	public RynoCheckExecutor(CommandContext commandContext,
-							 Plugin plugin) {
+							 Plugin plugin, String ... commandNames) {
+
 		this.commandContext = commandContext;
 		this.plugin = plugin;
+		register(commandNames);
+	}
+
+
+	private void register(String[] commandNames) {
+		if (commandNames == null) return;
+		for (String commandName : commandNames)
+			plugin.getServer().getPluginCommand(commandName).setExecutor(this);
 	}
 
 	protected Plugin getPlugin() {
 		return plugin;
 	}
 
+	@SuppressWarnings("WeakerAccess")
 	protected CommandContext getContext() {
 		return commandContext;
 	}
+
+	@SuppressWarnings("WeakerAccess")
+	protected void onException(Exception exception) {
+		exception.printStackTrace();
+		log.throwing(getClass().getName(), "onCommand", exception);
+	}
+
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -42,9 +59,4 @@ public abstract class RynoCheckExecutor implements CommandExecutor {
 
 	protected abstract boolean onCommandExecute(CommandSender sender, Command command,
 												String label, String[] args) throws Exception;
-
-	protected void onException(Exception exception) {
-		exception.printStackTrace();
-		log.throwing(getClass().getName(), "onCommand", exception);
-	}
 }

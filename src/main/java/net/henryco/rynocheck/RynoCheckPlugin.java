@@ -35,20 +35,6 @@ public class RynoCheckPlugin extends JavaPlugin {
 		GrInjector.inject(RynoCheckPlugin.this);
 
 		getLogger().info("Welcome to CYBER SOMALIA");
-
-		initCommands();
-	}
-
-
-	private void initCommands() {
-
-		getCommand("nap").setExecutor(getComponent(NapCommandExecutor.class));
-		getCommand("wallet").setExecutor(getComponent(WalletCommandExecutor.class));
-		getCommand("y").setExecutor(getComponent(DecisionCommandExecutor.class));
-		getCommand("n").setExecutor(getComponent(DecisionCommandExecutor.class));
-		getCommand("wallet-create").setExecutor(getComponent(WalletCreateCmEx.class));
-		getCommand("wallet-logout").setExecutor(getComponent(WalletLogoutCmEx.class));
-		getCommand("wallet-login").setExecutor(getComponent(WalletLoginCmEx.class));
 	}
 
 
