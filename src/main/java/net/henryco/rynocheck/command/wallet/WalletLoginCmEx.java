@@ -50,7 +50,7 @@ public class WalletLoginCmEx extends RynoCheckExecutor {
 			if (pa.getPermissible().hasPermission(PERMISSION)) {
 				if (walletSessionDao.isSessionExist(uniqueId)) {
 					String username = walletSessionDao.getSessionName(uniqueId);
-					sender.sendMessage("Your session: " + username);
+					sender.sendMessage("Your wallet: " + username);
 					return true;
 				}
 			}

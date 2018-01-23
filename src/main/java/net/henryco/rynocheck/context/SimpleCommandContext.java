@@ -16,9 +16,7 @@ public class SimpleCommandContext implements CommandContext {
 
 	private final Map<UUID, Function<Void, ?>> functionMap = new HashMap<>();
 
-	public SimpleCommandContext() {
-		System.out.println("SimpleCommandContext");
-	}
+	public SimpleCommandContext() { }
 
 	@Override
 	public void add(UUID uuid, Function<Void, ?> function) {

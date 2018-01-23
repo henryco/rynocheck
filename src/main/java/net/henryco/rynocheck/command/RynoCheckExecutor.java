@@ -1,48 +1,47 @@
 package net.henryco.rynocheck.command;
 
-import lombok.extern.java.Log;
+import lombok.Getter;
+import net.henryco.rynocheck.RynoCheck;
 import net.henryco.rynocheck.context.CommandContext;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 
 /**
  * @author Henry on 12/01/18.
- */ @Log
-public abstract class RynoCheckExecutor implements CommandExecutor {
+ */
+public abstract class RynoCheckExecutor implements CommandExecutor, RynoCheck {
 
-	private final CommandContext commandContext;
-	private final Plugin plugin;
+	private final @Getter CommandContext context;
+	private final @Getter Plugin plugin;
 
-	public RynoCheckExecutor(CommandContext commandContext,
+	public RynoCheckExecutor(CommandContext context,
 							 Plugin plugin, String ... commandNames) {
-
-		this.commandContext = commandContext;
+		this.context = context;
 		this.plugin = plugin;
 		register(commandNames);
 	}
 
 
 	private void register(String[] commandNames) {
+
 		if (commandNames == null) return;
-		for (String commandName : commandNames)
-			plugin.getServer().getPluginCommand(commandName).setExecutor(this);
+		for (String commandName : commandNames) {
+
+			PluginCommand command = plugin.getServer().getPluginCommand(commandName);
+			if (command == null)
+				throw new RuntimeException("There is no command: " + commandName);
+			command.setExecutor(this);
+		}
 	}
 
-	protected Plugin getPlugin() {
-		return plugin;
-	}
-
-	@SuppressWarnings("WeakerAccess")
-	protected CommandContext getContext() {
-		return commandContext;
-	}
 
 	@SuppressWarnings("WeakerAccess")
 	protected void onException(Exception exception) {
 		exception.printStackTrace();
-		log.throwing(getClass().getName(), "onCommand", exception);
+		getLogger().throwing(getClass().getName(), "onCommand", exception);
 	}
 
 

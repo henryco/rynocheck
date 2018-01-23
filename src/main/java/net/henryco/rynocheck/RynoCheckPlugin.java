@@ -3,15 +3,10 @@ package net.henryco.rynocheck;
 import com.github.henryco.injector.GrInjector;
 import com.j256.ormlite.support.ConnectionSource;
 import lombok.val;
-import net.henryco.rynocheck.command.DecisionCommandExecutor;
-import net.henryco.rynocheck.command.NapCommandExecutor;
-import net.henryco.rynocheck.command.wallet.WalletCommandExecutor;
-import net.henryco.rynocheck.command.wallet.WalletCreateCmEx;
-import net.henryco.rynocheck.command.wallet.WalletLoginCmEx;
-import net.henryco.rynocheck.command.wallet.WalletLogoutCmEx;
 import net.henryco.rynocheck.modules.PluginModule;
 import net.henryco.rynocheck.modules.RootModule;
 import net.henryco.rynocheck.utils.PluginClassFinder;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -21,7 +16,7 @@ import static com.github.henryco.injector.GrInjector.getComponent;
 /**
  * @author Henry on 11/01/18.
  */
-public class RynoCheckPlugin extends JavaPlugin {
+public class RynoCheckPlugin extends JavaPlugin implements Listener {
 
 
 	@Override
@@ -47,5 +42,4 @@ public class RynoCheckPlugin extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-
 }
