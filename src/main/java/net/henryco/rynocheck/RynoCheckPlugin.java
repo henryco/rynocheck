@@ -6,7 +6,6 @@ import lombok.val;
 import net.henryco.rynocheck.modules.PluginModule;
 import net.henryco.rynocheck.modules.RootModule;
 import net.henryco.rynocheck.utils.PluginClassFinder;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -16,7 +15,7 @@ import static com.github.henryco.injector.GrInjector.getComponent;
 /**
  * @author Henry on 11/01/18.
  */
-public class RynoCheckPlugin extends JavaPlugin implements Listener {
+public class RynoCheckPlugin extends JavaPlugin {
 
 
 	@Override

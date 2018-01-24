@@ -36,12 +36,12 @@ public class DecisionCommandExecutor extends RynoCheckExecutor {
 		String name = command.getName();
 
 		if (name.equalsIgnoreCase(YES)) {
-			getContext().release(uniqueId);
+			getContext().positive(uniqueId);
 			return true;
 		}
 
 		if (name.equalsIgnoreCase(NO)) {
-			getContext().wipe(uniqueId);
+			getContext().negative(uniqueId);
 			return true;
 		}
 

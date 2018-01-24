@@ -47,7 +47,7 @@ public class NapCommandExecutor extends RynoCheckExecutor {
 					return true;
 				}
 				sender.sendMessage("Are you sure? /(y : N)");
-				getContext().add(((Player) sender).getUniqueId(), aVoid -> {
+				getContext().addPositive(((Player) sender).getUniqueId(), aVoid -> {
 
 					RynoCheckPermissions.Utils.unsetPermission(sender, NAP);
 					sender.sendMessage("It's your decision, cowboy");

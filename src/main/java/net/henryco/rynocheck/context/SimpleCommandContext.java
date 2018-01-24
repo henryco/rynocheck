@@ -14,25 +14,46 @@ import java.util.function.Function;
 @Component @Singleton
 public class SimpleCommandContext implements CommandContext {
 
-	private final Map<UUID, Function<Void, ?>> functionMap = new HashMap<>();
+	private final Map<UUID, Function<Void, ?>> positiveMap = new HashMap<>();
+	private final Map<UUID, Function<Void, ?>> negativeMap = new HashMap<>();
 
 	public SimpleCommandContext() { }
 
 	@Override
-	public void add(UUID uuid, Function<Void, ?> function) {
-		wipe(uuid);
-		functionMap.put(uuid, function);
+	public CommandContext addPositive(UUID uuid, Function<Void, ?> function) {
+		positiveMap.put(uuid, function);
+		return this;
 	}
 
-	@Override @SuppressWarnings("unchecked")
-	public <T> T release(UUID uuid) {
-		Function<Void, ?> function = functionMap.remove(uuid);
-		if (function == null) return null;
-		return (T) function.apply(null);
+	@Override
+	public CommandContext addNegative(UUID uuid, Function<Void, ?> function) {
+		negativeMap.put(uuid, function);
+		return this;
+	}
+
+	@Override
+	public <T> T positive(UUID uuid) {
+		negativeMap.remove(uuid);
+		return release(uuid, positiveMap);
+	}
+
+	@Override
+	public <T> T negative(UUID uuid) {
+		positiveMap.remove(uuid);
+		return release(uuid, negativeMap);
 	}
 
 	@Override
 	public void wipe(UUID uuid) {
-		functionMap.remove(uuid);
+		positiveMap.remove(uuid);
+		negativeMap.remove(uuid);
 	}
+
+	@SuppressWarnings("unchecked")
+	private static <T> T release(UUID uuid, Map<UUID, Function<Void, ?>> map) {
+		Function<Void, ?> function = map.remove(uuid);
+		if (function == null) return null;
+		return (T) function.apply(null);
+	}
+
 }

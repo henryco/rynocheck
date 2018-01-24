@@ -8,10 +8,13 @@ import java.util.function.Function;
  */
 public interface CommandContext {
 
-	void add(UUID uuid, Function<Void, ?> function);
+	CommandContext addPositive(UUID uuid, Function<Void, ?> function);
 
-	<T> T release(UUID uuid);
+	CommandContext addNegative(UUID uuid, Function<Void, ?> function);
+
+	<T> T positive(UUID uuid);
+
+	<T> T negative(UUID uuid);
 
 	void wipe(UUID uuid);
-
 }
