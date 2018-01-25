@@ -11,6 +11,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Henry on 15/01/18.
@@ -35,6 +37,13 @@ import java.sql.SQLException;
 		return dbDir + File.separator + plugin.getConfig().getString(
 				"database.sqlite.name", "rynocheck.db"
 		);
+	}
+
+
+	@Provide @Singleton
+	public ExecutorService executorService(Plugin plugin) {
+		int pool = plugin.getConfig().getInt("transaction.pool.size", 1);
+		return Executors.newFixedThreadPool(pool);
 	}
 
 }

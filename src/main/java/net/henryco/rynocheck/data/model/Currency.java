@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity(name = "currency")
 @Data @NoArgsConstructor
 @AllArgsConstructor
-public class Currency {
+public class Currency implements Serializable {
 
 	public static final String CURRENCY_ID = "id";
 	public static final String CURRENCY_NAME = "name";

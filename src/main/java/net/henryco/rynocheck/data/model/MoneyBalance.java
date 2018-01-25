@@ -43,7 +43,7 @@ public class MoneyBalance {
 	) String user;
 
 
-	private @Column(
+	private @JoinColumn(
 			name = CURRENCY,
 			nullable = false,
 			updatable = false
