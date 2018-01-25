@@ -6,10 +6,7 @@ import com.github.henryco.injector.meta.annotations.Provide;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 import lombok.extern.java.Log;
-import net.henryco.rynocheck.data.dao.account.MoneyAccountDaoImp;
-import net.henryco.rynocheck.data.model.entity.MoneyAccount;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -39,12 +36,5 @@ import java.sql.SQLException;
 				"database.sqlite.name", "rynocheck.db"
 		);
 	}
-
-
-//	@Provide @Singleton
-//	public MoneyAccountDaoImp moneyAccountDao(ConnectionSource source) throws SQLException {
-//		TableUtils.createTableIfNotExists(source, MoneyAccount.class);
-//		return new MoneyAccountDaoImp(source);
-//	}
 
 }

@@ -1,1 +1,4 @@
-database.sqlite.name: mc_rynocheck.db
+database.sqlite.name: rynocheck.db
+
+# [Name, CODE, micro-transaction max value]
+currency.default: [AncapCoin, ANC, 100]

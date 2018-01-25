@@ -1,12 +1,10 @@
-package net.henryco.rynocheck.data.model.entity;
+package net.henryco.rynocheck.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.henryco.rynocheck.data.model.core.Currency;
 
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -19,37 +17,30 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "money_transaction")
-public class MoneyTransaction {
+@Entity(name = "money_balance")
+public class MoneyBalance {
 
 	public static final String ID = "id";
-	public static final String SENDER_ID = "sender_id";
-	public static final String RECEIVER_ID = "receiver_id";
+	public static final String ACCOUNT_ID = "account_id";
 	public static final String CURRENCY = "currency";
-	public static final String TIME = "time";
 	public static final String AMOUNT = "amount";
+	public static final String LAST_UPDATE = "last_update";
+
 
 	private @Id @Column(
 			name = ID,
-			updatable = false,
-			nullable = false
+			nullable = false,
+			updatable = false
 	) @GeneratedValue(
 			strategy = AUTO
 	) Long id;
 
 
 	private @Column(
-			name = SENDER_ID,
-			updatable = false,
-			nullable = false
-	) Long sender;
-
-
-	private @Column(
-			name = RECEIVER_ID,
-			updatable = false,
-			nullable = false
-	) Long receiver;
+			name = ACCOUNT_ID,
+			nullable = false,
+			updatable = false
+	) String user;
 
 
 	private @Column(
@@ -60,14 +51,14 @@ public class MoneyTransaction {
 
 
 	private @Column(
-			name = TIME
-	) @Temporal(
-			TIMESTAMP
-	) Date time;
+			name = AMOUNT
+	) BigDecimal amount;
 
 
 	private @Column(
-			name = AMOUNT
-	) BigDecimal amount;
+			name = LAST_UPDATE
+	) @Temporal(
+			TIMESTAMP
+	) Date lastUpdate;
 
 }

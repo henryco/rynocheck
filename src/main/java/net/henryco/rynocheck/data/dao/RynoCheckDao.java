@@ -14,4 +14,9 @@ public abstract class RynoCheckDao<T, ID> extends BaseDaoImpl<T, ID> {
 		super(connectionSource, dataClass);
 		TableUtils.createTableIfNotExists(connectionSource, dataClass);
 	}
+
+
+	protected static boolean assertString(String string) {
+		return (string != null && !string.trim().isEmpty());
+	}
 }

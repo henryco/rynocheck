@@ -5,17 +5,17 @@ import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.support.ConnectionSource;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
-import net.henryco.rynocheck.data.model.entity.MoneyAccount;
+import net.henryco.rynocheck.data.model.MoneyAccount;
 
 import java.sql.SQLException;
 
-import static net.henryco.rynocheck.data.model.entity.MoneyAccount.ACCOUNT_ID;
-import static net.henryco.rynocheck.data.model.entity.MoneyAccount.PASSWORD;
+import static net.henryco.rynocheck.data.model.MoneyAccount.ACCOUNT_ID;
+import static net.henryco.rynocheck.data.model.MoneyAccount.PASSWORD;
 
 
 @Component @Singleton
 public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
-		implements MoneyAccountDao{
+		implements MoneyAccountDao {
 
 
 	@Inject
