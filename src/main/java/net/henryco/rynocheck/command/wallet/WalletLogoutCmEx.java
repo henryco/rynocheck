@@ -5,7 +5,7 @@ import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.context.CommandContext;
-import net.henryco.rynocheck.data.dao.session.WalletSessionDao;
+import net.henryco.rynocheck.data.dao.session.SessionDao;
 import net.henryco.rynocheck.permission.RynoCheckPermissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,10 +22,10 @@ import static net.henryco.rynocheck.permission.RynoCheckPermissions.WALLET;
 @Component @Singleton
 public class WalletLogoutCmEx extends RynoCheckExecutor {
 
-	private final WalletSessionDao walletSessionDao;
+	private final SessionDao walletSessionDao;
 
 	@Inject
-	public WalletLogoutCmEx(WalletSessionDao walletSessionDao,
+	public WalletLogoutCmEx(SessionDao walletSessionDao,
 							CommandContext commandContext,
 							Plugin plugin) {
 		super(commandContext, plugin, "wallet-logout");

@@ -2,7 +2,7 @@ package net.henryco.rynocheck.data.dao.session;
 
 import java.util.UUID;
 
-public interface WalletSessionDao {
+public interface SessionDao {
 
 
 	void addSession(String username, UUID uuid);

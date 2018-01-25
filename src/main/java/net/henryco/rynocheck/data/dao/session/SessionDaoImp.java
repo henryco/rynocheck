@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component @Singleton
-public class WalletSessionDaoImp implements WalletSessionDao {
+public class SessionDaoImp implements SessionDao {
 
 	private final Map<UUID, String> sessionMap;
 
-	public WalletSessionDaoImp() {
+	public SessionDaoImp() {
 		this.sessionMap = new HashMap<>();
 	}
 

@@ -7,7 +7,7 @@ import lombok.val;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
-import net.henryco.rynocheck.data.dao.session.WalletSessionDao;
+import net.henryco.rynocheck.data.dao.session.SessionDao;
 import net.henryco.rynocheck.permission.RynoCheckPermissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,12 +22,12 @@ public class WalletLoginCmEx extends RynoCheckExecutor {
 
 	private static final String PERMISSION = RynoCheckPermissions.WALLET;
 
-	private final WalletSessionDao walletSessionDao;
+	private final SessionDao walletSessionDao;
 	private final MoneyAccountDao moneyAccDao;
 
 	@Inject
 	public WalletLoginCmEx(CommandContext commandContext,
-						   WalletSessionDao walletSessionDao,
+						   SessionDao walletSessionDao,
 						   MoneyAccountDao moneyAccDao,
 						   Plugin plugin) {
 		super(commandContext, plugin, "wallet-login");

@@ -8,7 +8,7 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import lombok.extern.java.Log;
-import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
+import net.henryco.rynocheck.data.dao.account.MoneyAccountDaoImp;
 import net.henryco.rynocheck.data.model.entity.MoneyAccount;
 import org.bukkit.plugin.Plugin;
 
@@ -41,10 +41,10 @@ import java.sql.SQLException;
 	}
 
 
-	@Provide @Singleton
-	public MoneyAccountDao moneyAccountDao(ConnectionSource source) throws SQLException {
-		TableUtils.createTableIfNotExists(source, MoneyAccount.class);
-		return new MoneyAccountDao(source);
-	}
+//	@Provide @Singleton
+//	public MoneyAccountDaoImp moneyAccountDao(ConnectionSource source) throws SQLException {
+//		TableUtils.createTableIfNotExists(source, MoneyAccount.class);
+//		return new MoneyAccountDaoImp(source);
+//	}
 
 }
