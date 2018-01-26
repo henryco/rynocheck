@@ -26,7 +26,7 @@ public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
 	@Override
 	public boolean isEmailExists(String email) {
 
-		if (email == null || email.trim().isEmpty()) return false;
+		if (!assertString(email)) return false;
 		try {
 			MoneyAccount account = queryBuilder().where().eq(ACCOUNT_ID, email.trim()).queryForFirst();
 			return account != null;
@@ -48,4 +48,25 @@ public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
 		}
 	}
 
+	@Override
+	public boolean isAccountExists(String name) {
+
+		if (!assertString(name)) return false;
+		try {
+			return idExists(name);
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public MoneyAccount getAccount(String name) {
+
+		if (!assertString(name)) return null;
+		try {
+			return queryForId(name);
+		} catch (SQLException e) {
+			return null;
+		}
+	}
 }

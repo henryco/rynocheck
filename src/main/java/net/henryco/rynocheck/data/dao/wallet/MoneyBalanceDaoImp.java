@@ -8,7 +8,9 @@ import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import static net.henryco.rynocheck.data.model.MoneyBalance.ACCOUNT_ID;
@@ -22,6 +24,22 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 		super(connectionSource, MoneyBalance.class);
 	}
 
+
+	@Override
+	public MoneyBalance createNewOne(String user, Currency currency) {
+
+		MoneyBalance balance = new MoneyBalance(null, user,
+				currency, new BigDecimal(0),
+				new Date(System.currentTimeMillis())
+		);
+
+		try {
+			create(balance);
+			return getUserBalance(currency, user);
+		} catch (SQLException e) {
+			return null;
+		}
+	}
 
 	@Override
 	public List<MoneyBalance> getUserBalanceList(String user) {

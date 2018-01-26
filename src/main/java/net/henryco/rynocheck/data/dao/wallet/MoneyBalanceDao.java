@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface MoneyBalanceDao extends Dao<MoneyBalance, Long> {
 
+	MoneyBalance createNewOne(String user, Currency currency);
+
 	List<MoneyBalance> getUserBalanceList(String user);
 
 	MoneyBalance getUserBalance(Currency currency, String user);

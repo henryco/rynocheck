@@ -8,4 +8,8 @@ public interface MoneyAccountDao extends Dao<MoneyAccount, String> {
 	boolean isEmailExists(String email);
 
 	boolean authenticate(String name, String password);
+
+	boolean isAccountExists(String name);
+
+	MoneyAccount getAccount(String name);
 }
