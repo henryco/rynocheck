@@ -44,7 +44,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 	@Override
 	public List<MoneyTransaction> getUserTransactions(String user, Currency currency) {
 		return getUserTransactions(user).stream()
-				.filter(t -> t.getCurrency().getId().equals(currency.getId()))
+				.filter(t -> t.getCurrency().equals(currency.getId()))
 		.collect(Collectors.toList());
 	}
 

@@ -29,7 +29,7 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 	public MoneyBalance createNewOne(String user, Currency currency) {
 
 		MoneyBalance balance = new MoneyBalance(null, user,
-				currency, new BigDecimal(0),
+				currency.getId(), new BigDecimal(0),
 				new Date(System.currentTimeMillis())
 		);
 
@@ -60,7 +60,7 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 			return queryBuilder().where()
 					.eq(ACCOUNT_ID, user)
 					.and()
-					.eq(CURRENCY, currency)
+					.eq(CURRENCY, currency.getId())
 			.queryForFirst();
 		} catch (SQLException e) {
 			e.printStackTrace();

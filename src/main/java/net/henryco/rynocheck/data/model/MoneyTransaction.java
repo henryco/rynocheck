@@ -29,9 +29,7 @@ public class MoneyTransaction {
 	public static final String AMOUNT = "amount";
 
 	private @Id @Column(
-			name = ID,
-			updatable = false,
-			nullable = false
+			name = ID
 	) @GeneratedValue(
 			strategy = AUTO
 	) Long id;
@@ -51,22 +49,24 @@ public class MoneyTransaction {
 	) String receiver;
 
 
-	private @JoinColumn(
+	private @Column(
 			name = CURRENCY,
 			nullable = false,
 			updatable = false
-	) Currency currency;
+	) Long currency;
 
 
 	private @Column(
-			name = TIME
+			name = TIME,
+			nullable = false
 	) @Temporal(
 			TIMESTAMP
 	) Date time;
 
 
 	private @Column(
-			name = AMOUNT
+			name = AMOUNT,
+			nullable = false
 	) BigDecimal amount;
 
 }

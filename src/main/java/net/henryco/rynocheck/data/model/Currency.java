@@ -21,10 +21,7 @@ public class Currency implements Serializable {
 	public static final String CURRENCY_MICRO_LIM = "micro_limit";
 
 	private @Id @Column(
-			name = CURRENCY_ID,
-			updatable = false,
-			nullable = false,
-			unique = true
+			name = CURRENCY_ID
 	) Long id;
 
 

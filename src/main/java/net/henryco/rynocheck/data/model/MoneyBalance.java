@@ -28,9 +28,7 @@ public class MoneyBalance {
 
 
 	private @Id @Column(
-			name = ID,
-			nullable = false,
-			updatable = false
+			name = ID
 	) @GeneratedValue(
 			strategy = AUTO
 	) Long id;
@@ -43,11 +41,11 @@ public class MoneyBalance {
 	) String user;
 
 
-	private @JoinColumn(
+	private @Column(
 			name = CURRENCY,
 			nullable = false,
 			updatable = false
-	) Currency currency;
+	) Long currency;
 
 
 	private @Column(
