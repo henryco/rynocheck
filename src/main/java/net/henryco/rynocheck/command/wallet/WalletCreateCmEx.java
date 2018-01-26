@@ -14,6 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Date;
+
 /**
  * @author Henry on 15/01/18.
  */
@@ -57,6 +59,7 @@ public class WalletCreateCmEx extends RynoCheckExecutor {
 			return true;
 		} else if (args.length == 3) account.setEmail(args[2]);
 
+		account.setLastUpdate(new Date(System.currentTimeMillis()));
 		moneyAccDao.create(account);
 		sender.sendMessage("Done, account: " + args[0] + " created, now you can login.");
 

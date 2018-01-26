@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity(name = "currency")
 @Data @NoArgsConstructor
@@ -21,7 +21,12 @@ public class Currency implements Serializable {
 	public static final String CURRENCY_MICRO_LIM = "micro_limit";
 
 	private @Id @Column(
-			name = CURRENCY_ID
+			name = CURRENCY_ID,
+			updatable = false,
+			nullable = false,
+			unique = true
+	) @GeneratedValue(
+			strategy = AUTO
 	) Long id;
 
 

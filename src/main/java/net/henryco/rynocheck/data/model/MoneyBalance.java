@@ -28,7 +28,10 @@ public class MoneyBalance {
 
 
 	private @Id @Column(
-			name = ID
+			name = ID,
+			updatable = false,
+			nullable = false,
+			unique = true
 	) @GeneratedValue(
 			strategy = AUTO
 	) Long id;
