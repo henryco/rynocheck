@@ -6,6 +6,7 @@ import com.github.henryco.injector.meta.annotations.Singleton;
 import net.henryco.rynocheck.data.dao.transaction.MoneyTransactionDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
+import net.henryco.rynocheck.data.page.Page;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.function.BiConsumer;
 @Component @Singleton
 public class MoneyTransactionService implements IMoneyTransactionService {
 
+	private static final long QUERY_PAGE_SIZE = 10000;
 	private final ExecutorService executorService;
 	private final MoneyTransactionDao transactionDao;
 
@@ -31,13 +33,24 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 									  BiConsumer<BigDecimal, Throwable> amountConsumer) {
 		executorService.submit(() -> {
 			try {
-				List<MoneyTransaction> transactions = transactionDao.getUserTransactions(user, currency);
-				BigDecimal value = new BigDecimal(0);
-				for (MoneyTransaction transaction : transactions) {
 
-					value = transaction.getSender().equals(user)
-							? value.subtract(transaction.getAmount())
-							: value.add(transaction.getAmount());
+				BigDecimal value = new BigDecimal(0);
+				long page = 0;
+
+				while (true) {
+
+					List<MoneyTransaction> transactions = transactionDao.getUserTransactions(
+									user, currency, new Page(page++, QUERY_PAGE_SIZE)
+					);
+
+					if (transactions == null || transactions.isEmpty())
+						break;
+
+					for (MoneyTransaction transaction : transactions) {
+						value = transaction.getSender().equals(user)
+								? value.subtract(transaction.getAmount())
+								: value.add(transaction.getAmount());
+					}
 				}
 
 				amountConsumer.accept(value, null);
@@ -48,6 +61,6 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 		});
 	}
 
-	
+
 
 }

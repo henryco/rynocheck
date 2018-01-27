@@ -38,6 +38,22 @@ commands:
       description: Create new wallet account
       usage: /<command> {name} {password} {(optional) email}
       aliases: [wcr, wcreate, w-create]
+
+    wallet-currency:
+      description: Currency operations terminal
+      aliases: [wcn, wcurrency, w-currency]
+      usage: |
+
+        List of <command> usage options:
+        + /<command> list
+        + /<command> list {page}
+        + /<command> list {author} {page}
+        + /<command> emite {recipient} {amount} {code}
+        + /<command> add {name} {code} {micro/null} {fee/null} {fee_rec/null}
+        + /<command> set {code} {new_micro/null} {new_fee/null} {new_fee_rec/null}
+      permission: wallet_login
+      permission-message: You should login to personal wallet first.
+
     wallet:
       description: Your personal money wallet
       aliases: [w]
@@ -52,7 +68,6 @@ commands:
         + /<command> history {currency}
         + /<command> history {currency} {page}
         Note, that {*} argument means ALL.
-
       permission: wallet_login
       permission-message: You should login to personal wallet first.
 

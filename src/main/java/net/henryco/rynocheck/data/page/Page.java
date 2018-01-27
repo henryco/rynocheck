@@ -2,10 +2,10 @@ package net.henryco.rynocheck.data.page;
 
 public class Page implements DaoPage {
 
-	private final int page;
-	private final int pageSize;
+	private final long page;
+	private final long pageSize;
 
-	public Page(int page, int pageSize) {
+	public Page(long page, long pageSize) {
 		this.page = page;
 		this.pageSize = pageSize;
 	}

@@ -21,6 +21,7 @@ public class WalletsBalanceSubCommand implements WalletSubCommand {
 	private static final int PAGE_SIZE = 9;
 	private final DaoBundle daoBundle;
 
+	// TODO: REPLACE manual pagination with dao implementation
 
 	@Inject
 	public WalletsBalanceSubCommand(DaoBundle daoBundle) {
