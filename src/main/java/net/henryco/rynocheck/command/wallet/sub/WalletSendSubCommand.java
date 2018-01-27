@@ -61,7 +61,7 @@ public class WalletSendSubCommand implements WalletSubCommand {
 			return true;
 		}
 
-		val senderBalance = daoBundle.getBalanceDao().getUserBalance(currency, sender);
+		val senderBalance = daoBundle.getBalanceDao().getUserBalance(sender, currency);
 		if (senderBalance == null) {
 			player.sendMessage("You don't have any founds");
 			daoBundle.getBalanceDao().createNewOne(sender, currency);
@@ -78,7 +78,7 @@ public class WalletSendSubCommand implements WalletSubCommand {
 			return true;
 		}
 
-		MoneyBalance receiverBalance = daoBundle.getBalanceDao().getUserBalance(currency, recipient);
+		MoneyBalance receiverBalance = daoBundle.getBalanceDao().getUserBalance(recipient, currency);
 		if (receiverBalance == null) {
 			receiverBalance = daoBundle.getBalanceDao().createNewOne(recipient, currency);
 		}

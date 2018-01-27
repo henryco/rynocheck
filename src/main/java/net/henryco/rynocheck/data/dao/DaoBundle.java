@@ -7,7 +7,7 @@ import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
 import net.henryco.rynocheck.data.dao.currency.CurrencyDao;
 import net.henryco.rynocheck.data.dao.session.SessionDao;
 import net.henryco.rynocheck.data.dao.transaction.MoneyTransactionDao;
-import net.henryco.rynocheck.data.dao.wallet.MoneyBalanceDao;
+import net.henryco.rynocheck.data.dao.balance.MoneyBalanceDao;
 
 @Data @Component
 public class DaoBundle {

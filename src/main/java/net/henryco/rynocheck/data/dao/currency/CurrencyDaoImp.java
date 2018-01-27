@@ -7,11 +7,14 @@ import com.j256.ormlite.support.ConnectionSource;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
+import net.henryco.rynocheck.data.page.DaoPage;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 
 import static net.henryco.rynocheck.data.model.Currency.CURRENCY_CODE;
+import static net.henryco.rynocheck.data.model.Currency.CURRENCY_ID;
 import static net.henryco.rynocheck.data.model.Currency.CURRENCY_NAME;
 
 @Component @Singleton
@@ -41,6 +44,8 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 
 	@Override
 	public boolean isExists(Currency currency) {
+
+		if (currency == null) return true;
 
 		try {
 			return queryBuilder().where()
@@ -100,4 +105,32 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 		}
 	}
 
+
+	@Override
+	public List<Currency> getCurrencies() {
+
+		try {
+			return queryForAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Currency> getCurrencies(DaoPage page) {
+
+	 	if (page == null) return null;
+
+	 	try {
+	 		return queryBuilder().offset(page.getStartRow())
+					.limit(page.getPageSize())
+					.orderBy(CURRENCY_ID, false)
+			.query();
+
+		} catch (SQLException e) {
+	 		e.printStackTrace();
+	 		return null;
+		}
+	}
 }

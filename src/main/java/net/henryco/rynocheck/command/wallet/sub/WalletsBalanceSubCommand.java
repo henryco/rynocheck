@@ -62,7 +62,7 @@ public class WalletsBalanceSubCommand implements WalletSubCommand {
 					return true;
 				}
 
-				val balance = daoBundle.getBalanceDao().getUserBalance(currency, sender);
+				val balance = daoBundle.getBalanceDao().getUserBalance(sender, currency);
 
 				player.sendMessage(currency.getName() + " balance: ");
 				if (balance == null) {
