@@ -48,4 +48,16 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 		.collect(Collectors.toList());
 	}
 
+
+	@Override
+	public boolean saveTransaction(MoneyTransaction transaction) {
+
+		try {
+			return create(transaction) == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

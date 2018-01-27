@@ -4,9 +4,11 @@ import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.support.ConnectionSource;
+import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import static net.henryco.rynocheck.data.model.Currency.CURRENCY_CODE;
@@ -60,6 +62,38 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 
 		try {
 			return create(currency) == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+
+	/**
+	 * Update currency transaction fee.
+	 * @param code code of currency
+	 * @param author last fee recipient
+	 * @param recipient new fee recipient
+	 * @param fee float from 0 to 1
+	 * @return true if updated
+	 */ @Override
+	public boolean updateFeeInfo(String code, String author, String recipient, String fee) {
+
+		if (!assertString(code) || !assertString(recipient)
+				|| !assertString(fee) || !assertString(author))
+			return false;
+
+		val currency = getCurrencyByCode(code);
+		if (currency == null) return false;
+
+		if (!currency.getFeeRecipient().equals(author))
+			return false;
+
+		currency.setFee(new BigDecimal(fee));
+		currency.setFeeRecipient(recipient);
+
+		try {
+			return update(currency) == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

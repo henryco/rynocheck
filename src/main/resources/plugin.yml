@@ -47,10 +47,10 @@ commands:
         + /<command> send {recipient} {amount} {currency}
         + /<command> balance
         + /<command> balance {currency}
+        + /<command> balance {currency} {page}
         + /<command> history
         + /<command> history {currency}
         + /<command> history {currency} {page}
-
         Note, that {*} argument means ALL.
 
       permission: wallet_login

@@ -27,6 +27,7 @@ public class MoneyTransaction {
 	public static final String CURRENCY = "currency";
 	public static final String TIME = "time";
 	public static final String AMOUNT = "amount";
+	public static final String DESCRIPTION = "description";
 
 	private @Id @Column(
 			name = ID,
@@ -71,5 +72,11 @@ public class MoneyTransaction {
 			name = AMOUNT,
 			nullable = false
 	) BigDecimal amount;
+
+
+	private @Column(
+			name = DESCRIPTION,
+			updatable = false
+	) String description;
 
 }

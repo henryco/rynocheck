@@ -4,5 +4,7 @@ import org.bukkit.command.CommandSender;
 
 public interface WalletSubCommand {
 
+	String ALL = "*";
+
 	boolean executeSubCommand(CommandSender sender, String[] args);
 }

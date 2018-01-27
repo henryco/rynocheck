@@ -10,4 +10,6 @@ public interface CurrencyDao extends Dao<Currency, Long> {
 	boolean isExists(Currency currency);
 
 	boolean addCurrency(Currency currency);
+
+	boolean updateFeeInfo(String code, String author, String recipient, String fee);
 }

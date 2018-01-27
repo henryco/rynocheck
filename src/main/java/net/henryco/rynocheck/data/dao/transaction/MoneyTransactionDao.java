@@ -11,4 +11,6 @@ public interface MoneyTransactionDao extends Dao<MoneyTransaction, Long> {
 	List<MoneyTransaction> getUserTransactions(String user);
 
 	List<MoneyTransaction> getUserTransactions(String user, Currency currency);
+
+	boolean saveTransaction(MoneyTransaction transaction);
 }

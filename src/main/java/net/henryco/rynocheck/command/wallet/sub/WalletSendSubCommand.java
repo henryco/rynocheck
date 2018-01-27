@@ -5,46 +5,35 @@ import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import lombok.val;
 import net.henryco.rynocheck.context.CommandContext;
-import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
-import net.henryco.rynocheck.data.dao.currency.CurrencyDao;
-import net.henryco.rynocheck.data.dao.session.SessionDao;
-import net.henryco.rynocheck.data.dao.wallet.MoneyBalanceDao;
+import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
+import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.service.IMoneyTransactionService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 @Component("SCSend") @Singleton
 public class WalletSendSubCommand implements WalletSubCommand {
 
-
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;
-	private final MoneyBalanceDao balanceDao;
-	private final MoneyAccountDao accountDao;
-	private final CurrencyDao currencyDao;
-	private final SessionDao sessionDao;
+	private final DaoBundle daoBundle;
 	private final Plugin plugin;
 
 	@Inject
 	public WalletSendSubCommand(IMoneyTransactionService transactionService,
 								CommandContext commandContext,
-								MoneyBalanceDao balanceDao,
-								MoneyAccountDao accountDao,
-								CurrencyDao currencyDao,
-								SessionDao sessionDao,
+								DaoBundle daoBundle,
 								Plugin plugin) {
 		this.transactionService = transactionService;
 		this.commandContext = commandContext;
-		this.balanceDao = balanceDao;
-		this.accountDao = accountDao;
-		this.currencyDao = currencyDao;
-		this.sessionDao = sessionDao;
+		this.daoBundle = daoBundle;
 		this.plugin = plugin;
 	}
 
@@ -54,41 +43,44 @@ public class WalletSendSubCommand implements WalletSubCommand {
 		val player = (Player) commandSender;
 		if (args.length != 4) return false;
 
-		val sender = sessionDao.getSessionName(player.getUniqueId());
-		if (!accountDao.isAccountExists(sender)) {
+		val sender = daoBundle.getSessionDao().getSessionName(player.getUniqueId());
+		if (!daoBundle.getAccountDao().isAccountExists(sender)) {
 			player.sendMessage("Account session error: null");
 			return true;
 		}
 
 		val recipient = args[1];
-		if (!accountDao.isAccountExists(recipient)) {
+		if (!daoBundle.getAccountDao().isAccountExists(recipient)) {
 			player.sendMessage("Unknown recipient!");
 			return true;
 		}
 
-		val currency = currencyDao.getCurrencyByCode(args[3]);
+		val currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[3]);
 		if (currency == null) {
 			player.sendMessage("Unknown currency!");
 			return true;
 		}
 
-		val senderBalance = balanceDao.getUserBalance(currency, sender);
+		val senderBalance = daoBundle.getBalanceDao().getUserBalance(currency, sender);
 		if (senderBalance == null) {
 			player.sendMessage("You don't have any founds");
-			balanceDao.createNewOne(sender, currency);
+			daoBundle.getBalanceDao().createNewOne(sender, currency);
 			return true;
 		}
 
 		final BigDecimal amount; try {
-			amount = new BigDecimal(args[2]);
+			if (args[2].equals(ALL)) {
+				amount = senderBalance.getAmount();
+			} else amount = new BigDecimal(args[2]);
+
 		} catch (NumberFormatException e) {
 			player.sendMessage("Wrong currency amount!");
 			return true;
 		}
 
-		MoneyBalance receiverBalance = balanceDao.getUserBalance(currency, recipient);
+		MoneyBalance receiverBalance = daoBundle.getBalanceDao().getUserBalance(currency, recipient);
 		if (receiverBalance == null) {
-			receiverBalance = balanceDao.createNewOne(recipient, currency);
+			receiverBalance = daoBundle.getBalanceDao().createNewOne(recipient, currency);
 		}
 
 		val rBalanceAmount = receiverBalance.getAmount();
@@ -104,21 +96,81 @@ public class WalletSendSubCommand implements WalletSubCommand {
 
 			transactionService.calculateTransactions(sender, currency,
 					(BigDecimal result, Throwable throwable) -> {
-						if (result.compareTo(senderBalance.getAmount()) != 0) {
-							senderBalance.setAmount(result);
-							sendMsgToSnd(player, result, currency);
-						}
-					});
+
+				if (throwable != null) {
+					throwable.printStackTrace();
+					plugin.getLogger().throwing(this.getClass().getName(),
+							"calculateTransactions", throwable);
+					return;
+				}
+
+				if (result != null) {
+
+					BigDecimal finalResult = result.subtract(amount);
+					if (finalResult.compareTo(currency.getMicroLimit().negate()) < 0) {
+						player.sendMessage("Transaction aborted, not enough founds ("
+								+ result.toString() + " " + currency.getCode() + ")");
+						return;
+					}
+
+					MoneyTransaction transaction = new MoneyTransaction();
+					transaction.setAmount(amount);
+					transaction.setDescription("regular");
+					transaction.setCurrency(currency.getId());
+					transaction.setSender(sender);
+					transaction.setReceiver(recipient);
+					transaction.setTime(new Date(System.currentTimeMillis()));
+					daoBundle.getTransactionDao().saveTransaction(transaction);
+
+					if (currency.getFee() != null) {
+						MoneyTransaction fee = new MoneyTransaction();
+						fee.setAmount(amount.multiply(currency.getFee()));
+						fee.setDescription("fee");
+						fee.setCurrency(currency.getId());
+						fee.setSender(sender);
+						fee.setReceiver(currency.getFeeRecipient());
+						fee.setTime(new Date(System.currentTimeMillis()));
+						daoBundle.getTransactionDao().saveTransaction(fee);
+
+						finalResult = finalResult.subtract(fee.getAmount());
+					}
+
+					if (finalResult.compareTo(senderBalance.getAmount()) != 0) {
+						senderBalance.setAmount(finalResult);
+						sendMsgToSnd(player, finalResult, currency);
+					}
+
+				}
+			});
 
 			transactionService.calculateTransactions(recipient, currency,
 					(BigDecimal result, Throwable throwable) -> {
-						if (result.compareTo(fReceiverBalance.getAmount()) != 0) {
-							fReceiverBalance.setAmount(result);
-							sendMsgToRec(sender, recipient, player, result, currency);
-						}
-					});
+
+				if (throwable != null) {
+					throwable.printStackTrace();
+					plugin.getLogger().throwing(this.getClass().getName(),
+							"calculateTransactions", throwable);
+					return;
+				}
+
+				if (result != null && result.compareTo(fReceiverBalance.getAmount()) != 0) {
+					fReceiverBalance.setAmount(result);
+					sendMsgToRec(sender, recipient, player, result, currency);
+				}
+			});
+
 		};
 
+		player.sendMessage("Are you want to send "
+				+ amount.toString() + currency.getCode()
+				+ calcFee(amount, currency)
+				+ " to " + recipient + "? /<y|N>"
+		);
+
+		commandContext.addNegative(player.getUniqueId(), aVoid -> {
+			player.sendMessage("Transaction canceled");
+			return true;
+		});
 
 		val microLimit = currency.getMicroLimit();
 		if (microLimit == null || amount.compareTo(microLimit) <= 0) {
@@ -147,7 +199,15 @@ public class WalletSendSubCommand implements WalletSubCommand {
 	}
 
 
+	private static String calcFee(BigDecimal amount, Currency currency) {
+		if (currency.getFee() == null) return "";
 
+		val fee = amount.multiply(currency.getFee());
+		val pct = currency.getFee().multiply(new BigDecimal(100));
+
+		return " + " + fee.toString() + currency.getCode()
+				+ " (" + pct.toString() + "%) ";
+	}
 
 	private void sendMsgToSnd(Player player, BigDecimal amount, Currency currency) {
 		player.sendMessage("Wallet balance: " + amount.toString() + " " + currency.getCode());
@@ -155,7 +215,7 @@ public class WalletSendSubCommand implements WalletSubCommand {
 
 	private void sendMsgToRec(String sender, String recipient, Player player,
 							  BigDecimal amount, Currency currency) {
-		UUID id = sessionDao.getSessionId(recipient);
+		UUID id = daoBundle.getSessionDao().getSessionId(recipient);
 		if (id == null) return;
 
 		Player p = plugin.getServer().getPlayer(id);
