@@ -32,9 +32,9 @@ import java.sql.SQLException;
 
 		plugin.getLogger().info("Configuring default currencies");
 
-		val fee = plugin.getConfig().getString("transaction.fee.value");
-		val rec = plugin.getConfig().getString("transaction.fee.recipient");
-		val list = plugin.getConfig().getStringList("currency.default");
+		val fee = plugin.getConfig().getString("currency.default.fee.value");
+		val rec = plugin.getConfig().getString("currency.default.fee.recipient");
+		val list = plugin.getConfig().getStringList("currency.default.entity");
 		val NAME = list.get(0);
 		val CODE = list.get(1);
 		val LIM = list.get(2);
