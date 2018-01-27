@@ -46,8 +46,8 @@ commands:
         List of <command> usage options:
         + /<command> send {recipient} {amount} {currency}
         + /<command> balance
+        + /<command> balance {page}
         + /<command> balance {currency}
-        + /<command> balance {currency} {page}
         + /<command> history
         + /<command> history {currency}
         + /<command> history {currency} {page}

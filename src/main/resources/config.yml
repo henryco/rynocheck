@@ -7,7 +7,7 @@ currency.default: [AncapCoin, ANC, 100]
 transaction.fee.value: 0.01
 
 # account name
-transaction.fee.receiver: henryco
+transaction.fee.recipient: henryco
 
 # minimum 1
 transaction.pool.size: 10

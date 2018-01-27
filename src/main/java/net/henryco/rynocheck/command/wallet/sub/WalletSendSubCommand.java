@@ -55,7 +55,7 @@ public class WalletSendSubCommand implements WalletSubCommand {
 			return true;
 		}
 
-		val currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[3]);
+		val currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[3].toUpperCase());
 		if (currency == null) {
 			player.sendMessage("Unknown currency!");
 			return true;
