@@ -97,7 +97,7 @@ public class WalletHistorySubCommand implements WalletSubCommand {
 									String user,
 									long page) {
 
-	 	sender.sendMessage("Transaction history [page " + page + "/?]:");
+	 	sender.sendMessage("Transaction history [page " + page + "]:");
 
 	 	if (history == null || history.isEmpty()) {
 			sender.sendMessage("+EMPTY+");

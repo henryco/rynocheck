@@ -43,14 +43,17 @@ commands:
       description: Currency operations terminal
       aliases: [wcn, wcurrency, w-currency]
       usage: |
-
         List of <command> usage options:
-        + /<command> list
-        + /<command> list {page}
-        + /<command> list {author} {page}
-        + /<command> emite {recipient} {amount} {code}
-        + /<command> add {name} {code} {micro/null} {fee/null} {fee_rec/null}
-        + /<command> set {code} {new_micro/null} {new_fee/null} {new_fee_rec/null}
+        + list
+        + list {page}
+        + list {author} {page}
+        + emite {recipient} {amount} {code}
+        + add {name} {code} {micro} {fee} {fee_dest}
+        + set {code} {new micro} {new fee} {new fee_dest}
+        {fee} - value (from 0.0 to 1.0) (might be NULL)
+        {fee_dest} - fee receiver (might be NULL)
+        {micro} - maximum amount of micro transaction (might be NULL)
+
       permission: wallet_login
       permission-message: You should login to personal wallet first.
 
@@ -60,13 +63,13 @@ commands:
       usage: |
 
         List of <command> usage options:
-        + /<command> send {recipient} {amount} {currency}
-        + /<command> balance
-        + /<command> balance {page}
-        + /<command> balance {currency}
-        + /<command> history
-        + /<command> history {currency}
-        + /<command> history {currency} {page}
+        + send {recipient} {amount} {currency}
+        + balance
+        + balance {page}
+        + balance {currency}
+        + history
+        + history {currency}
+        + history {currency} {page}
         Note, that {*} argument means ALL.
       permission: wallet_login
       permission-message: You should login to personal wallet first.
