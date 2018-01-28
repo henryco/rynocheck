@@ -1,9 +1,10 @@
-package net.henryco.rynocheck.command.wallet.sub;
+package net.henryco.rynocheck.command.sub.wallet;
 
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import lombok.val;
+import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component("SCSend") @Singleton
-public class WalletSendSubCommand implements WalletSubCommand {
+public class WalletSendSubCommand implements RynoCheckSubCommand {
 
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;

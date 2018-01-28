@@ -1,8 +1,8 @@
-package net.henryco.rynocheck.command.wallet.sub;
+package net.henryco.rynocheck.command.sub;
 
 import org.bukkit.command.CommandSender;
 
-public interface WalletSubCommand {
+public interface RynoCheckSubCommand {
 
 	int PAGE_SIZE = 9;
 	String ALL = "*";

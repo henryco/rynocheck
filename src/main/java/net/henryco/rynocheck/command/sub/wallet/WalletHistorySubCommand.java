@@ -1,9 +1,10 @@
-package net.henryco.rynocheck.command.wallet.sub;
+package net.henryco.rynocheck.command.sub.wallet;
 
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import lombok.val;
+import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
@@ -17,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Component("SCHist") @Singleton
-public class WalletHistorySubCommand implements WalletSubCommand {
+public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 	private static final DateFormat DATE_FORMAT
 			= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

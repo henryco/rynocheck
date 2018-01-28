@@ -5,7 +5,7 @@ import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Named;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
-import net.henryco.rynocheck.command.wallet.sub.WalletSubCommand;
+import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,15 +21,15 @@ public class WalletCommandExecutor extends RynoCheckExecutor {
 	private static final String BALANCE = "balance";
 	private static final String HISTORY = "history";
 
-	private final WalletSubCommand send;
-	private final WalletSubCommand history;
-	private final WalletSubCommand balance;
+	private final RynoCheckSubCommand send;
+	private final RynoCheckSubCommand history;
+	private final RynoCheckSubCommand balance;
 
 
 	@Inject
-	public WalletCommandExecutor(@Named("SCSend") WalletSubCommand send,
-								 @Named("SCHist") WalletSubCommand history,
-								 @Named("SCBlns") WalletSubCommand balance,
+	public WalletCommandExecutor(@Named("SCSend") RynoCheckSubCommand send,
+								 @Named("SCHist") RynoCheckSubCommand history,
+								 @Named("SCBlns") RynoCheckSubCommand balance,
 								 CommandContext commandContext,
 								 Plugin plugin) {
 
@@ -44,8 +44,7 @@ public class WalletCommandExecutor extends RynoCheckExecutor {
 
 		if (args.length == 0) return false;
 		if (!(sender instanceof Player)) {
-			// todo
-			return true;
+			return true; // todo
 		}
 
 		switch (args[0]) {

@@ -47,7 +47,7 @@ commands:
         + list
         + list {page}
         + list {author} {page}
-        + emite {recipient} {amount} {code}
+        + emit {recipient} {amount} {code}
         + add {name} {code} {micro} {fee} {fee_dest}
         + set {code} {new micro} {new fee} {new fee_dest}
         {fee} - value (from 0.0 to 1.0) (might be NULL)
