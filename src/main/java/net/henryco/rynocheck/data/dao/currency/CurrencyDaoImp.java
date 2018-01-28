@@ -13,9 +13,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
-import static net.henryco.rynocheck.data.model.Currency.CURRENCY_CODE;
-import static net.henryco.rynocheck.data.model.Currency.CURRENCY_ID;
-import static net.henryco.rynocheck.data.model.Currency.CURRENCY_NAME;
+import static net.henryco.rynocheck.data.model.Currency.*;
 
 @Component @Singleton
 public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
@@ -78,24 +76,24 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 	 * Update currency transaction fee.
 	 * @param code code of currency
 	 * @param author last fee recipient
-	 * @param recipient new fee recipient
+	 * @param emitter new emitter
 	 * @param fee float from 0 to 1
 	 * @return true if updated
 	 */ @Override
-	public boolean updateFeeInfo(String code, String author, String recipient, String fee) {
+	public boolean updateFeeInfo(String code, String author, String emitter, String fee) {
 
-		if (!assertString(code) || !assertString(recipient)
+		if (!assertString(code) || !assertString(emitter)
 				|| !assertString(fee) || !assertString(author))
 			return false;
 
 		val currency = getCurrencyByCode(code);
 		if (currency == null) return false;
 
-		if (!currency.getFeeRecipient().equals(author))
+		if (!currency.getEmitter().equals(author))
 			return false;
 
 		currency.setFee(new BigDecimal(fee));
-		currency.setFeeRecipient(recipient);
+		currency.setEmitter(emitter);
 
 		try {
 			return update(currency) == 1;
@@ -117,10 +115,26 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 		}
 	}
 
+
+	@Override
+	public List<Currency> getCurrencies(String emitter) {
+
+	 	if (emitter == null || emitter.trim().isEmpty())
+	 		return getCurrencies();
+
+		try {
+			return queryForEq(CURRENCY_EMITTER, emitter);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
 	@Override
 	public List<Currency> getCurrencies(Page page) {
 
-	 	if (page == null) return null;
+	 	if (page == null) return getCurrencies();
 
 	 	try {
 	 		return queryBuilder().offset(page.getStartRow())
@@ -133,4 +147,33 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 	 		return null;
 		}
 	}
+
+
+	@Override
+	public List<Currency> getCurrencies(String emitter, Page page) {
+
+	 	if (emitter == null || emitter.trim().isEmpty()) {
+
+	 		if (page == null) return getCurrencies();
+	 		else return getCurrencies(page);
+
+	 	} else if (page == null) return getCurrencies(emitter);
+
+	 	try {
+
+	 		return queryBuilder().offset(page.getStartRow())
+					.limit(page.getPageSize())
+					.orderBy(CURRENCY_ID, false)
+					.where()
+					.eq(CURRENCY_EMITTER, emitter)
+			.query();
+
+		} catch (SQLException e) {
+	 		e.printStackTrace();
+	 		return null;
+		}
+	}
+
+
+
 }

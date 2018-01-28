@@ -101,7 +101,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 	 	sender.sendMessage("Transaction history [page " + page + "]:");
 
 	 	if (history == null || history.isEmpty()) {
-			sender.sendMessage("+EMPTY+");
+			sender.sendMessage(EMPTY_MESSAGE);
 			return;
 		}
 
@@ -110,12 +110,12 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 			// yyyy-MM-dd HH:mm:ss | AMOUNT | <-- RECEIVER | DESCRIPTION
 			// 2018-01-28 01:10:22 | 100 ANC | <-- henryco | regular
 
-			String block1 = DATE_FORMAT.format(h.getTime()) + " ";
+			String block1 = " " + DATE_FORMAT.format(h.getTime()) + " ";
 			String block2 = createAmountField(h.getSender(), user, h.getAmount(), h.getCurrencyCode());
 			String block3 = createNameField(h.getSender(), h.getReceiver(), user);
 			String block4 = h.getDescription();
 
-			sender.sendMessage(block1 + "|" + block2 + "|" + block3 + "|" + block4);
+			sender.sendMessage(" +" + block1 + "|" + block2 + "|" + block3 + "|" + block4);
 		});
 
 	}

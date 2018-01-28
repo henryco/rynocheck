@@ -20,7 +20,7 @@ public class Currency implements Serializable {
 	public static final String CURRENCY_CODE = "code";
 	public static final String CURRENCY_MICRO_LIM = "micro_limit";
 	public static final String CURRENCY_FEE = "fee";
-	public static final String CURRENCY_FEE_REC = "fee_recipient";
+	public static final String CURRENCY_EMITTER = "emitter";
 
 	private @Id @Column(
 			name = CURRENCY_ID,
@@ -59,7 +59,7 @@ public class Currency implements Serializable {
 
 
 	private @Column(
-			name = CURRENCY_FEE_REC
-	) String feeRecipient;
+			name = CURRENCY_EMITTER
+	) String emitter;
 
 }

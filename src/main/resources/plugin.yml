@@ -46,12 +46,12 @@ commands:
         List of <command> usage options:
         + list
         + list {page}
-        + list {author} {page}
+        + list {emitter} {page}
         + emit {recipient} {amount} {code}
-        + add {name} {code} {micro} {fee} {fee_dest}
-        + set {code} {new micro} {new fee} {new fee_dest}
+        + add {name} {code} {micro} {fee} {emitter}
+        + set {code} {new micro} {new fee} {new emitter}
         {fee} - value (from 0.0 to 1.0) (might be NULL)
-        {fee_dest} - fee receiver (might be NULL)
+        {emitter} - emitter and fee receiver (might be NULL)
         {micro} - maximum amount of micro transaction (might be NULL)
 
       permission: wallet_login

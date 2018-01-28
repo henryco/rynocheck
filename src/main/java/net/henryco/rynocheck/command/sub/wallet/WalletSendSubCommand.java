@@ -131,7 +131,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 						fee.setCurrency(currency.getId());
 						fee.setCurrencyCode(currency.getCode());
 						fee.setSender(sender);
-						fee.setReceiver(currency.getFeeRecipient());
+						fee.setReceiver(currency.getEmitter());
 						fee.setTime(new Date(System.currentTimeMillis()));
 						daoBundle.getTransactionDao().saveTransaction(fee);
 

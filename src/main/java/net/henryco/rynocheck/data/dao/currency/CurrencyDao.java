@@ -14,9 +14,13 @@ public interface CurrencyDao extends Dao<Currency, Long> {
 
 	boolean addCurrency(Currency currency);
 
-	boolean updateFeeInfo(String code, String author, String recipient, String fee);
+	boolean updateFeeInfo(String code, String emitter, String recipient, String fee);
 
 	List<Currency> getCurrencies();
 
+	List<Currency> getCurrencies(String emitter);
+
 	List<Currency> getCurrencies(Page page);
+
+	List<Currency> getCurrencies(String emitter, Page page);
 }
