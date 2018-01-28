@@ -3,6 +3,7 @@ package net.henryco.rynocheck.data.dao.transaction;
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
@@ -71,14 +72,14 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 		if (!assertString(user) || currency == null) return null;
 
 		try {
-			val whereCurrency = queryBuilder()
-					.where().eq(CURRENCY, currency.getId());
 
-			val whereUser = queryBuilder()
-					.where().eq(SENDER_ID, user).or().eq(RECEIVER_ID, user);
+			val where = queryBuilder().where();
+
+			val whereCurrency = where.eq(CURRENCY, currency.getId());
+			val whereUser = where.eq(SENDER_ID, user).or().eq(RECEIVER_ID, user);
 
 			//noinspection unchecked
-			return queryBuilder().where().and(whereCurrency, whereUser).query();
+			return where.and(whereCurrency, whereUser).query();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -93,18 +94,16 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 
 
 		try {
-			val whereCurrency = queryBuilder()
-					.where().eq(CURRENCY, currency.getId());
-
-			val whereUser = queryBuilder()
-					.where().eq(SENDER_ID, user).or().eq(RECEIVER_ID, user);
-
-			//noinspection unchecked
-			return queryBuilder().offset(page.getStartRow())
+			val where = queryBuilder().offset(page.getStartRow())
 					.limit(page.getPageSize())
 					.orderBy(ID, false)
-					.where()
-					.and(whereCurrency, whereUser)
+			.where();
+
+			val whereCurrency = where.eq(CURRENCY, currency.getId());
+			val whereUser = where.eq(SENDER_ID, user).or().eq(RECEIVER_ID, user);
+
+			//noinspection unchecked
+			return where.and(whereCurrency, whereUser)
 			.query();
 		} catch (SQLException e) {
 			e.printStackTrace();

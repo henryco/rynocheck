@@ -14,9 +14,7 @@ import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component("SCHist") @Singleton
 public class WalletHistorySubCommand implements WalletSubCommand {
@@ -62,7 +60,7 @@ public class WalletHistorySubCommand implements WalletSubCommand {
 
 		} catch (NumberFormatException e) {
 
-			currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[1]);
+			currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[1].toUpperCase());
 			if (currency == null && !args[1].equals(ALL)) {
 				commandSender.sendMessage("Unknown currency: " + args[1]);
 				return true;
