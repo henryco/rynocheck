@@ -1,22 +1,34 @@
 package net.henryco.rynocheck.data.page;
 
-public class Page implements DaoPage {
+public interface Page {
 
-	private final long page;
-	private final long pageSize;
+	long getPage();
+	long getPageSize();
 
-	public Page(long page, long pageSize) {
-		this.page = page;
-		this.pageSize = pageSize;
+	default long getStartRow() {
+		return getPage() * getPageSize();
 	}
 
-	@Override
-	public long getPage() {
-		return page;
-	}
+	abstract class factory {
 
-	@Override
-	public long getPageSize() {
-		return pageSize;
+		private factory() {}
+
+		public static Page page(long page, long pageSize) {
+			return new Page() {
+				@Override
+				public long getPage() {
+					return page;
+				}
+				@Override
+				public long getPageSize() {
+					return pageSize;
+				}
+			};
+		}
+
+		public static Page ninePage(long page) {
+			return page(page, 9);
+		}
+
 	}
 }

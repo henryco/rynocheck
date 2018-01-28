@@ -7,7 +7,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
-import net.henryco.rynocheck.data.page.DaoPage;
+import net.henryco.rynocheck.data.page.Page;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -118,7 +118,7 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 	}
 
 	@Override
-	public List<Currency> getCurrencies(DaoPage page) {
+	public List<Currency> getCurrencies(Page page) {
 
 	 	if (page == null) return null;
 

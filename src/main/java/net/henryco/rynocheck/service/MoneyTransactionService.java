@@ -40,7 +40,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 				while (true) {
 
 					List<MoneyTransaction> transactions = transactionDao.getUserTransactions(
-									user, currency, new Page(page++, QUERY_PAGE_SIZE)
+									user, currency, Page.factory.page(page++, QUERY_PAGE_SIZE)
 					);
 
 					if (transactions == null || transactions.isEmpty())

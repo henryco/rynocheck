@@ -7,7 +7,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
-import net.henryco.rynocheck.data.page.DaoPage;
+import net.henryco.rynocheck.data.page.Page;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -60,7 +60,7 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 
 
 	@Override
-	public List<MoneyBalance> getUserBalanceList(String user, DaoPage page) {
+	public List<MoneyBalance> getUserBalanceList(String user, Page page) {
 
 		if (!assertString(user) || page == null) return null;
 

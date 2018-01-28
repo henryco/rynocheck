@@ -8,7 +8,7 @@ import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
-import net.henryco.rynocheck.data.page.DaoPage;
+import net.henryco.rynocheck.data.page.Page;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -45,7 +45,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 
 
 	@Override
-	public List<MoneyTransaction> getUserTransactions(String user, DaoPage page) {
+	public List<MoneyTransaction> getUserTransactions(String user, Page page) {
 
 		if (!assertString(user) || page == null) return null;
 
@@ -87,7 +87,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 
 
 	@Override
-	public List<MoneyTransaction> getUserTransactions(String user, Currency currency, DaoPage page) {
+	public List<MoneyTransaction> getUserTransactions(String user, Currency currency, Page page) {
 
 		if (!assertString(user) || currency == null || page == null) return null;
 

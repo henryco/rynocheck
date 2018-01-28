@@ -18,7 +18,6 @@ import java.util.List;
 @Component("SCBlns") @Singleton @Log
 public class WalletsBalanceSubCommand implements WalletSubCommand {
 
-	private static final int PAGE_SIZE = 9;
 	private final DaoBundle daoBundle;
 
 	// TODO: REPLACE manual pagination with dao implementation

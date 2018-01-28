@@ -25,9 +25,11 @@ public class MoneyTransaction {
 	public static final String SENDER_ID = "sender_id";
 	public static final String RECEIVER_ID = "receiver_id";
 	public static final String CURRENCY = "currency";
+	public static final String CURRENCY_CODE = "currency_code";
 	public static final String TIME = "time";
 	public static final String AMOUNT = "amount";
 	public static final String DESCRIPTION = "description";
+
 
 	private @Id @Column(
 			name = ID,
@@ -58,6 +60,13 @@ public class MoneyTransaction {
 			nullable = false,
 			updatable = false
 	) Long currency;
+
+
+	private @Column(
+			name = CURRENCY_CODE,
+			nullable = false,
+			updatable = false
+	) String currencyCode;
 
 
 	private @Column(

@@ -117,16 +117,18 @@ public class WalletSendSubCommand implements WalletSubCommand {
 					transaction.setAmount(amount);
 					transaction.setDescription("regular");
 					transaction.setCurrency(currency.getId());
+					transaction.setCurrencyCode(currency.getCode());
 					transaction.setSender(sender);
 					transaction.setReceiver(recipient);
 					transaction.setTime(new Date(System.currentTimeMillis()));
 					daoBundle.getTransactionDao().saveTransaction(transaction);
 
-					if (currency.getFee() != null) {
+					if (currency.getFee() != null && !currency.getFee().equals(new BigDecimal(0))) {
 						MoneyTransaction fee = new MoneyTransaction();
 						fee.setAmount(amount.multiply(currency.getFee()));
 						fee.setDescription("fee");
 						fee.setCurrency(currency.getId());
+						fee.setCurrencyCode(currency.getCode());
 						fee.setSender(sender);
 						fee.setReceiver(currency.getFeeRecipient());
 						fee.setTime(new Date(System.currentTimeMillis()));
