@@ -21,7 +21,7 @@ import java.util.List;
 public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 	private static final DateFormat DATE_FORMAT
-			= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			= new SimpleDateFormat("ddMMyy HH:mm");
 
 	private final DaoBundle daoBundle;
 
@@ -40,11 +40,8 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 	 	if (args.length == 0) return false;
 
 		val player = (Player) commandSender;
-		val user = daoBundle.getSessionDao().getSessionName(player.getUniqueId());
-		if (!daoBundle.getAccountDao().isAccountExists(user)) {
-			player.sendMessage("Account session error: null");
-			return true;
-		}
+		val user = daoBundle.createUserSession(player);
+		if (user == null) return true;
 
 		Currency currency;
 		long pageNumb = 1;
@@ -89,7 +86,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		val dao = daoBundle.getTransactionDao();
 
 		if (currency == null) return dao.getUserTransactions(user, page);
-		else return dao.getUserTransactions(user, currency, page);
+		else return dao.getUserTransactions(user, currency.getId(), page);
 	}
 
 
@@ -113,7 +110,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 			String block1 = " " + DATE_FORMAT.format(h.getTime()) + " ";
 			String block2 = createAmountField(h.getSender(), user, h.getAmount(), h.getCurrencyCode());
 			String block3 = createNameField(h.getSender(), h.getReceiver(), user);
-			String block4 = h.getDescription();
+			String block4 = " " + h.getDescription().toUpperCase();
 
 			sender.sendMessage(" +" + block1 + "|" + block2 + "|" + block3 + "|" + block4);
 		});
@@ -121,7 +118,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 	}
 
 	private static String createNameField(String sender, String receiver, String user) {
-	 	return sender.equals(user) ? " --> " + receiver + " " : " <-- " + sender + " ";
+	 	return sender.equals(user) ? " -> " + receiver + " " : " <- " + sender + " ";
 	}
 
 	private static String createAmountField(String sender, String user, BigDecimal amount, String code) {

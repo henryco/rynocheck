@@ -1,8 +1,6 @@
 package net.henryco.rynocheck.data.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -59,6 +57,8 @@ public class MoneyTransaction {
 			name = CURRENCY,
 			nullable = false,
 			updatable = false
+	) @Setter(
+			AccessLevel.NONE
 	) Long currency;
 
 
@@ -66,6 +66,8 @@ public class MoneyTransaction {
 			name = CURRENCY_CODE,
 			nullable = false,
 			updatable = false
+	) @Setter(
+			AccessLevel.NONE
 	) String currencyCode;
 
 
@@ -88,4 +90,14 @@ public class MoneyTransaction {
 			updatable = false
 	) String description;
 
+
+	private @Setter(
+			AccessLevel.NONE
+	) Currency transactional;
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency.getId();
+		this.currencyCode = currency.getCode();
+		this.transactional = currency;
+	}
 }

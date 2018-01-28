@@ -13,11 +13,9 @@ import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.service.IMoneyTransactionService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
 @Component("SCSend") @Singleton
 public class WalletSendSubCommand implements RynoCheckSubCommand {
@@ -25,17 +23,14 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;
 	private final DaoBundle daoBundle;
-	private final Plugin plugin;
 
 	@Inject
 	public WalletSendSubCommand(IMoneyTransactionService transactionService,
 								CommandContext commandContext,
-								DaoBundle daoBundle,
-								Plugin plugin) {
+								DaoBundle daoBundle) {
 		this.transactionService = transactionService;
 		this.commandContext = commandContext;
 		this.daoBundle = daoBundle;
-		this.plugin = plugin;
 	}
 
 	@Override // args: send {recipient} {amount} {currency}
@@ -44,30 +39,17 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		val player = (Player) commandSender;
 		if (args.length != 4) return false;
 
-		val sender = daoBundle.getSessionDao().getSessionName(player.getUniqueId());
-		if (!daoBundle.getAccountDao().isAccountExists(sender)) {
-			player.sendMessage("Account session error: null");
-			return true;
-		}
+		val sender = daoBundle.createUserSession(player);
+		if (sender == null) return true;
 
-		val recipient = args[1];
-		if (!daoBundle.getAccountDao().isAccountExists(recipient)) {
-			player.sendMessage("Unknown recipient!");
-			return true;
-		}
+		val recipient = daoBundle.createRecipient(player, args[1]);
+		if (recipient == null) return true;
 
-		val currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[3].toUpperCase());
-		if (currency == null) {
-			player.sendMessage("Unknown currency!");
-			return true;
-		}
+		val currency = daoBundle.createCurrency(player, args[3]);
+		if (currency == null) return true;
 
-		val senderBalance = daoBundle.getBalanceDao().getUserBalance(sender, currency);
-		if (senderBalance == null) {
-			player.sendMessage("You don't have any founds");
-			daoBundle.getBalanceDao().createNewOne(sender, currency);
-			return true;
-		}
+		val senderBalance = daoBundle.createBalance(player, sender, currency);
+		if (senderBalance == null) return true;
 
 		final BigDecimal amount; try {
 			if (args[2].equals(ALL)) {
@@ -79,15 +61,15 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			return true;
 		}
 
-		MoneyBalance receiverBalance = daoBundle.getBalanceDao().getUserBalance(recipient, currency);
+		MoneyBalance receiverBalance = daoBundle.getBalanceDao().getUserBalance(recipient, currency.getId());
 		if (receiverBalance == null) {
-			receiverBalance = daoBundle.getBalanceDao().createNewOne(recipient, currency);
+			receiverBalance = daoBundle.getBalanceDao().createNewOne(recipient, currency.getId());
 		}
 
 		val rBalanceAmount = receiverBalance.getAmount();
 		val sBalanceAmount = senderBalance.getAmount();
 		if (sBalanceAmount.compareTo(amount) < 0) {
-			player.sendMessage("You don't have enough founds!");
+			player.sendMessage("You don't have enough funds!");
 			return true;
 		}
 
@@ -95,80 +77,38 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 
 		Runnable delayedCalculation = () -> {
 
-			transactionService.calculateTransactions(sender, currency,
-					(BigDecimal result, Throwable throwable) -> {
+			MoneyTransaction transaction = new MoneyTransaction();
+			transaction.setAmount(amount);
+			transaction.setDescription("regular");
+			transaction.setCurrency(currency);
+			transaction.setSender(sender);
+			transaction.setReceiver(recipient);
+			transaction.setTime(new Date(System.currentTimeMillis()));
 
-				if (throwable != null) {
-					throwable.printStackTrace();
-					plugin.getLogger().throwing(this.getClass().getName(),
-							"calculateTransactions", throwable);
-					return;
+			transactionService.releaseTransaction(transaction, new IMoneyTransactionService.Notification() {
+
+				@Override
+				public void success(String userName, String amount, String currency) {
+
+					if (userName.equals(sender))
+						sendMsgToSnd(player, amount, currency);
+
+					else if (userName.equals(recipient))
+						daoBundle.sendMsgToRec(player, sender, recipient, amount, currency);
 				}
 
-				if (result != null) {
+				@Override
+				public void error(String u, String a, String c) {
 
-					BigDecimal finalResult = result.subtract(amount);
-					if (finalResult.compareTo(currency.getMicroLimit().negate()) < 0) {
-						player.sendMessage("Transaction aborted, not enough founds ("
-								+ result.toString() + " " + currency.getCode() + ")");
-						return;
-					}
-
-					MoneyTransaction transaction = new MoneyTransaction();
-					transaction.setAmount(amount);
-					transaction.setDescription("regular");
-					transaction.setCurrency(currency.getId());
-					transaction.setCurrencyCode(currency.getCode());
-					transaction.setSender(sender);
-					transaction.setReceiver(recipient);
-					transaction.setTime(new Date(System.currentTimeMillis()));
-					daoBundle.getTransactionDao().saveTransaction(transaction);
-
-					if (currency.getFee() != null && !currency.getFee().equals(new BigDecimal(0))) {
-						MoneyTransaction fee = new MoneyTransaction();
-						fee.setAmount(amount.multiply(currency.getFee()));
-						fee.setDescription("fee");
-						fee.setCurrency(currency.getId());
-						fee.setCurrencyCode(currency.getCode());
-						fee.setSender(sender);
-						fee.setReceiver(currency.getEmitter());
-						fee.setTime(new Date(System.currentTimeMillis()));
-						daoBundle.getTransactionDao().saveTransaction(fee);
-
-						finalResult = finalResult.subtract(fee.getAmount());
-					}
-
-					if (finalResult.compareTo(senderBalance.getAmount()) != 0) {
-						senderBalance.setAmount(finalResult);
-						sendMsgToSnd(player, finalResult, currency);
-					}
-
-				}
-			});
-
-			transactionService.calculateTransactions(recipient, currency,
-					(BigDecimal result, Throwable throwable) -> {
-
-				if (throwable != null) {
-					throwable.printStackTrace();
-					plugin.getLogger().throwing(this.getClass().getName(),
-							"calculateTransactions", throwable);
-					return;
-				}
-
-				if (result != null && result.compareTo(fReceiverBalance.getAmount()) != 0) {
-					fReceiverBalance.setAmount(result);
-					sendMsgToRec(sender, recipient, player, result, currency);
+					if (u.equals(sender))
+						player.sendMessage("Transaction aborted, not enough funds ("+a+" "+c+")");
 				}
 			});
 
 		};
 
-		player.sendMessage("Are you want to send "
-				+ amount.toString() + currency.getCode()
-				+ calcFee(amount, currency)
-				+ " to " + recipient + "? /<y|N>"
-		);
+		player.sendMessage("Are you want to send to " + recipient + " ");
+		player.sendMessage(amount.toString() + currency.getCode() + calcFee(amount, currency) +  "? /< y | N >");
 
 		commandContext.addNegative(player.getUniqueId(), aVoid -> {
 			player.sendMessage("Transaction canceled");
@@ -183,8 +123,11 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 				fReceiverBalance.setAmount(rBalanceAmount.add(amount));
 				senderBalance.setAmount(sBalanceAmount.subtract(amount));
 
-				sendMsgToSnd(player, senderBalance.getAmount(), currency);
-				sendMsgToRec(sender, recipient, player, fReceiverBalance.getAmount(), currency);
+				daoBundle.getBalanceDao().updateBalance(fReceiverBalance);
+				daoBundle.getBalanceDao().updateBalance(senderBalance);
+
+				sendMsgToSnd(player, senderBalance.getAmount().toString(), currency.getCode());
+				daoBundle.sendMsgToRec(player, sender, recipient, fReceiverBalance.getAmount().toString(), currency.getCode());
 
 				delayedCalculation.run();
 				return true;
@@ -209,22 +152,12 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		val pct = currency.getFee().multiply(new BigDecimal(100));
 
 		return " + " + fee.toString() + currency.getCode()
-				+ " (" + pct.toString() + "%) ";
+				+ " (FEE: " + pct.toString() + "%) ";
 	}
 
-	private void sendMsgToSnd(Player player, BigDecimal amount, Currency currency) {
-		player.sendMessage("Wallet balance: " + amount.toString() + " " + currency.getCode());
+
+	private void sendMsgToSnd(Player player, String amount, String currency) {
+		player.sendMessage("Updated wallet balance: " + amount + " " + currency);
 	}
 
-	private void sendMsgToRec(String sender, String recipient, Player player,
-							  BigDecimal amount, Currency currency) {
-		UUID id = daoBundle.getSessionDao().getSessionId(recipient);
-		if (id == null) return;
-
-		Player p = plugin.getServer().getPlayer(id);
-		if (p == null) return;
-
-		p.sendMessage("Received founds from " + sender);
-		player.sendMessage("Wallet balance: " + amount.toString() + " " + currency.getCode());
-	}
 }

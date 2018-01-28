@@ -44,12 +44,12 @@ commands:
       aliases: [wcn, wcurrency, w-currency]
       usage: |
         List of <command> usage options:
-        + list
-        + list {page}
-        + list {emitter} {page}
-        + emit {recipient} {amount} {code}
-        + add {name} {code} {micro} {fee} {emitter}
-        + set {code} {new micro} {new fee} {new emitter}
+         + list
+         + list {page}
+         + list {emitter} {page}
+         + emit {recipient} {amount} {code}
+         + add {name} {code} {micro} {fee} {emitter}
+         + set {code} {new micro} {new fee} {new emitter}
         {fee} - value (from 0.0 to 1.0) (might be NULL)
         {emitter} - emitter and fee receiver (might be NULL)
         {micro} - maximum amount of micro transaction (might be NULL)
@@ -63,13 +63,13 @@ commands:
       usage: |
 
         List of <command> usage options:
-        + send {recipient} {amount} {currency}
-        + balance
-        + balance {page}
-        + balance {currency}
-        + history
-        + history {currency}
-        + history {currency} {page}
+         + send {recipient} {amount} {currency}
+         + balance
+         + balance {page}
+         + balance {currency}
+         + history
+         + history {currency}
+         + history {currency} {page}
         Note, that {*} argument means ALL.
       permission: wallet_login
       permission-message: You should login to personal wallet first.

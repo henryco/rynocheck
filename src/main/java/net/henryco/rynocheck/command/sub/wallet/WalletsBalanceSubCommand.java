@@ -37,11 +37,8 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 
 		val player = (Player) commandSender;
 
-		val sender = daoBundle.getSessionDao().getSessionName(player.getUniqueId());
-		if (!daoBundle.getAccountDao().isAccountExists(sender)) {
-			player.sendMessage("Account session error: null");
-			return true;
-		}
+		val sender = daoBundle.createUserSession(player);
+		if (sender == null) return true;
 
 		val moneyBalances = daoBundle.getBalanceDao().getUserBalanceList(sender);
 
@@ -63,7 +60,7 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 					return true;
 				}
 
-				val balance = daoBundle.getBalanceDao().getUserBalance(sender, currency);
+				val balance = daoBundle.getBalanceDao().getUserBalance(sender, currency.getId());
 
 				player.sendMessage(currency.getName() + " balance: ");
 				if (balance == null) {

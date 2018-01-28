@@ -3,11 +3,9 @@ package net.henryco.rynocheck.data.dao.transaction;
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
-import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.data.page.Page;
 
@@ -53,7 +51,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 		try {
 			return queryBuilder().offset(page.getStartRow())
 					.limit(page.getPageSize())
-					.orderBy(ID, false)
+					.orderBy(TIME, false)
 					.where()
 					.eq(SENDER_ID, user)
 					.or()
@@ -67,7 +65,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 
 
 	@Override
-	public List<MoneyTransaction> getUserTransactions(String user, Currency currency) {
+	public List<MoneyTransaction> getUserTransactions(String user, Long currency) {
 
 		if (!assertString(user) || currency == null) return null;
 
@@ -75,7 +73,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 
 			val where = queryBuilder().where();
 
-			val whereCurrency = where.eq(CURRENCY, currency.getId());
+			val whereCurrency = where.eq(CURRENCY, currency);
 			val whereUser = where.eq(SENDER_ID, user).or().eq(RECEIVER_ID, user);
 
 			//noinspection unchecked
@@ -88,7 +86,7 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 
 
 	@Override
-	public List<MoneyTransaction> getUserTransactions(String user, Currency currency, Page page) {
+	public List<MoneyTransaction> getUserTransactions(String user, Long currency, Page page) {
 
 		if (!assertString(user) || currency == null || page == null) return null;
 
@@ -96,10 +94,10 @@ public class MoneyTransactionDaoImp extends RynoCheckDao<MoneyTransaction, Long>
 		try {
 			val where = queryBuilder().offset(page.getStartRow())
 					.limit(page.getPageSize())
-					.orderBy(ID, false)
+					.orderBy(TIME, false)
 			.where();
 
-			val whereCurrency = where.eq(CURRENCY, currency.getId());
+			val whereCurrency = where.eq(CURRENCY, currency);
 			val whereUser = where.eq(SENDER_ID, user).or().eq(RECEIVER_ID, user);
 
 			//noinspection unchecked

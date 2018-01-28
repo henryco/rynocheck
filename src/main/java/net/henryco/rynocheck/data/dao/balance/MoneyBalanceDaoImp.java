@@ -4,8 +4,8 @@ import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.support.ConnectionSource;
+import lombok.extern.java.Log;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
-import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
 import net.henryco.rynocheck.data.page.Page;
 
@@ -18,7 +18,7 @@ import static net.henryco.rynocheck.data.model.MoneyBalance.ACCOUNT_ID;
 import static net.henryco.rynocheck.data.model.MoneyBalance.CURRENCY;
 import static net.henryco.rynocheck.data.model.MoneyBalance.ID;
 
-@Component @Singleton
+@Component @Singleton @Log
 public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> implements MoneyBalanceDao {
 
 	@Inject
@@ -28,12 +28,12 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 
 
 	@Override
-	public MoneyBalance createNewOne(String user, Currency currency) {
+	public MoneyBalance createNewOne(String user, Long currency) {
 
 		if (!assertString(user) || currency == null) return null;
 
 		MoneyBalance balance = new MoneyBalance(null, user,
-				currency.getId(), new BigDecimal(0),
+				currency, new BigDecimal(0),
 				new Date(System.currentTimeMillis())
 		);
 
@@ -41,6 +41,7 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 			create(balance);
 			return getUserBalance(user, currency);
 		} catch (SQLException e) {
+			log.throwing(getClass().getName(), "createNewOne", e);
 			return null;
 		}
 	}
@@ -53,7 +54,7 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 		try {
 			return queryForEq(ACCOUNT_ID, user);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.throwing(getClass().getName(), "getUserBalanceList", e);
 			return null;
 		}
 	}
@@ -72,14 +73,14 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 					.eq(ACCOUNT_ID, user)
 			.query();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.throwing(getClass().getName(), "getUserBalanceList", e);
 			return null;
 		}
 	}
 
 
 	@Override
-	public MoneyBalance getUserBalance(String user, Currency currency) {
+	public MoneyBalance getUserBalance(String user, Long currency) {
 
 		if (!assertString(user) || currency == null) return null;
 
@@ -87,11 +88,43 @@ public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> impleme
 			return queryBuilder().where()
 					.eq(ACCOUNT_ID, user)
 					.and()
-					.eq(CURRENCY, currency.getId())
+					.eq(CURRENCY, currency)
 					.queryForFirst();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.throwing(getClass().getName(), "getUserBalance", e);
 			return null;
+		}
+	}
+
+	@Override
+	public MoneyBalance getOrCrateUserBalance(String user, Long currency) {
+
+		if (!assertString(user) || currency == null) return null;
+
+		try {
+			MoneyBalance b = queryBuilder().where()
+					.eq(ACCOUNT_ID, user)
+					.and()
+					.eq(CURRENCY, currency)
+			.queryForFirst();
+
+			return b != null ? b : createNewOne(user, currency);
+
+		} catch (SQLException e) {
+			log.throwing(getClass().getName(), "getOrCrateUserBalance", e);
+			return null;
+		}
+	}
+
+
+	@Override
+	public boolean updateBalance(MoneyBalance balance) {
+
+		try {
+			return update(balance) == 1;
+		} catch (SQLException e) {
+			log.throwing(getClass().getName(), "updateBalance", e);
+			return false;
 		}
 	}
 
