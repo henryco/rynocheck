@@ -54,7 +54,11 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		final BigDecimal amount; try {
 			if (args[2].equals(ALL)) {
 				amount = senderBalance.getAmount();
-			} else amount = new BigDecimal(args[2]);
+				if (amount.compareTo(new BigDecimal(0)) < 0) {
+					player.sendMessage("You don't have any funds!");
+					return true;
+				}
+			} else amount = new BigDecimal(args[2]).abs();
 
 		} catch (NumberFormatException e) {
 			player.sendMessage("Wrong currency amount!");

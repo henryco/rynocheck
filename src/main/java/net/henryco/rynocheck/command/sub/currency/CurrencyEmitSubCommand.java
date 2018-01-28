@@ -53,10 +53,9 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 		}
 
 		val bank = "BANK OF " + currency.getName();
-		val amn = args[2];
 
 		MoneyTransaction transaction = new MoneyTransaction();
-		transaction.setAmount(new BigDecimal(args[2]));
+		transaction.setAmount(new BigDecimal(args[2]).abs());
 		transaction.setDescription("emit");
 		transaction.setCurrency(currency);
 		transaction.setSender(bank);
@@ -80,7 +79,8 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 				public void success(String userName, String amount, String currency) {
 					if (userName.equals(recipient)) {
 
-						player.sendMessage("Transaction update: " + recipient + " received " + amn + " " + currency);
+						player.sendMessage("Transaction update: " + recipient + " received "
+								+ transaction.getAmount().toString() + " " + currency);
 						daoBundle.sendMsgToRec(player, bank, recipient, amount, currency);
 					}
 				}

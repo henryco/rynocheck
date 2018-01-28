@@ -84,6 +84,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 									Notification notification,
 									boolean force,
 									boolean fee) {
+		log.info(" ");
 		log.info("-------------------");
 		log.info("releaseTransaction(t: " + transaction +", n: " + notification + ", force: " + force + ", fee: " + fee);
 
@@ -91,7 +92,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 		val receiver = transaction.getReceiver();
 		val currency = transaction.getCurrency();
 		val code = transaction.getCurrencyCode();
-		val amount = transaction.getAmount();
+		val amount = transaction.getAmount().abs();
 		val microLimit = transaction.getTransactional().getMicroLimit();
 
 		val rBalance = balanceDao.getOrCrateUserBalance(receiver, currency);
@@ -152,6 +153,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 				notification.success(sender, finalResult.toString(), code);
 			}
 			log.info(":::PART SENDER::: END");
+			log.info(" ");
 		});
 
 
@@ -174,6 +176,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 				notification.success(receiver, result.toString(), code);
 			}
 			log.info(":::PART RECEIVER::: END");
+			log.info(" ");
 		});
 	}
 

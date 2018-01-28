@@ -100,4 +100,8 @@ public class MoneyTransaction {
 		this.currencyCode = currency.getCode();
 		this.transactional = currency;
 	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount.abs();
+	}
 }

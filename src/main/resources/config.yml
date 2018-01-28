@@ -10,4 +10,4 @@ currency.default.fee.value: 0.01
 currency.default.fee.recipient: henryco
 
 # minimum 1
-transaction.pool.size: 10
+transaction.pool.size: 1
