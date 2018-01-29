@@ -18,7 +18,8 @@ import java.util.List;
 
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_FEE;
 
-@Component("SCHist") @Singleton
+@Component("SCHist")
+@Singleton
 public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 	private static final DateFormat DATE_FORMAT
@@ -35,10 +36,11 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 	 * args: history {currency}
 	 * args: history {page}
 	 * args: history
-	 */ @Override
+	 */
+	@Override
 	public boolean executeSubCommand(CommandSender commandSender, String[] args) {
 
-	 	if (args.length == 0) return false;
+		if (args.length == 0) return false;
 
 		val player = (Player) commandSender;
 		val user = daoBundle.createUserSession(player);
@@ -96,9 +98,9 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 									String user,
 									long page) {
 
-	 	sender.sendMessage("Transaction history [page " + page + "]:");
+		sender.sendMessage("Transaction history [page " + page + "]:");
 
-	 	if (history == null || history.isEmpty()) {
+		if (history == null || history.isEmpty()) {
 			sender.sendMessage(EMPTY_MESSAGE);
 			return;
 		}
@@ -108,7 +110,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 			// yyyy-MM-dd HH:mm:ss | DES | AMOUNT | <-- RECEIVER
 			// 2018-01-28 01:10:22 | REG | 100 ANC | <-- henryco
 
-			String block1 = " " + DATE_FORMAT.format(transaction.getTime()) + " ";
+			String block1 = createTimeField(transaction);
 			String block2 = createAmountField(transaction, user);
 			String block3 = createNameField(transaction, user);
 			String block4 = creteTagField(transaction);
@@ -118,13 +120,17 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 	}
 
+	private static String createTimeField(MoneyTransaction transaction) {
+		return " " + DATE_FORMAT.format(transaction.getTime()) + " ";
+	}
+
 	private static String creteTagField(MoneyTransaction transaction) {
-	 	return " " + transaction.getDescription().substring(0, 3).toUpperCase() + " ";
+		return " " + transaction.getDescription().substring(0, 3).toUpperCase() + " ";
 	}
 
 	private static String createNameField(MoneyTransaction transaction, String user) {
 
-	 	final String receiver;
+		final String receiver;
 		final String sender;
 
 		if (transaction.getDescription().equalsIgnoreCase(TAG_FEE)) {
@@ -139,7 +145,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 	private static String createAmountField(MoneyTransaction transaction, String user) {
 
-	 	val code = transaction.getCurrencyCode();
+		val code = transaction.getCurrencyCode();
 		val sender = transaction.getSender();
 		val amount = transaction.getAmount();
 		return " " + (sender.equals(user) ? "-" : "+") + amount.toString() + " " + code + " ";
