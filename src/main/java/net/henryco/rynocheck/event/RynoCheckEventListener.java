@@ -15,7 +15,9 @@ public abstract class RynoCheckEventListener implements Listener, RynoCheck {
 	}
 
 	private void register() {
-		getPlugin().getServer().getPluginManager().registerEvents(this, plugin);
+		getPlugin().getServer()
+				.getPluginManager()
+				.registerEvents(this, plugin);
 	}
 
 }

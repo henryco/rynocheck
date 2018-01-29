@@ -36,8 +36,8 @@ public class SessionDaoImp implements SessionDao {
 	}
 
 	@Override
-	public void removeSession(UUID uuid) {
-		sessionMap.remove(uuid);
+	public String removeSession(UUID uuid) {
+		return sessionMap.remove(uuid);
 	}
 
 	@Override

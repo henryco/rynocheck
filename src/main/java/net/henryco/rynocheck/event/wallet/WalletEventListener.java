@@ -33,8 +33,7 @@ public class WalletEventListener extends RynoCheckEventListener {
 	public void onLogout(PlayerQuitEvent event) {
 
 		val uuid = event.getPlayer().getUniqueId();
-		val name = walletSessionDao.getSessionName(uuid);
-		walletSessionDao.removeSession(uuid);
+		val name = walletSessionDao.removeSession(uuid);
 
 		if (name != null)
 			getLogger().info("Wallet session closed: " + name);

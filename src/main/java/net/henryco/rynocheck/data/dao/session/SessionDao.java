@@ -9,7 +9,7 @@ public interface SessionDao {
 
 	void removeSession(String username);
 
-	void removeSession(UUID uuid);
+	String removeSession(UUID uuid);
 
 	boolean isSessionExist(String username);
 
