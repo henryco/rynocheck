@@ -12,10 +12,11 @@ import net.henryco.rynocheck.data.page.Page;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_FEE;
 
 @Component("SCHist") @Singleton
 public class WalletHistorySubCommand implements RynoCheckSubCommand {
@@ -102,26 +103,45 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 			return;
 		}
 
-		history.forEach(h -> {
+		history.forEach(transaction -> {
 
 			// yyyy-MM-dd HH:mm:ss | DES | AMOUNT | <-- RECEIVER
 			// 2018-01-28 01:10:22 | REG | 100 ANC | <-- henryco
 
-			String block1 = " " + DATE_FORMAT.format(h.getTime()) + " ";
-			String block2 = createAmountField(h.getSender(), user, h.getAmount(), h.getCurrencyCode());
-			String block3 = createNameField(h.getSender(), h.getReceiver(), user);
-			String block4 = " " + h.getDescription().substring(0, 3).toUpperCase() + " ";
+			String block1 = " " + DATE_FORMAT.format(transaction.getTime()) + " ";
+			String block2 = createAmountField(transaction, user);
+			String block3 = createNameField(transaction, user);
+			String block4 = creteTagField(transaction);
 
-			sender.sendMessage(" +" + block1 + "|" + block4 + "|" + block2 + "|" + block3);
+			sender.sendMessage(" *" + block1 + "|" + block4 + "|" + block2 + "|" + block3);
 		});
 
 	}
 
-	private static String createNameField(String sender, String receiver, String user) {
-	 	return sender.equals(user) ? " -> " + receiver + " " : " <- " + sender + " ";
+	private static String creteTagField(MoneyTransaction transaction) {
+	 	return " " + transaction.getDescription().substring(0, 3).toUpperCase() + " ";
 	}
 
-	private static String createAmountField(String sender, String user, BigDecimal amount, String code) {
+	private static String createNameField(MoneyTransaction transaction, String user) {
+
+	 	final String receiver;
+		final String sender;
+
+		if (transaction.getDescription().equalsIgnoreCase(TAG_FEE)) {
+			receiver = sender = Currency.createBankName(transaction.getCurrencyCode());
+		} else {
+			receiver = transaction.getReceiver();
+			sender = transaction.getSender();
+		}
+
+		return transaction.getSender().equals(user) ? " -> " + receiver + " " : " <- " + sender + " ";
+	}
+
+	private static String createAmountField(MoneyTransaction transaction, String user) {
+
+	 	val code = transaction.getCurrencyCode();
+		val sender = transaction.getSender();
+		val amount = transaction.getAmount();
 		return " " + (sender.equals(user) ? "-" : "+") + amount.toString() + " " + code + " ";
 	}
 }

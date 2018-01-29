@@ -15,10 +15,10 @@ import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_EMIT;
+
 @Component("SCEmitCurr") @Singleton
 public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
-
-	private static final String TAG_EMIT = "emt";
 
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;
@@ -54,7 +54,7 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 			return true;
 		}
 
-		val bank = "BANK OF " + currency.getName();
+		val bank = currency.getBankName();
 
 		MoneyTransaction transaction = new MoneyTransaction();
 		transaction.setAmount(new BigDecimal(args[2]).abs());

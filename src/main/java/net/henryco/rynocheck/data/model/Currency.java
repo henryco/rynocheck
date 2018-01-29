@@ -15,6 +15,17 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 public class Currency implements Serializable {
 
+	public static final String BANK_PREFIX = "BANK OF ";
+
+	public static String createBankName(Currency currency) {
+		return createBankName(currency.getCode());
+	}
+
+	public static String createBankName(String currencyCode) {
+		return BANK_PREFIX + currencyCode;
+	}
+
+
 	public static final String CURRENCY_ID = "id";
 	public static final String CURRENCY_NAME = "name";
 	public static final String CURRENCY_CODE = "code";
@@ -62,4 +73,8 @@ public class Currency implements Serializable {
 			name = CURRENCY_EMITTER
 	) String emitter;
 
+
+	public String getBankName() {
+		return createBankName(this);
+	}
 }

@@ -15,11 +15,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 
+import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_FEE;
+
 @Component @Singleton @Log
 public class MoneyTransactionService implements IMoneyTransactionService {
 
 	private static final long QUERY_PAGE_SIZE = 10000;
-	private static final String TAG_FEE = "fee";
 
 	private final ExecutorService executorService;
 	private final MoneyTransactionDao transactionDao;
@@ -115,81 +116,88 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 		log.info("sBalance: " + sBalance);
 
 
+		this.calculateTransactions(sender, currency, (senderResult, senderThrowable) -> {
 
-		this.calculateTransactions(sender, currency, (result, throwable) -> {
 
 			log.info(":::PART SENDER::: START");
-			log.info("Calculated: " + sender + ", " + currency + ", " + result + ", " + throwable);
+			log.info("Calculated: " + sender + ", " + currency + ", " + senderResult + ", " + senderThrowable);
 
-			if (throwable != null) {
-				onThrow(throwable);
+			if (senderThrowable != null) {
+				onThrow(senderThrowable);
 				return;
 			}
 
-			BigDecimal finalResult = result.subtract(amount);
-			log.info("finalResult: " + finalResult);
+			BigDecimal finalSender = senderResult.subtract(amount);
+			log.info("finalSender: " + finalSender);
 
-			if (finalResult.compareTo(microLimit.negate()) < 0) {
+			if (finalSender.compareTo(microLimit.negate()) < 0) {
 				if (!force) {
-					notification.error(sender, result.toString(), code);
+					notification.error(sender, senderResult.toString(), code);
 					return;
 				}
 			}
 
-			transactionDao.saveTransaction(transaction);
-			log.info("transaction saved");
-
-			if (finalResult.compareTo(sBalance.getAmount()) != 0) {
-
-				log.info("setAmount(" + finalResult + ")");
-
-				sBalance.setAmount(finalResult);
-				if (!balanceDao.updateBalance(sBalance)) {
-					log.info("updateBalance error");
-					notification.error(sender, result.toString(), code);
-				}
-
-				notification.success(sender, finalResult.toString(), code);
-			}
-
 			log.info(":::PART SENDER::: END");
-			log.info(" ");
-			log.info(" ");
-			log.info(" ");
 
-			MoneyTransaction feeTransaction = createFee(transaction);
-			log.info("feeTransaction: " + feeTransaction);
-			if (feeTransaction != null && fee) {
+			this.calculateTransactions(receiver, currency, (receiverResult, receiverThrowable) -> {
 
-				this.releaseEmit(feeTransaction, notification);
-				log.info("fee saved");
-			}
-		});
+				log.info(":::PART RECEIVER::: START");
+				log.info("Calculated: " + sender + ", " + currency + ", " + receiverResult + ", " + receiverThrowable);
 
-
-		this.calculateTransactions(receiver, currency, (result, throwable) -> {
-			log.info(":::PART RECEIVER::: START");
-			log.info("Calculated: " + sender + ", " + currency + ", " + result + ", " + throwable);
-
-			if (throwable != null) {
-				onThrow(throwable);
-				return;
-			}
-
-			if (result != null && result.compareTo(rBalance.getAmount()) != 0) {
-				log.info("setAmount(" + result + ")");
-				rBalance.setAmount(result);
-				if (!balanceDao.updateBalance(rBalance)) {
-					log.info("updateBalance error");
-					notification.error(receiver, result.toString(), code);
+				if (receiverThrowable != null) {
+					onThrow(receiverThrowable);
+					return;
 				}
-				notification.success(receiver, result.toString(), code);
-			}
-			log.info(":::PART RECEIVER::: END");
-			log.info(" ");
-			log.info(" ");
-			log.info(" ");
+
+				log.info(":::PART RECEIVER::: END");
+
+
+				BigDecimal finalReceiver = receiverResult.add(amount);
+				log.info("finalReceiver: " + finalReceiver);
+
+
+				transactionDao.saveTransaction(transaction);
+				log.info("transaction saved");
+
+
+				log.info("Sender balance update");
+				if (finalSender.compareTo(sBalance.getAmount()) != 0) {
+
+					log.info("setAmount(" + finalSender + ")");
+
+					sBalance.setAmount(finalSender);
+					if (!balanceDao.updateBalance(sBalance)) {
+						log.info("updateBalance error");
+						notification.error(sender, senderResult.toString(), code);
+					}
+
+					notification.success(sender, finalSender.toString(), code);
+				}
+
+				log.info("Receiver balance update");
+				if (finalReceiver != null && finalReceiver.compareTo(rBalance.getAmount()) != 0) {
+					log.info("setAmount(" + finalReceiver + ")");
+					rBalance.setAmount(finalReceiver);
+					if (!balanceDao.updateBalance(rBalance)) {
+						log.info("updateBalance error");
+						notification.error(receiver, finalReceiver.toString(), code);
+					}
+					notification.success(receiver, finalReceiver.toString(), code);
+				}
+
+
+				MoneyTransaction feeTransaction = createFee(transaction);
+				log.info("feeTransaction: " + feeTransaction);
+				if (feeTransaction != null && fee) {
+
+					this.releaseEmit(feeTransaction, notification);
+					log.info("fee released");
+				}
+
+			});
+
 		});
+
 	}
 
 

@@ -17,10 +17,10 @@ import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_REGULAR;
+
 @Component("SCSend") @Singleton
 public class WalletSendSubCommand implements RynoCheckSubCommand {
-
-	private static final String TAG_REGULAR = "reg";
 
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;

@@ -19,6 +19,11 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity(name = "money_transaction")
 public class MoneyTransaction {
 
+	public static final String TAG_REGULAR = "REG";
+	public static final String TAG_EMIT = "EMT";
+	public static final String TAG_FEE = "FEE";
+
+
 	public static final String ID = "id";
 	public static final String SENDER_ID = "sender_id";
 	public static final String RECEIVER_ID = "receiver_id";

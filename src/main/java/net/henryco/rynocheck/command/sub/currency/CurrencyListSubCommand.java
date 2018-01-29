@@ -87,7 +87,7 @@ public class CurrencyListSubCommand implements RynoCheckSubCommand {
 			String block4 = createFee(c.getFee());
 			String block5 = createEmitter(c.getEmitter());
 
-			sender.sendMessage(" +" + block1 + "|" + block2 + "|" + block3 + "|" + block4 + "|" + block5);
+			sender.sendMessage(" *" + block1 + "|" + block2 + "|" + block3 + "|" + block4 + "|" + block5);
 		});
 
 	}

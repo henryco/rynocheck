@@ -39,8 +39,7 @@ public class WalletLoginCmEx extends RynoCheckExecutor {
 	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
 
 		if (!(sender instanceof Player)) {
-			// todo
-			return true;
+			return true; // todo
 		}
 
 		val uniqueId = ((Player) sender).getUniqueId();
