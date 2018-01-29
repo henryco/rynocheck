@@ -104,15 +104,15 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 		history.forEach(h -> {
 
-			// yyyy-MM-dd HH:mm:ss | AMOUNT | <-- RECEIVER | DESCRIPTION
-			// 2018-01-28 01:10:22 | 100 ANC | <-- henryco | regular
+			// yyyy-MM-dd HH:mm:ss | DES | AMOUNT | <-- RECEIVER
+			// 2018-01-28 01:10:22 | REG | 100 ANC | <-- henryco
 
 			String block1 = " " + DATE_FORMAT.format(h.getTime()) + " ";
 			String block2 = createAmountField(h.getSender(), user, h.getAmount(), h.getCurrencyCode());
 			String block3 = createNameField(h.getSender(), h.getReceiver(), user);
-			String block4 = " " + h.getDescription().toUpperCase();
+			String block4 = " " + h.getDescription().substring(0, 3).toUpperCase() + " ";
 
-			sender.sendMessage(" +" + block1 + "|" + block2 + "|" + block3 + "|" + block4);
+			sender.sendMessage(" +" + block1 + "|" + block4 + "|" + block2 + "|" + block3);
 		});
 
 	}

@@ -20,6 +20,8 @@ import java.util.Date;
 @Component("SCSend") @Singleton
 public class WalletSendSubCommand implements RynoCheckSubCommand {
 
+	private static final String TAG_REGULAR = "reg";
+
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;
 	private final DaoBundle daoBundle;
@@ -83,7 +85,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 
 			MoneyTransaction transaction = new MoneyTransaction();
 			transaction.setAmount(amount);
-			transaction.setDescription("regular");
+			transaction.setDescription(TAG_REGULAR);
 			transaction.setCurrency(currency);
 			transaction.setSender(sender);
 			transaction.setReceiver(recipient);

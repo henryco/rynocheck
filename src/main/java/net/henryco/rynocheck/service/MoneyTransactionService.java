@@ -90,6 +90,12 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 		val sender = transaction.getSender();
 		val receiver = transaction.getReceiver();
+
+		if (sender.equals(receiver)) {
+			log.info("SENDER == RECEIVER, skipping redundant calculations");
+			return;
+		}
+
 		val currency = transaction.getCurrency();
 		val code = transaction.getCurrencyCode();
 		val amount = transaction.getAmount().abs();
@@ -111,6 +117,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 
 		this.calculateTransactions(sender, currency, (result, throwable) -> {
+
 			log.info(":::PART SENDER::: START");
 			log.info("Calculated: " + sender + ", " + currency + ", " + result + ", " + throwable);
 
@@ -120,21 +127,13 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 			}
 
 			BigDecimal finalResult = result.subtract(amount);
+			log.info("finalResult: " + finalResult);
+
 			if (finalResult.compareTo(microLimit.negate()) < 0) {
 				if (!force) {
 					notification.error(sender, result.toString(), code);
 					return;
 				}
-			}
-
-			log.info("finalResult: " + finalResult);
-
-			MoneyTransaction feeTransaction = createFee(transaction);
-			log.info("feeTransaction: " + feeTransaction);
-			if (feeTransaction != null && fee) {
-				finalResult = finalResult.subtract(feeTransaction.getAmount());
-				transactionDao.saveTransaction(feeTransaction);
-				log.info("fee saved");
 			}
 
 			transactionDao.saveTransaction(transaction);
@@ -152,8 +151,19 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 				notification.success(sender, finalResult.toString(), code);
 			}
+
 			log.info(":::PART SENDER::: END");
 			log.info(" ");
+			log.info(" ");
+			log.info(" ");
+
+			MoneyTransaction feeTransaction = createFee(transaction);
+			log.info("feeTransaction: " + feeTransaction);
+			if (feeTransaction != null && fee) {
+
+				this.releaseEmit(feeTransaction, notification);
+				log.info("fee saved");
+			}
 		});
 
 
@@ -176,6 +186,8 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 				notification.success(receiver, result.toString(), code);
 			}
 			log.info(":::PART RECEIVER::: END");
+			log.info(" ");
+			log.info(" ");
 			log.info(" ");
 		});
 	}

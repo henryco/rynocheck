@@ -18,6 +18,8 @@ import java.util.Date;
 @Component("SCEmitCurr") @Singleton
 public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 
+	private static final String TAG_EMIT = "emt";
+
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;
 	private final DaoBundle daoBundle;
@@ -56,7 +58,7 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 
 		MoneyTransaction transaction = new MoneyTransaction();
 		transaction.setAmount(new BigDecimal(args[2]).abs());
-		transaction.setDescription("emit");
+		transaction.setDescription(TAG_EMIT);
 		transaction.setCurrency(currency);
 		transaction.setSender(bank);
 		transaction.setReceiver(recipient);
