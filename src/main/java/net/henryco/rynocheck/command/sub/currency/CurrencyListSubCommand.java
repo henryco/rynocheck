@@ -70,6 +70,10 @@ public class CurrencyListSubCommand implements RynoCheckSubCommand {
 	private static void showCurrencies(List<Currency> currencies,
 									   CommandSender sender,
 									   long page) {
+
+		sender.sendMessage(" "); // clearing console
+		sender.sendMessage(" "); // clearing console
+
 	 	sender.sendMessage("List of currencies [page: " + page + "]:");
 	 	if (currencies == null || currencies.isEmpty()) {
 	 		sender.sendMessage(EMPTY_MESSAGE);

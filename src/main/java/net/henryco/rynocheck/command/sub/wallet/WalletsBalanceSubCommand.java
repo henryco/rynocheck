@@ -78,6 +78,9 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 
 	private void showBalance(List<MoneyBalance> balances, Player player, int page) {
 
+		player.sendMessage(" "); // clearing console
+		player.sendMessage(" "); // clearing console
+
 	 	double d = ((double) balances.size()) / ((double) PAGE_SIZE);
 		int pages = Math.max((int) Math.ceil(d), 1);
 		int actual = (Math.min(page, pages) - 1) * PAGE_SIZE;

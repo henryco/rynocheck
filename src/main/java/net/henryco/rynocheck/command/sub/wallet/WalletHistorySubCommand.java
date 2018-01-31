@@ -98,6 +98,9 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 									String user,
 									long page) {
 
+		sender.sendMessage(" "); // clearing console
+		sender.sendMessage(" "); // clearing console
+
 		sender.sendMessage("Transaction history [page " + page + "]:");
 
 		if (history == null || history.isEmpty()) {
@@ -140,14 +143,26 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 			sender = transaction.getSender();
 		}
 
-		return transaction.getSender().equals(user) ? " -> " + receiver + " " : " <- " + sender + " ";
+		char[] symbol = {'>', '<'};
+		if (user.equals(transaction.getSender())) symbol[1] = '>';
+		if (user.equals(transaction.getReceiver())) symbol[0] = '<';
+
+		return " " + new String(symbol) + " " + (transaction.getSender().equals(user) ? receiver : sender) + " ";
 	}
 
 	private static String createAmountField(MoneyTransaction transaction, String user) {
 
 		val code = transaction.getCurrencyCode();
 		val sender = transaction.getSender();
+		val receiver = transaction.getReceiver();
 		val amount = transaction.getAmount();
-		return " " + (sender.equals(user) ? "-" : "+") + amount.toString() + " " + code + " ";
+
+		final String sign;
+		if (user.equals(sender) && user.equals(receiver))
+			sign = "+-";
+		else if (user.equals(sender)) sign = "-";
+		else sign = "+";
+
+		return " " + sign + amount.toString() + " " + code + " ";
 	}
 }

@@ -70,6 +70,11 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 				"man made inflation, which means stealth taxation. " +
 				"But taxation is theft, are you sure to continue? /< y | N >");
 
+		commandContext.addNegative(player.getUniqueId(), aVoid -> {
+			player.sendMessage("Money emitting canceled.");
+			return true;
+		});
+
 		commandContext.addPositive(player.getUniqueId(), aVoid -> {
 
 			player.sendMessage("Done! Transaction will be released in few moments");

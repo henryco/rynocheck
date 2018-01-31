@@ -10,14 +10,16 @@ public interface IMoneyTransactionService {
 
 	void releaseTransaction(MoneyTransaction transaction, Notification notification);
 
+	void releaseTransaction(MoneyTransaction transaction, Notification notification, boolean micro);
+
 	void releaseEmit(MoneyTransaction transaction, Notification notification);
+
+	void releaseMicroTransaction(MoneyTransaction transaction, Notification notification);
 
 	interface Notification {
 		void success(String userName, String amount, String currency);
 		void error(String userName, String amount, String currency);
 	}
 
-	void calculateTransactions(String user, Long currency,
-							   BiConsumer<BigDecimal, Throwable> amountConsumer
-	);
+	void calculateTransactions(String user, Long currency, BiConsumer<BigDecimal, Throwable> amountConsumer);
 }
