@@ -1,6 +1,6 @@
-package net.henryco.rynocheck.service.exec.block;
+package net.henryco.rynocheck.transaction.exec.block;
 
-import net.henryco.rynocheck.service.exec.active.IPartActive;
+import net.henryco.rynocheck.transaction.exec.active.IPartActive;
 
 public abstract class Block<ELEMENT> {
 

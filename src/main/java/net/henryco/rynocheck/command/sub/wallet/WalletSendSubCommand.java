@@ -9,7 +9,7 @@ import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
-import net.henryco.rynocheck.service.IMoneyTransactionService;
+import net.henryco.rynocheck.transaction.IMoneyTransactionService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_REGULAR;
-import static net.henryco.rynocheck.service.IMoneyTransactionService.Notification;
+import static net.henryco.rynocheck.transaction.IMoneyTransactionService.Notification;
 
 
 @Component("SCSend") @Singleton

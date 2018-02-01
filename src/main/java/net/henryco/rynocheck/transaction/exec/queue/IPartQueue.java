@@ -1,6 +1,6 @@
-package net.henryco.rynocheck.service.exec.queue;
+package net.henryco.rynocheck.transaction.exec.queue;
 
-import net.henryco.rynocheck.service.exec.active.IPartActive;
+import net.henryco.rynocheck.transaction.exec.active.IPartActive;
 
 import java.util.Queue;
 

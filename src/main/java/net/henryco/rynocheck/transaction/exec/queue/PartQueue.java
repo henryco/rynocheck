@@ -1,14 +1,13 @@
-package net.henryco.rynocheck.service.exec.queue;
+package net.henryco.rynocheck.transaction.exec.queue;
 
 import lombok.val;
-import net.henryco.rynocheck.service.exec.active.IPartActive;
+import net.henryco.rynocheck.transaction.exec.active.IPartActive;
 
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class PartQueue<KEY, ELEMENT> implements IPartQueue<KEY, ELEMENT> {
-
 
 	private final Map<KEY, Queue<ELEMENT>> queueMap;
 	private final Queue<KEY> keyQueue;

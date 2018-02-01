@@ -1,4 +1,4 @@
-package net.henryco.rynocheck.service;
+package net.henryco.rynocheck.transaction;
 
 
 import net.henryco.rynocheck.data.model.MoneyTransaction;

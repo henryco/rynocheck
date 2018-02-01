@@ -7,6 +7,7 @@ import lombok.val;
 import net.henryco.rynocheck.RynoCheckPlugin;
 import net.henryco.rynocheck.data.dao.currency.CurrencyDao;
 import net.henryco.rynocheck.data.model.Currency;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.math.BigDecimal;
@@ -28,7 +29,7 @@ import java.sql.SQLException;
 
 
 	@Provide("currency_config") @Singleton
-	public int currencyConfig(CurrencyDao dao, Plugin plugin) {
+	public FileConfiguration currencyConfig(CurrencyDao dao, Plugin plugin) {
 
 		plugin.getLogger().info("Configuring default currencies");
 
@@ -47,7 +48,13 @@ import java.sql.SQLException;
 				e.printStackTrace();
 			}
 		}
-		return 0;
+		return plugin.getConfig();
+	}
+
+
+	@Provide("TransactionPoolSize")
+	public int transactionPoolSize(FileConfiguration configuration) {
+		return configuration.getInt("transaction.pool.size", 1);
 	}
 
 }

@@ -1,4 +1,4 @@
-package net.henryco.rynocheck.service;
+package net.henryco.rynocheck.transaction;
 
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
@@ -12,7 +12,7 @@ import net.henryco.rynocheck.data.dao.transaction.MoneyTransactionDao;
 import net.henryco.rynocheck.data.model.MoneyBalance;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.data.page.Page;
-import net.henryco.rynocheck.service.exec.ITransactionExecutor;
+import net.henryco.rynocheck.transaction.exec.ITransactionExecutor;
 
 import java.math.BigDecimal;
 import java.util.Date;

@@ -1,10 +1,10 @@
-package net.henryco.rynocheck.service.exec;
+package net.henryco.rynocheck.transaction.exec;
 
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
-import net.henryco.rynocheck.service.exec.active.IPartActive;
-import net.henryco.rynocheck.service.exec.queue.IPartQueue;
+import net.henryco.rynocheck.transaction.exec.active.IPartActive;
+import net.henryco.rynocheck.transaction.exec.queue.IPartQueue;
 
 @Component
 @Singleton

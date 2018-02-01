@@ -1,6 +1,6 @@
-package net.henryco.rynocheck.service.exec.active;
+package net.henryco.rynocheck.transaction.exec.active;
 
-import net.henryco.rynocheck.service.exec.queue.IPartQueue;
+import net.henryco.rynocheck.transaction.exec.queue.IPartQueue;
 
 public interface IPartActive<KEY, ELEMENT> {
 

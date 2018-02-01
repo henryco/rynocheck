@@ -1,4 +1,4 @@
-package net.henryco.rynocheck.service.exec;
+package net.henryco.rynocheck.transaction.exec;
 
 public interface ITransactionExecutor {
 

@@ -8,7 +8,7 @@ import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
-import net.henryco.rynocheck.service.IMoneyTransactionService;
+import net.henryco.rynocheck.transaction.IMoneyTransactionService;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
