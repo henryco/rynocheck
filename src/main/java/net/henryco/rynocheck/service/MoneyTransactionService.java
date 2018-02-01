@@ -12,11 +12,11 @@ import net.henryco.rynocheck.data.dao.transaction.MoneyTransactionDao;
 import net.henryco.rynocheck.data.model.MoneyBalance;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.data.page.Page;
+import net.henryco.rynocheck.service.exec.ITransactionExecutor;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -27,15 +27,15 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 	private static final long QUERY_PAGE_SIZE = 10000;
 
-	private final ExecutorService executorService;
+	private final ITransactionExecutor transactionExecutor;
 	private final MoneyTransactionDao transactionDao;
 	private final MoneyBalanceDao balanceDao;
 
 	@Inject
-	public MoneyTransactionService(ExecutorService executorService,
+	public MoneyTransactionService(ITransactionExecutor transactionExecutor,
 								   MoneyTransactionDao transactionDao,
 								   MoneyBalanceDao balanceDao) {
-		this.executorService = executorService;
+		this.transactionExecutor = transactionExecutor;
 		this.transactionDao = transactionDao;
 		this.balanceDao = balanceDao;
 	}
@@ -43,12 +43,12 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 	@Override
 	public void calculateTransactions(String user, Long currency, BiConsumer<BigDecimal, Throwable> amountConsumer) {
-		executorService.submit(() -> calculate(user, currency, amountConsumer));
+		transactionExecutor.submit(currency, () -> calculate(user, currency, amountConsumer));
 	}
 
 	@Override
 	public void releaseTransaction(MoneyTransaction transaction, Notification notification) {
-		executorService.submit(() -> releaseTransaction(transaction, notification, false, true));
+		transactionExecutor.submit(transaction.getCurrency(), () -> releaseTransaction(transaction, notification, false, true));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 	@Override
 	public void releaseEmit(MoneyTransaction transaction, Notification notification) {
-		executorService.submit(() -> releaseTransaction(transaction, notification, true, false));
+		transactionExecutor.submit(transaction.getCurrency(), () -> releaseTransaction(transaction, notification, true, false));
 	}
 
 	@Override
