@@ -48,7 +48,9 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 	@Override
 	public void releaseTransaction(MoneyTransaction transaction, Notification notification) {
-		transactionExecutor.submit(transaction.getCurrency(), () -> releaseTransaction(transaction, notification, false, true));
+		transactionExecutor.submit(transaction.getCurrency(),
+				() -> releaseTransaction(transaction, notification, false, true)
+		);
 	}
 
 	@Override
@@ -69,7 +71,9 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 
 	@Override
 	public void releaseEmit(MoneyTransaction transaction, Notification notification) {
-		transactionExecutor.submit(transaction.getCurrency(), () -> releaseTransaction(transaction, notification, true, false));
+		transactionExecutor.submit(transaction.getCurrency(),
+				() -> releaseTransaction(transaction, notification, true, false)
+		);
 	}
 
 	@Override

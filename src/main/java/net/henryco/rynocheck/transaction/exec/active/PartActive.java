@@ -1,5 +1,6 @@
 package net.henryco.rynocheck.transaction.exec.active;
 
+import lombok.extern.java.Log;
 import net.henryco.rynocheck.transaction.exec.block.Block;
 import net.henryco.rynocheck.transaction.exec.block.BlockFactory;
 import net.henryco.rynocheck.transaction.exec.queue.IPartQueue;
@@ -9,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+@Log
 public class PartActive<KEY, ELEMENT> implements IPartActive<KEY, ELEMENT> {
 
 	private final BlockFactory<Queue<ELEMENT>> blockFactory;
