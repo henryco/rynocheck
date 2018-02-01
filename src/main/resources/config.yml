@@ -11,3 +11,4 @@ currency.default.fee.recipient: henryco
 
 # minimum 1
 transaction.pool.size: 5
+transaction.self: true

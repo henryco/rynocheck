@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static net.henryco.rynocheck.context.CommandContext.YN_OPTION;
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_EMIT;
 
 @Component("SCEmitCurr") @Singleton
@@ -68,7 +69,7 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 
 		player.sendMessage("Daily reminder: emitting money increases " +
 				"man made inflation, which means stealth taxation. " +
-				"But taxation is theft, are you sure to continue? /< y | N >");
+				"But taxation is theft, are you sure to continue?" + YN_OPTION);
 
 		commandContext.addNegative(player.getUniqueId(), aVoid -> {
 			player.sendMessage("Money emitting canceled.");

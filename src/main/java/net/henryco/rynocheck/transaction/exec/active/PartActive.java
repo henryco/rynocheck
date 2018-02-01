@@ -21,6 +21,9 @@ public class PartActive<KEY, ELEMENT> implements IPartActive<KEY, ELEMENT> {
 	private IPartQueue<KEY, ELEMENT> partQueue;
 
 	public PartActive(BlockFactory<Queue<ELEMENT>> blockFactory, int poolSize) {
+
+		log.info(":::PartActive:::INSTANCE:::PoolSize:::" + poolSize);
+
 		this.executorService = Executors.newFixedThreadPool(poolSize);
 		this.poolCount = new AtomicInteger(0);
 		this.blockFactory = blockFactory;
@@ -30,28 +33,36 @@ public class PartActive<KEY, ELEMENT> implements IPartActive<KEY, ELEMENT> {
 
 	@Override
 	public void bindQueuePart(IPartQueue<KEY, ELEMENT> partQueue) {
+		log.info(":::PartActive:::bindQueuePart:::" + partQueue);
 		this.partQueue = partQueue;
 	}
 
 	@Override
 	public synchronized void push() {
 
+		log.info(":::PartActive:::push:::");
 		if (poolCount.get() < poolSize && partQueue != null) {
 
+			log.info(":::PartActive:::push:::partQueue.release");
 			Queue<ELEMENT> elementQueue = partQueue.release();
 			if (elementQueue == null) return;
 
+			log.info(":::PartActive:::push:::blockFactory.createBlock");
 			Block<Queue<ELEMENT>> block = blockFactory.createBlock(elementQueue);
+
+			log.info(":::PartActive:::push:::block.bindPartActive:::this");
 			block.bindPartActive(this);
 
 			poolCount.incrementAndGet();
 
+			log.info(":::PartActive:::push:::executorService.SUBMIT");
 			executorService.submit(block::processBlock);
 		}
 	}
 
 	@Override
 	public void release() {
+		log.info(":::PartActive:::release:::");
 		poolCount.set(Math.max(0, poolCount.decrementAndGet()));
 	}
 

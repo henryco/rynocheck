@@ -2,6 +2,7 @@ package net.henryco.rynocheck.command.sub.wallet;
 
 import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
+import com.github.henryco.injector.meta.annotations.Named;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static net.henryco.rynocheck.context.CommandContext.YN_OPTION;
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_REGULAR;
 import static net.henryco.rynocheck.transaction.IMoneyTransactionService.Notification;
 
@@ -26,14 +28,17 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 	private final IMoneyTransactionService transactionService;
 	private final CommandContext commandContext;
 	private final DaoBundle daoBundle;
+	private final boolean selfEnable;
 
 	@Inject
 	public WalletSendSubCommand(IMoneyTransactionService transactionService,
+								@Named("selfEnable") boolean selfEnable,
 								CommandContext commandContext,
 								DaoBundle daoBundle) {
 		this.transactionService = transactionService;
 		this.commandContext = commandContext;
 		this.daoBundle = daoBundle;
+		this.selfEnable = selfEnable;
 	}
 
 	@Override // args: send {recipient} {amount} {currency}
@@ -48,6 +53,11 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		val recipient = daoBundle.createRecipient(player, args[1]);
 		if (recipient == null) return true;
 
+		if (recipient.equals(sender) && !selfEnable) {
+			player.sendMessage("Self transactions are not supported!");
+			return true;
+		}
+
 		val currency = daoBundle.createCurrency(player, args[3]);
 		if (currency == null) return true;
 
@@ -57,7 +67,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		final BigDecimal amount; try {
 			if (args[2].equals(ALL)) {
 				amount = senderBalance.getAmount();
-				if (amount.compareTo(new BigDecimal(0)) < 0) {
+				if (amount.compareTo(BigDecimal.ZERO) < 0) {
 					player.sendMessage("You don't have any funds!");
 					return true;
 				}
@@ -68,9 +78,13 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			return true;
 		}
 
+		if (amount.compareTo(BigDecimal.ZERO) == 0) {
+			player.sendMessage("Cannot handle empty transactions!");
+			return true;
+		}
 
 		player.sendMessage("Are you want to send to " + recipient + " ");
-		player.sendMessage(amount.toString() + currency.getCode() + calcFee(amount, currency) +  "? /< y | N >");
+		player.sendMessage(amount.toString() + currency.getCode() + calcFee(amount, currency) + YN_OPTION);
 
 
 		commandContext.addPositive(player.getUniqueId(), aVoid -> {

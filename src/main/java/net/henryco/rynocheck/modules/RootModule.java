@@ -57,4 +57,8 @@ import java.sql.SQLException;
 		return configuration.getInt("transaction.pool.size", 1);
 	}
 
+	@Provide("selfEnable")
+	public boolean transactionSelf(FileConfiguration configuration) {
+		return configuration.getBoolean("transaction.self", false);
+	}
 }

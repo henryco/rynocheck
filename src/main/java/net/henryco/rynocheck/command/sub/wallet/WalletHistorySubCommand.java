@@ -110,17 +110,22 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 		history.forEach(transaction -> {
 
-			// yyyy-MM-dd HH:mm:ss | DES | AMOUNT | <-- RECEIVER
-			// 2018-01-28 01:10:22 | REG | 100 ANC | <-- henryco
+			// yyyy-MM-dd HH:mm:ss | DES | CODE | AMOUNT | <-- RECEIVER
+			// 2018-01-28 01:10:22 | REG | ANC | 100 | <-- henryco
 
 			String block1 = createTimeField(transaction);
-			String block2 = createAmountField(transaction, user);
-			String block3 = createNameField(transaction, user);
-			String block4 = creteTagField(transaction);
+			String block2 = createCurrencyField(transaction);
+			String block3 = createAmountField(transaction, user);
+			String block4 = createNameField(transaction, user);
+			String block5 = creteTagField(transaction);
 
-			sender.sendMessage(" *" + block1 + "|" + block4 + "|" + block2 + "|" + block3);
+			sender.sendMessage(" *" + block1 + "|" + block5 + "|" + block2 + "|" + block3 + "|" + block4);
 		});
 
+	}
+
+	private static String createCurrencyField(MoneyTransaction transaction) {
+		return " " + transaction.getCurrencyCode() + " ";
 	}
 
 	private static String createTimeField(MoneyTransaction transaction) {
@@ -152,7 +157,6 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 	private static String createAmountField(MoneyTransaction transaction, String user) {
 
-		val code = transaction.getCurrencyCode();
 		val sender = transaction.getSender();
 		val receiver = transaction.getReceiver();
 		val amount = transaction.getAmount();
@@ -163,6 +167,6 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		else if (user.equals(sender)) sign = "-";
 		else sign = "+";
 
-		return " " + sign + amount.toString() + " " + code + " ";
+		return " " + sign + amount.toString() + " ";
 	}
 }

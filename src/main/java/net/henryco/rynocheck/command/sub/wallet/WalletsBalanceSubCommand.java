@@ -107,7 +107,7 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 	}
 
 	private static void showCurrency(Player player, int i, Currency c, String amount) {
-		player.sendMessage(" *"+i+"+ "+c.getName()+": "+amount+" "+c.getCode());
+		player.sendMessage(" +" + i + "+ " + c.getName() + ": " + amount + " " + c.getCode());
 	}
 
 	private static void showEmpty(Player player) {
