@@ -14,7 +14,7 @@ public interface CurrencyDao extends Dao<Currency, Long> {
 
 	boolean addCurrency(Currency currency);
 
-	boolean updateFeeInfo(String code, String emitter, String recipient, String fee);
+	boolean updateCurrency(Currency currency);
 
 	List<Currency> getCurrencies();
 

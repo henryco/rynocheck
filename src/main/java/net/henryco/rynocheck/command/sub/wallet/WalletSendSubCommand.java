@@ -11,6 +11,7 @@ import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.transaction.IMoneyTransactionService;
+import net.henryco.rynocheck.utils.StringUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -113,7 +114,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 
 
 	private static void sendMsgToSnd(Player player, String amount, String currency) {
-		player.sendMessage("Updated wallet balance: " + amount + " " + currency);
+		player.sendMessage("Updated wallet balance: " + StringUtil.precise(amount) + " " + currency);
 	}
 
 
@@ -123,8 +124,8 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		val fee = amount.multiply(currency.getFee());
 		val pct = currency.getFee().multiply(new BigDecimal(100));
 
-		return " + " + fee.toString() + currency.getCode()
-				+ " (FEE: " + pct.toString() + "%) ";
+		return " + " + StringUtil.precise(fee.toString()) + currency.getCode()
+				+ " (FEE: " + StringUtil.precise(pct.toString()) + "%) ";
 	}
 
 
@@ -135,17 +136,18 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			@Override
 			public void success(String userName, String amount, String currency) {
 
+				final String amn = StringUtil.precise(amount);
 				if (userName.equals(sender))
-					sendMsgToSnd(player, amount, currency);
+					sendMsgToSnd(player, amn, currency);
 				if (userName.equals(recipient))
-					bundle.sendMsgToRec(player, sender, recipient, amount, currency);
+					bundle.sendMsgToRec(player, sender, recipient, amn, currency);
 			}
 
 			@Override
 			public void error(String userName, String amount, String currency) {
 
 				if (userName.equals(sender))
-					player.sendMessage("Transaction aborted, not enough funds: " + amount + " " + currency);
+					player.sendMessage("Transaction aborted, not enough funds: " + StringUtil.precise(amount) + " " + currency);
 			}
 		};
 	}

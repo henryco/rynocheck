@@ -47,11 +47,17 @@ public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 		currency.setCode(code);
 
 
-		val fee = processDecimal(args[4]);
-		if (fee != null && fee.compareTo(new BigDecimal(1)) > 0) {
-			sender.sendMessage("Fee should be bounded from 0 to 1");
-			return true;
+		BigDecimal fee = processDecimal(args[4]);
+		if (fee != null) {
+			if (fee.compareTo(new BigDecimal(100)) > 0 ||
+					fee.compareTo(BigDecimal.ZERO) == 0) {
+				sender.sendMessage("Fee should be bounded from 0 to 100");
+				return true;
+			}
+
+			fee = new BigDecimal(new Double(fee.abs().toPlainString()) / 100D);
 		}
+
 		currency.setFee(fee);
 
 

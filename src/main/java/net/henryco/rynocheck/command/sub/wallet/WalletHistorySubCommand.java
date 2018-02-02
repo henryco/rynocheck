@@ -9,6 +9,7 @@ import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.data.page.Page;
+import net.henryco.rynocheck.utils.StringUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -167,6 +168,6 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		else if (user.equals(sender)) sign = "-";
 		else sign = "+";
 
-		return " " + sign + amount.toString() + " ";
+		return " " + sign + StringUtil.precise(amount.toString()) + " ";
 	}
 }

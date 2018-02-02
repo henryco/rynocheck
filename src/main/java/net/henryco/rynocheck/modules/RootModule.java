@@ -11,7 +11,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 /**
  * @author Henry on 14/01/18.
@@ -40,14 +39,8 @@ import java.sql.SQLException;
 		val CODE = list.get(1);
 		val LIM = list.get(2);
 
-		val currency = new Currency(null, NAME, CODE, new BigDecimal(LIM), new BigDecimal(fee), rec);
-		if (!dao.isExists(currency)) {
-			try {
-				dao.create(currency);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		dao.addCurrency(new Currency(null, NAME, CODE, new BigDecimal(LIM), new BigDecimal(fee), rec));
+
 		return plugin.getConfig();
 	}
 

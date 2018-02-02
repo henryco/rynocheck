@@ -4,12 +4,10 @@ import com.github.henryco.injector.meta.annotations.Component;
 import com.github.henryco.injector.meta.annotations.Inject;
 import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.support.ConnectionSource;
-import lombok.val;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.page.Page;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -71,29 +69,10 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 		}
 	}
 
+	@Override
+	public boolean updateCurrency(Currency currency) {
 
-	/**
-	 * Update currency transaction fee.
-	 * @param code code of currency
-	 * @param author last fee recipient
-	 * @param emitter new emitter
-	 * @param fee float from 0 to 1
-	 * @return true if updated
-	 */ @Override
-	public boolean updateFeeInfo(String code, String author, String emitter, String fee) {
-
-		if (!assertString(code) || !assertString(emitter)
-				|| !assertString(fee) || !assertString(author))
-			return false;
-
-		val currency = getCurrencyByCode(code);
-		if (currency == null) return false;
-
-		if (!currency.getEmitter().equals(author))
-			return false;
-
-		currency.setFee(new BigDecimal(fee));
-		currency.setEmitter(emitter);
+		if (!isExists(currency)) return false;
 
 		try {
 			return update(currency) == 1;
@@ -102,7 +81,6 @@ public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 			return false;
 		}
 	}
-
 
 	@Override
 	public List<Currency> getCurrencies() {

@@ -5,12 +5,13 @@ import com.github.henryco.injector.meta.annotations.Inject;
 import lombok.Data;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
+import net.henryco.rynocheck.data.dao.balance.MoneyBalanceDao;
 import net.henryco.rynocheck.data.dao.currency.CurrencyDao;
 import net.henryco.rynocheck.data.dao.session.SessionDao;
 import net.henryco.rynocheck.data.dao.transaction.MoneyTransactionDao;
-import net.henryco.rynocheck.data.dao.balance.MoneyBalanceDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
+import net.henryco.rynocheck.utils.StringUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -89,6 +90,6 @@ public class DaoBundle {
 		if (p == null) return;
 
 		p.sendMessage("Received founds from " + sender);
-		player.sendMessage("Wallet balance: " + amount + " " + currency);
+		player.sendMessage("Wallet balance: " + StringUtil.precise(amount) + " " + currency);
 	}
 }

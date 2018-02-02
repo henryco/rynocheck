@@ -8,6 +8,7 @@ import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.page.Page;
+import net.henryco.rynocheck.utils.StringUtil;
 import org.bukkit.command.CommandSender;
 
 import java.math.BigDecimal;
@@ -101,13 +102,13 @@ public class CurrencyListSubCommand implements RynoCheckSubCommand {
 	}
 
 	private static String createMicro(BigDecimal micro) {
-		return " M: " + (micro == null ? "N/A" : micro.toString()) + " ";
+		return " M: " + (micro == null ? "N/A" : StringUtil.precise(micro.toString())) + " ";
 	}
 
 	private static String createFee(BigDecimal fee) {
 	 	return " F: " + (fee == null
 				? "0"
-				: fee.multiply(new BigDecimal(100)).toString()
+				: StringUtil.precise(fee.multiply(new BigDecimal(100)).toString())
 		) + "% ";
 	}
 }
