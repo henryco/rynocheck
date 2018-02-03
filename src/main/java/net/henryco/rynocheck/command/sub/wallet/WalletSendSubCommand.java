@@ -11,7 +11,7 @@ import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.transaction.IMoneyTransactionService;
-import net.henryco.rynocheck.utils.StringUtil;
+import net.henryco.rynocheck.utils.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -114,7 +114,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 
 
 	private static void sendMsgToSnd(Player player, String amount, String currency) {
-		player.sendMessage("Updated wallet balance: " + StringUtil.precise(amount) + " " + currency);
+		player.sendMessage("Updated wallet balance: " + Util.precise(amount) + " " + currency);
 	}
 
 
@@ -124,8 +124,8 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		val fee = amount.multiply(currency.getFee());
 		val pct = currency.getFee().multiply(new BigDecimal(100));
 
-		return " + " + StringUtil.precise(fee.toString()) + currency.getCode()
-				+ " (FEE: " + StringUtil.precise(pct.toString()) + "%) ";
+		return " + " + Util.precise(fee.toString()) + currency.getCode()
+				+ " (FEE: " + Util.precise(pct.toString()) + "%) ";
 	}
 
 
@@ -136,7 +136,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			@Override
 			public void success(String userName, String amount, String currency) {
 
-				final String amn = StringUtil.precise(amount);
+				final String amn = Util.precise(amount);
 				if (userName.equals(sender))
 					sendMsgToSnd(player, amn, currency);
 				if (userName.equals(recipient))
@@ -147,7 +147,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			public void error(String userName, String amount, String currency) {
 
 				if (userName.equals(sender))
-					player.sendMessage("Transaction aborted, not enough funds: " + StringUtil.precise(amount) + " " + currency);
+					player.sendMessage("Transaction aborted, not enough funds: " + Util.precise(amount) + " " + currency);
 			}
 		};
 	}

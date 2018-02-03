@@ -9,7 +9,7 @@ import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
-import net.henryco.rynocheck.utils.StringUtil;
+import net.henryco.rynocheck.utils.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -108,7 +108,7 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 	}
 
 	private static void showCurrency(Player player, int i, Currency c, String amount) {
-		player.sendMessage(" +" + i + "+ " + c.getName() + ": " + StringUtil.precise(amount) + " " + c.getCode());
+		player.sendMessage(" +" + i + "+ " + c.getName() + ": " + Util.precise(amount) + " " + c.getCode());
 	}
 
 	private static void showEmpty(Player player) {

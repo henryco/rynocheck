@@ -1,9 +1,9 @@
 package net.henryco.rynocheck.data.model;
 
 import lombok.*;
+import net.henryco.rynocheck.utils.Util;
 
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -107,6 +107,6 @@ public class MoneyTransaction {
 	}
 
 	public void setAmount(BigDecimal amount) {
-		this.amount = amount.abs();
+		this.amount = Util.setPrecision(amount).abs();
 	}
 }

@@ -59,10 +59,21 @@ public class WalletCreateCmEx extends RynoCheckExecutor {
 			return true;
 		} else if (args.length == 3) account.setEmail(args[2]);
 
+		if (!matches(args[0])) {
+			sender.sendMessage("Name should be at least 5 characters length, A-Z 0-9");
+			return true;
+		}
+
+
 		account.setLastUpdate(new Date(System.currentTimeMillis()));
 		moneyAccDao.create(account);
 		sender.sendMessage("Done, account: " + args[0] + " created, now you can login.");
 
 		return true;
+	}
+
+
+	private static boolean matches(String input) {
+		return input != null && input.length() >= 5 && input.matches("[A-Za-z0-9]*");
 	}
 }

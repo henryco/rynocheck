@@ -11,7 +11,7 @@ import net.henryco.rynocheck.data.dao.session.SessionDao;
 import net.henryco.rynocheck.data.dao.transaction.MoneyTransactionDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyBalance;
-import net.henryco.rynocheck.utils.StringUtil;
+import net.henryco.rynocheck.utils.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -90,6 +90,6 @@ public class DaoBundle {
 		if (p == null) return;
 
 		p.sendMessage("Received founds from " + sender);
-		player.sendMessage("Wallet balance: " + StringUtil.precise(amount) + " " + currency);
+		player.sendMessage("Wallet balance: " + Util.precise(amount) + " " + currency);
 	}
 }

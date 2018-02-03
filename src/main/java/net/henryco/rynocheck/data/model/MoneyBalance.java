@@ -3,6 +3,7 @@ package net.henryco.rynocheck.data.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.henryco.rynocheck.utils.Util;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -62,4 +63,8 @@ public class MoneyBalance {
 			TIMESTAMP
 	) Date lastUpdate;
 
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = Util.setPrecision(amount);
+	}
 }

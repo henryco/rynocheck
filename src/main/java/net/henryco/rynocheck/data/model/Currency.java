@@ -3,6 +3,7 @@ package net.henryco.rynocheck.data.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.henryco.rynocheck.utils.Util;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,15 +20,20 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 public class Currency implements Serializable {
 
-	public static final String BANK_PREFIX = "BANK OF ";
+	public static final String BANK_POSTFIX = "?";
 
 	public static String createBankName(Currency currency) {
 		return createBankName(currency.getCode());
 	}
 
 	public static String createBankName(String currencyCode) {
-		return BANK_PREFIX + currencyCode;
+		return currencyCode + BANK_POSTFIX;
 	}
+
+	public static String createBankName() {
+		return BANK_POSTFIX;
+	}
+
 
 
 	public static final String CURRENCY_ID = "id";
@@ -80,5 +86,14 @@ public class Currency implements Serializable {
 
 	public String getBankName() {
 		return createBankName(this);
+	}
+
+
+	public void setMicroLimit(BigDecimal microLimit) {
+		this.microLimit = Util.setPrecision(microLimit).abs();
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = Util.setPrecision(fee).abs();
 	}
 }

@@ -9,7 +9,7 @@ import net.henryco.rynocheck.data.dao.DaoBundle;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.data.page.Page;
-import net.henryco.rynocheck.utils.StringUtil;
+import net.henryco.rynocheck.utils.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -143,7 +143,7 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		final String sender;
 
 		if (transaction.getDescription().equalsIgnoreCase(TAG_FEE)) {
-			receiver = sender = Currency.createBankName(transaction.getCurrencyCode());
+			receiver = sender = Currency.createBankName();
 		} else {
 			receiver = transaction.getReceiver();
 			sender = transaction.getSender();
@@ -168,6 +168,6 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		else if (user.equals(sender)) sign = "-";
 		else sign = "+";
 
-		return " " + sign + StringUtil.precise(amount.toString()) + " ";
+		return " " + sign + Util.precise(amount.toString()) + " ";
 	}
 }
