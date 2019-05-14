@@ -1,7 +1,8 @@
 package net.henryco.rynocheck.data.dao;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
+
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.Data;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.account.MoneyAccountDao;
@@ -15,9 +16,10 @@ import net.henryco.rynocheck.utils.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
 import java.util.UUID;
 
-@Data @Component
+@Data @Provide
 public class DaoBundle {
 
 	private final MoneyTransactionDao transactionDao;

@@ -2,11 +2,12 @@ package net.henryco.rynocheck.modules;
 
 import com.github.henryco.injector.meta.annotations.Module;
 import com.github.henryco.injector.meta.annotations.Provide;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
 import lombok.Setter;
 import lombok.val;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Singleton;
 import java.io.File;
 
 /**

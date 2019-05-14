@@ -2,7 +2,7 @@ package net.henryco.rynocheck.modules;
 
 import com.github.henryco.injector.meta.annotations.Module;
 import com.github.henryco.injector.meta.annotations.Provide;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import javax.inject.Singleton;
 import lombok.val;
 import net.henryco.rynocheck.RynoCheckPlugin;
 import net.henryco.rynocheck.data.dao.currency.CurrencyDao;

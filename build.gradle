@@ -30,7 +30,7 @@ dependencies {
     compile group: 'com.j256.ormlite', name: 'ormlite-jdbc', version: '5.0'
 
 //    compile files('/home/henryco/Projects/GrInjector/build/libs/GrInjector-1.1.0.jar')
-    compile 'com.github.henryco:grinjector:1.1.0'
+    compile 'com.github.henryco:grinjector:+'
 
 
     compileOnly "org.bukkit:bukkit:+"

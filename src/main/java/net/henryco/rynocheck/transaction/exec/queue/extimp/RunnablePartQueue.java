@@ -1,13 +1,13 @@
 package net.henryco.rynocheck.transaction.exec.queue.extimp;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
 import net.henryco.rynocheck.transaction.exec.queue.PartQueue;
 
+import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Component
+@Provide
 @Singleton
 public class RunnablePartQueue extends PartQueue<Long, Runnable> {
 

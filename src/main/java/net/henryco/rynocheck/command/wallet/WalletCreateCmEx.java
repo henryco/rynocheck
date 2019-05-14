@@ -1,8 +1,7 @@
 package net.henryco.rynocheck.command.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.extern.java.Log;
 import lombok.val;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
@@ -14,12 +13,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Date;
 
 /**
  * @author Henry on 15/01/18.
  */
-@Component @Log @Singleton
+@Provide
+@Log @Singleton
 public class WalletCreateCmEx extends RynoCheckExecutor {
 
 	private final MoneyAccountDao moneyAccDao;

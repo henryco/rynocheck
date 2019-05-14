@@ -1,19 +1,20 @@
 package net.henryco.rynocheck.command;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import net.henryco.rynocheck.context.CommandContext;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.UUID;
 
 /**
  * @author Henry on 14/01/18.
- */ @Component @Singleton
+ */ @Provide @Singleton
 public class DecisionCommandExecutor extends RynoCheckExecutor {
 
 	private static final String YES = "y";

@@ -1,19 +1,20 @@
 package net.henryco.rynocheck.data.dao.account;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import com.j256.ormlite.support.ConnectionSource;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.MoneyAccount;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.sql.SQLException;
 
 import static net.henryco.rynocheck.data.model.MoneyAccount.ACCOUNT_ID;
 import static net.henryco.rynocheck.data.model.MoneyAccount.PASSWORD;
 
 
-@Component @Singleton
+@Provide @Singleton
 public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
 		implements MoneyAccountDao {
 

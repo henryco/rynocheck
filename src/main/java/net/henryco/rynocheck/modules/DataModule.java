@@ -1,14 +1,14 @@
 package net.henryco.rynocheck.modules;
 
 import com.github.henryco.injector.meta.annotations.Module;
-import com.github.henryco.injector.meta.annotations.Named;
 import com.github.henryco.injector.meta.annotations.Provide;
-import com.github.henryco.injector.meta.annotations.Singleton;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import lombok.extern.java.Log;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;

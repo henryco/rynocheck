@@ -1,8 +1,8 @@
 package net.henryco.rynocheck.command.sub.currency;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
@@ -18,7 +18,7 @@ import java.util.Date;
 import static net.henryco.rynocheck.context.CommandContext.YN_OPTION;
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_EMIT;
 
-@Component("SCEmitCurr") @Singleton
+@Provide("SCEmitCurr") @Singleton
 public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 
 	private final IMoneyTransactionService transactionService;

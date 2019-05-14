@@ -1,15 +1,15 @@
 package net.henryco.rynocheck.transaction.exec;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.extern.java.Log;
 import net.henryco.rynocheck.transaction.exec.active.IPartActive;
 import net.henryco.rynocheck.transaction.exec.queue.IPartQueue;
 
-@Component
-@Singleton
-@Log
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Provide @Singleton @Log
 public class TransactionExecutor implements ITransactionExecutor {
 
 	private final IPartActive<Long, Runnable> partActive;

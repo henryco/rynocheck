@@ -1,8 +1,7 @@
 package net.henryco.rynocheck.command.sub.currency;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.data.dao.DaoBundle;
@@ -11,11 +10,13 @@ import net.henryco.rynocheck.data.page.Page;
 import net.henryco.rynocheck.utils.Util;
 import org.bukkit.command.CommandSender;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.math.BigDecimal;
 import java.util.List;
 
 
-@Component("SCListCurr") @Singleton
+@Provide("SCListCurr") @Singleton
 public class CurrencyListSubCommand implements RynoCheckSubCommand {
 
 	private final DaoBundle daoBundle;

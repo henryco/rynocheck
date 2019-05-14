@@ -1,8 +1,8 @@
 package net.henryco.rynocheck.transaction;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.java.Log;
@@ -14,6 +14,7 @@ import net.henryco.rynocheck.data.model.MoneyTransaction;
 import net.henryco.rynocheck.data.page.Page;
 import net.henryco.rynocheck.transaction.exec.ITransactionExecutor;
 
+import javax.inject.Singleton;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.function.Function;
 
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_FEE;
 
-@Component @Singleton @Log
+@Provide @Singleton @Log
 public class MoneyTransactionService implements IMoneyTransactionService {
 
 	private static final long QUERY_PAGE_SIZE = 10000;

@@ -1,8 +1,8 @@
 package net.henryco.rynocheck.command.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.data.dao.session.SessionDao;
@@ -19,7 +19,7 @@ import static net.henryco.rynocheck.permission.RynoCheckPermissions.WALLET;
 /**
  * @author Henry on 15/01/18.
  */
-@Component @Singleton
+@Provide @Singleton
 public class WalletLogoutCmEx extends RynoCheckExecutor {
 
 	private final SessionDao walletSessionDao;

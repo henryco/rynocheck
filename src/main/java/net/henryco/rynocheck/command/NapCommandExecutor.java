@@ -1,8 +1,7 @@
 package net.henryco.rynocheck.command;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import net.henryco.rynocheck.context.CommandContext;
 import net.henryco.rynocheck.permission.RynoCheckPermissions;
 import org.bukkit.command.Command;
@@ -11,11 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import static net.henryco.rynocheck.permission.RynoCheckPermissions.NAP;
 
 /**
  * @author Henry on 11/01/18.
- */ @Component @Singleton
+ */ @Provide @Singleton
 public class NapCommandExecutor extends RynoCheckExecutor {
 
 	private static final String YES = "on";

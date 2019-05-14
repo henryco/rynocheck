@@ -1,9 +1,9 @@
 package net.henryco.rynocheck.command.sub.currency;
 
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
 
-@Component("SCAddCurr") @Singleton
+@Provide("SCAddCurr") @Singleton
 public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 
 	private final CommandContext commandContext;

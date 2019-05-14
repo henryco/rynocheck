@@ -1,9 +1,9 @@
 package net.henryco.rynocheck.command.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Named;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
@@ -14,7 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * @author Henry on 12/01/18.
- */ @Component @Singleton
+ */ @Provide @Singleton
 public class WalletCommandExecutor extends RynoCheckExecutor {
 
  	private static final String SEND = "send";

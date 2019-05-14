@@ -7,85 +7,85 @@ website: https://github.com/henryco
 main: net.henryco.rynocheck.RynoCheckPlugin
 
 commands:
-    nap:
-      description: You should agree with NAP contract
-      usage: /<command> [on / off]
+  nap:
+    description: You should agree with NAP contract
+    usage: /<command> [on / off]
 
-    y:
-      description: Confirm action
-      usage: /<command>
-      aliases: [yes, accept, ok, Y]
+  y:
+    description: Confirm action
+    usage: /<command>
+    aliases: [yes, accept, ok, Y]
 
-    n:
-      description: Decline action
-      usage: </command>
-      aliases: [no, decline, cancel, N]
+  n:
+    description: Decline action
+    usage: </command>
+    aliases: [no, decline, cancel, N]
 
-    wallet-login:
-      description: Login to your personal wallet
-      usage: /<command> {name} {password}
-      aliases: [wln, wlogin, w-login]
-      permissions-message: You should logout first
+  wallet-login:
+    description: Login to your personal wallet
+    usage: /<command> {name} {password}
+    aliases: [wln, wlogin, w-login]
+    permissions-message: You should logout first
 
-    wallet-logout:
-      description: Logout
-      usage: </command>
-      aliases: [wlt, wlogout, w-logout]
-      permissions: wallet_login
-      permissions-message: You should login first
+  wallet-logout:
+    description: Logout
+    usage: </command>
+    aliases: [wlt, wlogout, w-logout]
+    permissions: wallet_login
+    permissions-message: You should login first
 
-    wallet-create:
-      description: Create new wallet account
-      usage: /<command> {name} {password} {(optional) email}
-      aliases: [wcr, wcreate, w-create]
+  wallet-create:
+    description: Create new wallet account
+    usage: /<command> {name} {password} {(optional) email}
+    aliases: [wcr, wcreate, w-create]
 
-    wallet-currency:
-      description: Currency operations terminal
-      aliases: [wcn, wcurrency, w-currency]
-      usage: |
-        List of <command> usage options:
-         + list
-         + list {page}
-         + list {emitter} {page}
-         + emit {recipient} {amount} {code}
-         + add {name} {code} {micro} {fee} {emitter}
-         + set {code} {attribute name} {new attribute value}
-        {fee} - value in percents (might be NULL)
-        {emitter} - emitter and fee receiver (might be NULL)
-        {micro} - maximum amount of micro transaction (might be NULL)
+  wallet-currency:
+    description: Currency operations terminal
+    aliases: [wcn, wcurrency, w-currency]
+    usage: |
+      List of <command> usage options:
+       + list
+       + list {page}
+       + list {emitter} {page}
+       + emit {recipient} {amount} {code}
+       + add {name} {code} {micro} {fee} {emitter}
+       + set {code} {attribute name} {new attribute value}
+      {fee} - value in percents (might be NULL)
+      {emitter} - emitter and fee receiver (might be NULL)
+      {micro} - maximum amount of micro transaction (might be NULL)
 
-      permission: wallet_login
-      permission-message: You should login to personal wallet first.
+    permission: wallet_login
+    permission-message: You should login to personal wallet first.
 
-    wallet:
-      description: Your personal money wallet
-      aliases: [w]
-      usage: |
+  wallet:
+    description: Your personal money wallet
+    aliases: [w]
+    usage: |
+      List of <command> usage options:
+       + send {recipient} {amount} {currency}
+       + balance
+       + balance {page}
+       + balance {currency}
+       + history
+       + history {currency}
+       + history {currency} {page}
+      Note, that {*} argument means ALL.
 
-        List of <command> usage options:
-         + send {recipient} {amount} {currency}
-         + balance
-         + balance {page}
-         + balance {currency}
-         + history
-         + history {currency}
-         + history {currency} {page}
-        Note, that {*} argument means ALL.
-      permission: wallet_login
-      permission-message: You should login to personal wallet first.
+    permission: wallet_login
+    permission-message: You should login to personal wallet first.
 
 permissions:
-    nap_member.*:
-      description: NAP member
-      children:
-        nap_member.revenge: true
-        nap_member.private_property: true
-    nap_member.revenge:
-      description: J U S T I C E
-      default: true
-    nap_member.private_property:
-      description: You deserve it!
-      default: true
-    wallet_login:
-      description: Wallet login
-      default: false
+  nap_member.*:
+    description: NAP member
+    children:
+      nap_member.revenge: true
+      nap_member.private_property: true
+  nap_member.revenge:
+    description: J U S T I C E
+    default: true
+  nap_member.private_property:
+    description: You deserve it!
+    default: true
+  wallet_login:
+    description: Wallet login
+    default: false

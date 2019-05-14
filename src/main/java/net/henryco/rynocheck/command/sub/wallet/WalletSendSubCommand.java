@@ -1,9 +1,7 @@
 package net.henryco.rynocheck.command.sub.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Named;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.context.CommandContext;
@@ -15,6 +13,9 @@ import net.henryco.rynocheck.utils.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,7 +24,7 @@ import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_REGULAR;
 import static net.henryco.rynocheck.transaction.IMoneyTransactionService.Notification;
 
 
-@Component("SCSend") @Singleton
+@Provide("SCSend") @Singleton
 public class WalletSendSubCommand implements RynoCheckSubCommand {
 
 	private final IMoneyTransactionService transactionService;

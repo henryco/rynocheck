@@ -1,8 +1,6 @@
 package net.henryco.rynocheck.event.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.val;
 import net.henryco.rynocheck.data.dao.session.SessionDao;
 import net.henryco.rynocheck.event.RynoCheckEventListener;
@@ -11,7 +9,11 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
-@Component @Singleton
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Provide
+@Singleton
 public class WalletEventListener extends RynoCheckEventListener {
 
 	private final SessionDao walletSessionDao;

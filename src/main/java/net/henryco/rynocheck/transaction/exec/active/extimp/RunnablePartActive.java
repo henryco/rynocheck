@@ -1,15 +1,16 @@
 package net.henryco.rynocheck.transaction.exec.active.extimp;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Named;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import net.henryco.rynocheck.transaction.exec.active.PartActive;
 import net.henryco.rynocheck.transaction.exec.block.Block;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Queue;
 
-@Component
+@Provide
 @Singleton
 public class RunnablePartActive extends PartActive<Long, Runnable> {
 

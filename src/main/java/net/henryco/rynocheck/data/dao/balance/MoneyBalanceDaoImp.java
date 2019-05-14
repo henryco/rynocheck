@@ -1,8 +1,8 @@
 package net.henryco.rynocheck.data.dao.balance;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import com.j256.ormlite.support.ConnectionSource;
 import lombok.extern.java.Log;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
@@ -18,7 +18,7 @@ import static net.henryco.rynocheck.data.model.MoneyBalance.ACCOUNT_ID;
 import static net.henryco.rynocheck.data.model.MoneyBalance.CURRENCY;
 import static net.henryco.rynocheck.data.model.MoneyBalance.ID;
 
-@Component @Singleton @Log
+@Provide @Singleton @Log
 public class MoneyBalanceDaoImp extends RynoCheckDao<MoneyBalance, Long> implements MoneyBalanceDao {
 
 	@Inject

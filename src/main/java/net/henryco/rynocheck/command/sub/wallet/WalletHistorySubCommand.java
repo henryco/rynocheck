@@ -1,8 +1,8 @@
 package net.henryco.rynocheck.command.sub.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
 import net.henryco.rynocheck.data.dao.DaoBundle;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_FEE;
 
-@Component("SCHist")
+@Provide("SCHist")
 @Singleton
 public class WalletHistorySubCommand implements RynoCheckSubCommand {
 

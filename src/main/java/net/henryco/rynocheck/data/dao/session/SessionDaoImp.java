@@ -1,13 +1,16 @@
 package net.henryco.rynocheck.data.dao.session;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Singleton;
 
+
+import com.github.henryco.injector.meta.annotations.Provide;
+
+import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Component @Singleton
+@Provide
+@Singleton
 public class SessionDaoImp implements SessionDao {
 
 	private final Map<UUID, String> sessionMap;

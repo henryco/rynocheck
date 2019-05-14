@@ -1,19 +1,20 @@
 package net.henryco.rynocheck.data.dao.currency;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+import com.github.henryco.injector.meta.annotations.Provide;
 import com.j256.ormlite.support.ConnectionSource;
 import net.henryco.rynocheck.data.dao.RynoCheckDao;
 import net.henryco.rynocheck.data.model.Currency;
 import net.henryco.rynocheck.data.page.Page;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.sql.SQLException;
 import java.util.List;
 
 import static net.henryco.rynocheck.data.model.Currency.*;
 
-@Component @Singleton
+@Provide
+@Singleton
 public class CurrencyDaoImp extends RynoCheckDao<Currency, Long>
 		implements CurrencyDao {
 

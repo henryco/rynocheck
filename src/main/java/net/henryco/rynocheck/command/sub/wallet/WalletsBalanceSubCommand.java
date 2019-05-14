@@ -1,8 +1,7 @@
 package net.henryco.rynocheck.command.sub.wallet;
 
-import com.github.henryco.injector.meta.annotations.Component;
-import com.github.henryco.injector.meta.annotations.Inject;
-import com.github.henryco.injector.meta.annotations.Singleton;
+
+import com.github.henryco.injector.meta.annotations.Provide;
 import lombok.extern.java.Log;
 import lombok.val;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
@@ -13,11 +12,13 @@ import net.henryco.rynocheck.utils.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.sql.SQLException;
 import java.util.List;
 
 
-@Component("SCBlns") @Singleton @Log
+@Provide("SCBlns") @Singleton @Log
 public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 
 	private final DaoBundle daoBundle;
