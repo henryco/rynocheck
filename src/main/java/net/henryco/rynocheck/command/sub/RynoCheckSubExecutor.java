@@ -1,5 +1,6 @@
 package net.henryco.rynocheck.command.sub;
 
+import lombok.extern.java.Log;
 import lombok.val;
 import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.context.CommandContext;
@@ -8,11 +9,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
+
+@Log
 public abstract class RynoCheckSubExecutor extends RynoCheckExecutor {
 
 
 	public RynoCheckSubExecutor(CommandContext context, Plugin plugin, String... commands) {
-		this(context, plugin, 100, commands);
+		this(context, plugin, 10, commands);
 	}
 
 	public RynoCheckSubExecutor(CommandContext context, Plugin plugin, int argsNumber, String... commands) {
@@ -26,6 +30,8 @@ public abstract class RynoCheckSubExecutor extends RynoCheckExecutor {
 	@Override
 	protected boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args)  {
 
+		log.info(this.getClass().getSimpleName() + ": onCommandExecute: " + Arrays.toString(args));
+
 		if (args[0] == null) return false;
 		if (!(sender instanceof Player)) {
 			return true; // todo
@@ -38,7 +44,7 @@ public abstract class RynoCheckSubExecutor extends RynoCheckExecutor {
 				if (sub.strict()) {
 					for (val a: arguments) {
 						if (a == null) {
-							return false;
+							throw new IllegalArgumentException(Arrays.toString(arguments));
 						}
 					}
 				}
@@ -52,12 +58,14 @@ public abstract class RynoCheckSubExecutor extends RynoCheckExecutor {
 
 
 	private static boolean compare(boolean caseSensitive, String o1, String o2) {
-		return caseSensitive ? o1.equals(o2) : o1.equalsIgnoreCase(o2);
+		val r = caseSensitive ? o1.equals(o2) : o1.equalsIgnoreCase(o2);
+		log.info("COMPARE: " + caseSensitive + " : " + o1 + " : " + o2 + " = " + r);
+		return r;
 	}
 
 	private static String[] trimArgs(int number, String ... args) {
 
-		val lim = Math.min(number, args.length);
+		val lim = Math.max(0, Math.min(number, args.length - 1));
 		val arr = new String[number];
 
 		//  0  1  2  3  4
@@ -70,9 +78,10 @@ public abstract class RynoCheckSubExecutor extends RynoCheckExecutor {
 		// [c, 2, 4]      : 3 -> lim
 		//    [2, 4, -, -]: 4
 
-		if (lim - 1 >= 0)
-			System.arraycopy(args, 1, arr, 0, lim - 1);
+		System.arraycopy(args, 1, arr, 0, lim);
 
+		log.info("IN ARGS: " + Arrays.toString(args));
+		log.info("OUT ARGS: " + Arrays.toString(arr));
 		return arr;
 	}
 }
