@@ -1,6 +1,7 @@
 package net.henryco.rynocheck.command;
 
 import lombok.Getter;
+import lombok.val;
 import net.henryco.rynocheck.RynoCheck;
 import net.henryco.rynocheck.context.CommandContext;
 import org.bukkit.command.Command;
@@ -16,14 +17,26 @@ public abstract class RynoCheckExecutor implements CommandExecutor, RynoCheck {
 
 	private final @Getter CommandContext context;
 	private final @Getter Plugin plugin;
+	private final int argsNumber;
 
-	public RynoCheckExecutor(CommandContext context,
-							 Plugin plugin, String ... commandNames) {
+	public RynoCheckExecutor(
+			CommandContext context,
+			Plugin plugin,
+			int argsNumber,
+			String ... commandNames
+	) {
+		this.argsNumber = argsNumber;
 		this.context = context;
 		this.plugin = plugin;
 		register(commandNames);
 	}
 
+	private static String[] adaptInputData(int size, String ... args) {
+		val arr = new String[size];
+		val limit = Math.min(size, args.length);
+		System.arraycopy(args, 0, arr, 0, limit);
+		return arr;
+	}
 
 	private void register(String[] commandNames) {
 
@@ -49,7 +62,7 @@ public abstract class RynoCheckExecutor implements CommandExecutor, RynoCheck {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		try {
-			return onCommandExecute(sender, command, label, args);
+			return onCommandExecute(sender, command, label, adaptInputData(argsNumber, args));
 		} catch (Exception e) {
 			onException(e);
 			return false;

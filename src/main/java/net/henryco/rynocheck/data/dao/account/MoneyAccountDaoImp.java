@@ -37,7 +37,7 @@ public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
 	}
 
 	@Override
-	public boolean authenticate(String name, String password) {
+	public boolean isAccountExistsByUsernameAndPasswordHash(String name, String password) {
 
 		if (name == null || password == null) return false;
 
@@ -50,7 +50,7 @@ public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
 	}
 
 	@Override
-	public boolean isAccountExists(String name) {
+	public boolean isUsernameExists(String name) {
 
 		if (!assertString(name)) return false;
 		try {
@@ -61,7 +61,7 @@ public class MoneyAccountDaoImp extends RynoCheckDao<MoneyAccount, String>
 	}
 
 	@Override
-	public MoneyAccount getAccount(String name) {
+	public MoneyAccount getAccountByUsername(String name) {
 
 		if (!assertString(name)) return null;
 		try {

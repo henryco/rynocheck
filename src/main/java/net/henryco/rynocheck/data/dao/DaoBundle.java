@@ -47,7 +47,7 @@ public class DaoBundle {
 
 	public String createUserSession(Player player) {
 		String user = getSessionDao().getSessionName(player.getUniqueId());
-		if (!getAccountDao().isAccountExists(user)) {
+		if (!getAccountDao().isUsernameExists(user)) {
 			player.sendMessage("Account session error: null");
 			return null;
 		}
@@ -55,7 +55,7 @@ public class DaoBundle {
 	}
 
 	public String createRecipient(Player player, String arg) {
-		if (!getAccountDao().isAccountExists(arg)) {
+		if (!getAccountDao().isUsernameExists(arg)) {
 			player.sendMessage("Unknown recipient!");
 			return null;
 		}

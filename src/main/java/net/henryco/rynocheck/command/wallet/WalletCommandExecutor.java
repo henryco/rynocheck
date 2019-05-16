@@ -33,7 +33,7 @@ public class WalletCommandExecutor extends RynoCheckExecutor {
 								 CommandContext commandContext,
 								 Plugin plugin) {
 
-		super(commandContext, plugin, "wallet");
+		super(commandContext, plugin, 100, "wallet");
 		this.balance = balance;
 		this.history = history;
 		this.send = send;

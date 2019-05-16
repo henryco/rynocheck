@@ -35,7 +35,7 @@ public class WalletCurrencyCmEx extends RynoCheckExecutor {
 							  @Named("SCSetCurr") RynoCheckSubCommand set,
 							  CommandContext context,
 							  Plugin plugin) {
-		super(context, plugin, "wallet-currency");
+		super(context, plugin, 100,"wallet-currency");
 
 		this.list = list;
 		this.emit = emit;
@@ -44,7 +44,7 @@ public class WalletCurrencyCmEx extends RynoCheckExecutor {
 	}
 
 	@Override
-	protected boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
+	protected boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) {
 
 		if (args.length == 0) return false;
 		if (!(sender instanceof Player)) {

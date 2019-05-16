@@ -28,12 +28,12 @@ public class WalletLogoutCmEx extends RynoCheckExecutor {
 	public WalletLogoutCmEx(SessionDao walletSessionDao,
 							CommandContext commandContext,
 							Plugin plugin) {
-		super(commandContext, plugin, "wallet-logout");
+		super(commandContext, plugin, 0, "wallet-logout");
 		this.walletSessionDao = walletSessionDao;
 	}
 
 	@Override
-	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) throws Exception {
+	public boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
 			return true; // todo
