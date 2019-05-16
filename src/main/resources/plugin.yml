@@ -1,15 +1,12 @@
-name: RynoCheck
-version: 2.1.3.8
-description: Free market intensifies
+name: Rynocheck
+version: 2.1.3.7
+description: Free market i n t e n s i f i e s
 
 author: HenryCo
-website: https://github.com/henryco
+website: https://tindersamurai.dev
 main: net.henryco.rynocheck.RynoCheckPlugin
 
 commands:
-  nap:
-    description: You should agree with NAP contract
-    usage: /<command> [on / off]
 
   y:
     description: Confirm action
@@ -53,7 +50,6 @@ commands:
       {fee} - value in percents (might be NULL)
       {emitter} - emitter and fee receiver (might be NULL)
       {micro} - maximum amount of micro transaction (might be NULL)
-
     permission: wallet_login
     permission-message: You should login to personal wallet first.
 
@@ -70,22 +66,10 @@ commands:
        + history {currency}
        + history {currency} {page}
       Note, that {*} argument means ALL.
-
     permission: wallet_login
     permission-message: You should login to personal wallet first.
 
 permissions:
-  nap_member.*:
-    description: NAP member
-    children:
-      nap_member.revenge: true
-      nap_member.private_property: true
-  nap_member.revenge:
-    description: J U S T I C E
-    default: true
-  nap_member.private_property:
-    description: You deserve it!
-    default: true
   wallet_login:
     description: Wallet login
     default: false

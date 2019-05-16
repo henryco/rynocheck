@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Projects-rynocheck_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Projects-rynocheck_main.iml" group="rynocheck" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Projects-rynocheck_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Projects-rynocheck_test.iml" group="rynocheck" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rynocheck.iml" filepath="$PROJECT_DIR$/.idea/modules/rynocheck.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rynocheck.iml" filepath="$PROJECT_DIR$/.idea/modules/rynocheck.iml" group="rynocheck" />
     </modules>
   </component>
 </project>
