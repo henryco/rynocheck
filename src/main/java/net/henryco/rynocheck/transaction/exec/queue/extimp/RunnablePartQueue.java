@@ -7,8 +7,7 @@ import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Provide
-@Singleton
+@Provide @Singleton
 public class RunnablePartQueue extends PartQueue<Long, Runnable> {
 
 	public RunnablePartQueue() {
