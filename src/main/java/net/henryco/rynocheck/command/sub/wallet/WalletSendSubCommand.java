@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Calendar;
 
 import static net.henryco.rynocheck.context.CommandContext.YN_OPTION;
 import static net.henryco.rynocheck.data.model.MoneyTransaction.TAG_REGULAR;
@@ -53,16 +53,20 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		return "send";
 	}
 
-	@Override // args: send {recipient} {amount} {currency}
+	@Override
+	public boolean strict() {
+		return true;
+	}
+
+	@Override // args: {recipient} {amount} {currency}
 	public boolean executeSubCommand(CommandSender commandSender, String[] args) {
 
 		val player = (Player) commandSender;
-		if (args.length != 4) return false;
 
 		val sender = daoBundle.createUserSession(player);
 		if (sender == null) return true;
 
-		val recipient = daoBundle.createRecipient(player, args[1]);
+		val recipient = daoBundle.createRecipient(player, args[0]);
 		if (recipient == null) return true;
 
 		if (recipient.equals(sender) && !selfEnable) {
@@ -70,20 +74,20 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			return true;
 		}
 
-		val currency = daoBundle.createCurrency(player, args[3]);
+		val currency = daoBundle.createCurrency(player, args[2]);
 		if (currency == null) return true;
 
 		val senderBalance = daoBundle.createBalance(player, sender, currency);
 		if (senderBalance == null) return true;
 
 		final BigDecimal amount; try {
-			if (args[2].equals(ALL)) {
+			if (args[1].equals(ALL)) {
 				amount = senderBalance.getAmount();
 				if (amount.compareTo(BigDecimal.ZERO) < 0) {
 					player.sendMessage("You don't have any funds!");
 					return true;
 				}
-			} else amount = new BigDecimal(args[2]).abs();
+			} else amount = new BigDecimal(args[1]).abs();
 
 		} catch (NumberFormatException e) {
 			player.sendMessage("Wrong currency amount!");
@@ -107,7 +111,7 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 			transaction.setCurrency(currency);
 			transaction.setSender(sender);
 			transaction.setReceiver(recipient);
-			transaction.setTime(new Date(System.currentTimeMillis()));
+			transaction.setTime(Calendar.getInstance().getTime());
 
 			Notification notification = createNotification(player, daoBundle, sender, recipient);
 			transactionService.releaseTransaction(transaction, notification, true);

@@ -43,18 +43,23 @@ public class CurrencySetSubCommand implements RynoCheckSubCommand {
 		return "set";
 	}
 
-	// set {code} {attribute} {new value}
+	@Override
+	public boolean strict() {
+		return true;
+	}
+
+	// args: {code} {attribute} {new value}
 	// attribute: <micro> <fee> <emitter>
 	@Override
 	public boolean executeSubCommand(CommandSender sender, String[] args) {
 
+		val code = args[0];
+		val attr = args[1];
+		val value = args[2];
 
-		if (args.length < 4) return false;
-		if (args.length % 2 != 0) return false;
-
-		val currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[1]);
+		val currency = daoBundle.getCurrencyDao().getCurrencyByCode(code);
 		if (currency == null) {
-			sender.sendMessage("Unknown currency: " + args[1]);
+			sender.sendMessage("Unknown currency: " + code);
 			return true;
 		}
 
@@ -66,28 +71,21 @@ public class CurrencySetSubCommand implements RynoCheckSubCommand {
 			return true;
 		}
 
-		for (int i = 2; i < args.length - 1; i += 2) {
+		if (attr.equalsIgnoreCase(NAME) || attr.equalsIgnoreCase(CODE)) {
+			sender.sendMessage("You cannot change name or code!");
+			return true;
+		}
 
-			if (args[i].equalsIgnoreCase(NAME) || args[i].equalsIgnoreCase(CODE)) {
-				sender.sendMessage("You cannot change name or code!");
-				return true;
-			}
-
-			switch (args[i].toUpperCase()) {
-
-				case FEE:
-					currency.setFee(new BigDecimal(new Double(args[i + 1]) / 100.D));
-					break;
-
-				case MICRO:
-					currency.setMicroLimit(new BigDecimal(args[i + 1]));
-					break;
-
-				case EMITTER:
-					currency.setEmitter(args[i + 1]);
-					break;
-			}
-
+		switch (attr.toUpperCase()) {
+			case FEE:
+				currency.setFee(new BigDecimal(new Double(value) / 100.D));
+				break;
+			case MICRO:
+				currency.setMicroLimit(new BigDecimal(value));
+				break;
+			case EMITTER:
+				currency.setEmitter(value);
+				break;
 		}
 
 		sender.sendMessage("You are going to edit " + currency.getName());

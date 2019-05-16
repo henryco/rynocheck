@@ -41,47 +41,44 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 		return "balance";
 	}
 
-	/* args: balance {currency}
-	 * args: balance {page}
-	 * args: balance
+	/* args: {currency}
+	 * args: {page}
+	 * args: <null>
 	 */ @Override
 	public boolean executeSubCommand(CommandSender commandSender, String[] args) {
 
 		val player = (Player) commandSender;
-
 		val sender = daoBundle.createUserSession(player);
 		if (sender == null) return true;
 
 		val moneyBalances = daoBundle.getBalanceDao().getUserBalanceList(sender);
+		val argument = args[0];
 
-		if (args.length == 1) {
+		if (argument == null) { // null case
 			showBalance(moneyBalances, player, 1);
 			return true;
 		}
 
-		if (args.length == 2) {
+		try {
+			showBalance(moneyBalances, player, Math.max(1, Integer.valueOf(argument)));
+			return true;
+		} catch (NumberFormatException e) {
 
-			try {
-				showBalance(moneyBalances, player, Math.max(1, Integer.valueOf(args[1])));
+			val currency = daoBundle.getCurrencyDao().getCurrencyByCode(argument.toUpperCase());
+			if (currency == null) {
+				player.sendMessage("Unknown currency: " + argument);
 				return true;
-			} catch (NumberFormatException e) {
-
-				val currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[1].toUpperCase());
-				if (currency == null) {
-					player.sendMessage("Unknown currency: " + args[1]);
-					return true;
-				}
-
-				val balance = daoBundle.getBalanceDao().getUserBalance(sender, currency.getId());
-
-				player.sendMessage(currency.getName() + " balance: ");
-				if (balance == null) {
-					showEmpty(player);
-					return true;
-				}
-
-				showCurrency(player, 1, currency, balance.getAmount().toString());
 			}
+
+			val balance = daoBundle.getBalanceDao().getUserBalance(sender, currency.getId());
+
+			player.sendMessage(currency.getName() + " balance: ");
+			if (balance == null) {
+				showEmpty(player);
+				return true;
+			}
+
+			showCurrency(player, 1, currency, balance.getAmount().toString());
 		}
 
 	 	return true;
@@ -123,7 +120,7 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 	}
 
 	private static void showEmpty(Player player) {
-		player.sendMessage("+EMPTY+");
+		player.sendMessage(EMPTY_MESSAGE);
 	}
 
 }

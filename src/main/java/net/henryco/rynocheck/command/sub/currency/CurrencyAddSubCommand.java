@@ -37,18 +37,28 @@ public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 		return "add";
 	}
 
-	@Override // args: add {name} {code} {micro} {fee} {emitter}
+	@Override
+	public boolean strict() {
+		return true;
+	}
+
+	@Override // args: {name} {code} {micro} {fee} {emitter}
 	public boolean executeSubCommand(CommandSender sender, String[] args) {
 
 		val player = (Player) sender;
-		if (args.length < 6) return false;
+
+		val NAME = args[0];
+		val CODE = args[1];
+		val MICR = args[2];
+		val FEE = args[3];
+		val EMIT = args[4];
 
 		val currency = new Currency();
-		currency.setName(args[1]);
-		currency.setMicroLimit(processDecimal(args[3]));
+		currency.setName(NAME);
+		currency.setMicroLimit(processDecimal(MICR));
 
 
-		val code = args[2].toUpperCase();
+		val code = CODE.toUpperCase();
 		if (code.length() != 3) {
 			sender.sendMessage("Currency code should be 3 characters length");
 			return true;
@@ -56,7 +66,7 @@ public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 		currency.setCode(code);
 
 
-		BigDecimal fee = processDecimal(args[4]);
+		BigDecimal fee = processDecimal(FEE);
 		if (fee != null) {
 			if (fee.compareTo(new BigDecimal(100)) > 0 ||
 					fee.compareTo(BigDecimal.ZERO) == 0) {
@@ -70,7 +80,7 @@ public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 		currency.setFee(fee);
 
 
-		val emitter = processStr(args[5]);
+		val emitter = processStr(EMIT);
 		currency.setEmitter(emitter);
 
 
@@ -82,7 +92,7 @@ public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 
 
 		sender.sendMessage(" ");
-		sender.sendMessage("You intend to create new currency: " + args[1]
+		sender.sendMessage("You intend to create new currency: " + NAME
 				+ ", you will not be able to remove it in the future.");
 
 		if (emitter == null || !emitter.equals(daoBundle.getSessionDao().getSessionName(player.getUniqueId()))) {

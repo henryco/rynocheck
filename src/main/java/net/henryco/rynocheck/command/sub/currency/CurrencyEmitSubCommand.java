@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import static net.henryco.rynocheck.context.CommandContext.YN_OPTION;
@@ -45,19 +46,27 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 		return "emit";
 	}
 
-	@Override // args: emit {recipient} {amount} {code}
+	@Override
+	public boolean strict() {
+		return true;
+	}
+
+	@Override // args: {recipient} {amount} {code}
 	public boolean executeSubCommand(CommandSender sender, String[] args) {
 
 		val player = (Player) sender;
-	 	if (args.length < 4) return false;
+
+	 	val REC = args[0];
+	 	val MNT = args[1];
+		val CODE = args[2];
 
 	 	val user = daoBundle.createUserSession(player);
 		if (user == null) return true;
 
-		val recipient = daoBundle.createRecipient(player, args[1]);
+		val recipient = daoBundle.createRecipient(player, REC);
 		if (recipient == null) return true;
 
-		val currency = daoBundle.createCurrency(player, args[3]);
+		val currency = daoBundle.createCurrency(player, CODE);
 		if (currency == null) return true;
 
 		if (!user.equals(currency.getEmitter())) {
@@ -68,12 +77,12 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 		val bank = currency.getBankName();
 
 		MoneyTransaction transaction = new MoneyTransaction();
-		transaction.setAmount(new BigDecimal(args[2]).abs());
+		transaction.setTime(Calendar.getInstance().getTime());
+		transaction.setAmount(new BigDecimal(MNT).abs());
 		transaction.setDescription(TAG_EMIT);
+		transaction.setReceiver(recipient);
 		transaction.setCurrency(currency);
 		transaction.setSender(bank);
-		transaction.setReceiver(recipient);
-		transaction.setTime(new Date(System.currentTimeMillis()));
 
 		daoBundle.getPlugin().getLogger().info("Create emit transaction: " + transaction);
 

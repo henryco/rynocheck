@@ -41,38 +41,34 @@ public class CurrencyListSubCommand implements RynoCheckSubCommand {
 	 * list {emitter} {page}
 	 * list {emitter}
 	 * list {page}
-	 * list
+	 * list <null>
 	 */ @Override
 	public boolean executeSubCommand(CommandSender sender, String[] args) {
 
-	 	if (args.length < 1) return false;
-
 	 	String emitter;
 	 	long pageNumb = 1;
-	 	Page page;
 
-	 	if (args.length == 1)
+	 	if (args[0] == null)
 
 	 		emitter = null;
 
 	 	else try {
 
-			pageNumb = Long.valueOf(args[1]);
+			pageNumb = Long.valueOf(args[0]);
 			emitter = null;
 
 		} catch (NumberFormatException e) {
 
-	 		emitter = args[1];
+	 		emitter = args[0];
 
 	 		if (args.length == 3) {
-	 			pageNumb = Long.valueOf(args[2]);
+	 			pageNumb = Long.valueOf(args[1]);
 			}
 		}
 
 		pageNumb = Math.max(1, pageNumb);
-	 	page = Page.factory.ninePage(pageNumb - 1);
 
-		val currencies = daoBundle.getCurrencyDao().getCurrencies(emitter, page);
+		val currencies = daoBundle.getCurrencyDao().getCurrencies(emitter, Page.factory.ninePage(pageNumb - 1));
 		showCurrencies(currencies, sender, pageNumb);
 
 		return true;

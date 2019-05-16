@@ -44,15 +44,13 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		return "history";
 	}
 
-	/* args: history {currency} {page}
-	 * args: history {currency}
-	 * args: history {page}
-	 * args: history
+	/* args: {currency} {page}
+	 * args: {currency}
+	 * args: {page}
+	 * args: <null>
 	 */
 	@Override
 	public boolean executeSubCommand(CommandSender commandSender, String[] args) {
-
-		if (args.length == 0) return false;
 
 		val player = (Player) commandSender;
 		val user = daoBundle.createUserSession(player);
@@ -60,33 +58,32 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 
 		Currency currency;
 		long pageNumb = 1;
-		Page page;
 
-		if (args.length == 1)
+		if (args[0] == null)
 
 			currency = null;
 
 		else try {
 
-			pageNumb = Long.valueOf(args[1]);
+			pageNumb = Long.valueOf(args[0]);
 			currency = null;
 
 		} catch (NumberFormatException e) {
 
-			currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[1].toUpperCase());
-			if (currency == null && !args[1].equals(ALL)) {
-				commandSender.sendMessage("Unknown currency: " + args[1]);
+			currency = daoBundle.getCurrencyDao().getCurrencyByCode(args[0].toUpperCase());
+			if (currency == null && !args[0].equals(ALL)) {
+				commandSender.sendMessage("Unknown currency: " + args[0]);
 				return true;
 			}
 
-			if (args.length == 3) {
-				pageNumb = Long.valueOf(args[2]);
+			if (args[1] != null) {
+				pageNumb = Long.valueOf(args[1]);
 			}
 		}
 
 
 		pageNumb = Math.max(1, pageNumb);
-		page = Page.factory.ninePage(pageNumb - 1);
+		val page = Page.factory.ninePage(pageNumb - 1);
 
 
 		val transactions = getTransactions(user, page, currency);

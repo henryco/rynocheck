@@ -33,7 +33,17 @@ public abstract class RynoCheckSubExecutor extends RynoCheckExecutor {
 
 		for (val sub: provideSubCommands()) {
 			if (compare(sub.caseSensitive(), sub.name(), args[0])) {
-				return sub.executeSubCommand(sender, trimArgs(sub.maxNumberOfArgs(), args));
+				val arguments = trimArgs(sub.maxNumberOfArgs(), args);
+
+				if (sub.strict()) {
+					for (val a: arguments) {
+						if (a == null) {
+							return false;
+						}
+					}
+				}
+
+				return sub.executeSubCommand(sender, arguments);
 			}
 		}
 

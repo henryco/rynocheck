@@ -14,6 +14,10 @@ public interface RynoCheckSubCommand {
 		return false;
 	}
 
+	default boolean strict() {
+		return false;
+	}
+
 	int maxNumberOfArgs();
 
 	String name();
