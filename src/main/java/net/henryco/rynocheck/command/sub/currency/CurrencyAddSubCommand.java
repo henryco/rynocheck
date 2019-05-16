@@ -27,6 +27,15 @@ public class CurrencyAddSubCommand implements RynoCheckSubCommand {
 		this.daoBundle = daoBundle;
 	}
 
+	@Override
+	public int maxNumberOfArgs() {
+		return 5;
+	}
+
+	@Override
+	public String name() {
+		return "add";
+	}
 
 	@Override // args: add {name} {code} {micro} {fee} {emitter}
 	public boolean executeSubCommand(CommandSender sender, String[] args) {

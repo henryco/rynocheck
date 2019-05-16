@@ -9,4 +9,12 @@ public interface RynoCheckSubCommand {
 	String ALL = "*";
 
 	boolean executeSubCommand(CommandSender sender, String[] args);
+
+	default boolean caseSensitive() {
+		return false;
+	}
+
+	int maxNumberOfArgs();
+
+	String name();
 }

@@ -43,6 +43,16 @@ public class WalletSendSubCommand implements RynoCheckSubCommand {
 		this.selfEnable = selfEnable;
 	}
 
+	@Override
+	public int maxNumberOfArgs() {
+		return 3;
+	}
+
+	@Override
+	public String name() {
+		return "send";
+	}
+
 	@Override // args: send {recipient} {amount} {currency}
 	public boolean executeSubCommand(CommandSender commandSender, String[] args) {
 

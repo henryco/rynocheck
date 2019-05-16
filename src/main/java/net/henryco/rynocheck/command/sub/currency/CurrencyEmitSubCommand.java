@@ -35,6 +35,16 @@ public class CurrencyEmitSubCommand implements RynoCheckSubCommand {
 	}
 
 
+	@Override
+	public int maxNumberOfArgs() {
+		return 3;
+	}
+
+	@Override
+	public String name() {
+		return "emit";
+	}
+
 	@Override // args: emit {recipient} {amount} {code}
 	public boolean executeSubCommand(CommandSender sender, String[] args) {
 

@@ -33,6 +33,17 @@ public class WalletHistorySubCommand implements RynoCheckSubCommand {
 		this.daoBundle = daoBundle;
 	}
 
+
+	@Override
+	public int maxNumberOfArgs() {
+		return 2;
+	}
+
+	@Override
+	public String name() {
+		return "history";
+	}
+
 	/* args: history {currency} {page}
 	 * args: history {currency}
 	 * args: history {page}

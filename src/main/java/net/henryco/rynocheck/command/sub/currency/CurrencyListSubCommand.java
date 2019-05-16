@@ -27,6 +27,16 @@ public class CurrencyListSubCommand implements RynoCheckSubCommand {
 	}
 
 
+	@Override
+	public int maxNumberOfArgs() {
+		return 2;
+	}
+
+	@Override
+	public String name() {
+		return "list";
+	}
+
 	/*
 	 * list {emitter} {page}
 	 * list {emitter}

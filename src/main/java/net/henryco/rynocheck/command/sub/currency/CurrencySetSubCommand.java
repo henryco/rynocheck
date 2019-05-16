@@ -33,8 +33,19 @@ public class CurrencySetSubCommand implements RynoCheckSubCommand {
 		this.daoBundle = daoBundle;
 	}
 
-	@Override // args: set {code} {attribute} {new value}
-	// {new micro} {new fee} {new emitter}
+	@Override
+	public int maxNumberOfArgs() {
+		return 3;
+	}
+
+	@Override
+	public String name() {
+		return "set";
+	}
+
+	// set {code} {attribute} {new value}
+	// attribute: <micro> <fee> <emitter>
+	@Override
 	public boolean executeSubCommand(CommandSender sender, String[] args) {
 
 

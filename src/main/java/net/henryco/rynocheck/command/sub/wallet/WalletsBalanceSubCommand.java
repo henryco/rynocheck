@@ -31,6 +31,16 @@ public class WalletsBalanceSubCommand implements RynoCheckSubCommand {
 	}
 
 
+	@Override
+	public int maxNumberOfArgs() {
+		return 1;
+	}
+
+	@Override
+	public String name() {
+		return "balance";
+	}
+
 	/* args: balance {currency}
 	 * args: balance {page}
 	 * args: balance

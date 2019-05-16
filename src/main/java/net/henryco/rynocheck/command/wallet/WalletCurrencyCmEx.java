@@ -2,12 +2,9 @@ package net.henryco.rynocheck.command.wallet;
 
 
 import com.github.henryco.injector.meta.annotations.Provide;
-import net.henryco.rynocheck.command.RynoCheckExecutor;
 import net.henryco.rynocheck.command.sub.RynoCheckSubCommand;
+import net.henryco.rynocheck.command.sub.RynoCheckSubExecutor;
 import net.henryco.rynocheck.context.CommandContext;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import javax.inject.Inject;
@@ -15,50 +12,27 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Provide @Singleton
-public class WalletCurrencyCmEx extends RynoCheckExecutor {
+public class WalletCurrencyCmEx extends RynoCheckSubExecutor {
 
-	private static final String LIST = "list";
-	private static final String EMIT = "emit";
-	private static final String ADD = "add";
-	private static final String SET = "set";
-
-	private final RynoCheckSubCommand list;
-	private final RynoCheckSubCommand emit;
-	private final RynoCheckSubCommand add;
-	private final RynoCheckSubCommand set;
-
+	private final RynoCheckSubCommand[] subCommands;
 
 	@Inject
-	public WalletCurrencyCmEx(@Named("SCListCurr") RynoCheckSubCommand list,
-							  @Named("SCEmitCurr") RynoCheckSubCommand emit,
-							  @Named("SCAddCurr") RynoCheckSubCommand add,
-							  @Named("SCSetCurr") RynoCheckSubCommand set,
-							  CommandContext context,
-							  Plugin plugin) {
-		super(context, plugin, 100,"wallet-currency");
-
-		this.list = list;
-		this.emit = emit;
-		this.add = add;
-		this.set = set;
+	public WalletCurrencyCmEx(
+			@Named("SCListCurr") RynoCheckSubCommand list,
+			@Named("SCEmitCurr") RynoCheckSubCommand emit,
+			@Named("SCAddCurr") RynoCheckSubCommand add,
+			@Named("SCSetCurr") RynoCheckSubCommand set,
+			CommandContext context,
+			Plugin plugin
+	) {
+		super(context, plugin,"wallet-currency");
+		this.subCommands = new RynoCheckSubCommand[] {
+				list, emit, add, set
+		};
 	}
 
 	@Override
-	protected boolean onCommandExecute(CommandSender sender, Command command, String label, String[] args) {
-
-		if (args.length == 0) return false;
-		if (!(sender instanceof Player)) {
-			return true; // TODO
-		}
-
-		switch (args[0]) {
-			case LIST: return list.executeSubCommand(sender, args);
-			case EMIT: return emit.executeSubCommand(sender, args);
-			case ADD: return add.executeSubCommand(sender, args);
-			case SET: return set.executeSubCommand(sender, args);
-		}
-
-		return false;
+	protected RynoCheckSubCommand[] provideSubCommands() {
+		return subCommands;
 	}
-
 }
